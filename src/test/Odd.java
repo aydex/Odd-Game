@@ -12,5 +12,3 @@ public class Odd {
 		Odd odd = new Odd();
 	}
 }
-
-
