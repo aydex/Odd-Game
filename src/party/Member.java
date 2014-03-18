@@ -190,12 +190,12 @@ public class Member {
 	 * Creates all the equipment the member is going to have
 	 */
 	private void createEquipment(){
-		this.weapon = new Weapon(level);
-		this.headGear = new Armor("headGear", level);
-		this.chest = new Armor("chest", level);
-		this.hands = new Armor("hands", level);
-		this.shield = new Armor("shield", level);
-		this.boots = new Armor("boots", level);
+		this.weapon = new Weapon(level-1);
+		this.headGear = new Armor("headGear", level-1);
+		this.chest = new Armor("chest", level-1);
+		this.hands = new Armor("hands", level-1);
+		this.shield = new Armor("shield", level-1);
+		this.boots = new Armor("boots", level-1);
 	}
 
 	/**
