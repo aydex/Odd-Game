@@ -3,9 +3,9 @@ package party;
 import java.util.ArrayList;
 
 import equipment.Armor;
+import equipment.Armor.ArmorType;
 import equipment.Equipment;
 import equipment.Weapon;
-
 
 public class Member {
 	
@@ -148,30 +148,32 @@ public class Member {
 	 * @return return the old armorpiece
 	 */
 	public Equipment changeEquipment(Armor armor){
-		if(armor.getType() == "headGear"){
-			Armor returnArmor = this.headGear;
+		Armor returnArmor;
+		if(armor.getType() == ArmorType.HEADGEAR){
+			returnArmor = this.headGear;
 			this.headGear = armor;
 		}
-		else if(armor.getType() == "boots"){
-			Armor returnArmor = this.boots;
+		else if(armor.getType() == ArmorType.BOOTS){
+			returnArmor = this.boots;
 			this.boots = armor;
 		}
-		else if(armor.getType() == "chest"){
-			Armor returnArmor = this.chest;
+		else if(armor.getType() == ArmorType.CHEST){
+			returnArmor = this.chest;
 			this.chest = armor;
 		}
-		else if(armor.getType() == "hands"){
-			Armor returnArmor = this.hands;
+		else if(armor.getType() == ArmorType.HANDS){
+			returnArmor = this.hands;
 			this.hands = armor;
 		}
-		else if(armor.getType() == "shield"){
-			Armor returnArmor = this.shield;
+		else if(armor.getType() == ArmorType.SHIELD){
+			returnArmor = this.shield;
 			this.shield = armor;
 		}
 		else{
 			throw new IllegalArgumentException("The armor must be of recognizable type");
 		}
 		this.updateDamDef();
+		return returnArmor;
 	}
 
 	/**
@@ -190,12 +192,12 @@ public class Member {
 	 * Creates all the equipment the member is going to have
 	 */
 	private void createEquipment(){
-		this.weapon = new Weapon(level-1);
-		this.headGear = new Armor("headGear", level-1);
-		this.chest = new Armor("chest", level-1);
-		this.hands = new Armor("hands", level-1);
-		this.shield = new Armor("shield", level-1);
-		this.boots = new Armor("boots", level-1);
+		this.weapon = new Weapon(1);
+		this.headGear = new Armor(ArmorType.HEADGEAR, 1);
+		this.chest = new Armor(ArmorType.CHEST, 1);
+		this.hands = new Armor(ArmorType.HANDS, 1);
+		this.shield = new Armor(ArmorType.SHIELD, 1);
+		this.boots = new Armor(ArmorType.BOOTS, 1);
 	}
 
 	/**
