@@ -2,6 +2,9 @@ package party;
 
 import java.util.ArrayList;
 
+import party.Member;
+import party.Member.MemberType;
+
 public class EnemyParty extends Party {
 
 	/**
@@ -17,7 +20,7 @@ public class EnemyParty extends Party {
 	 * @param size The number of members in the party
 	 * @param level The max level of the party to be generated
 	 */
-	public EnemyParty(int size, int level){
+	public EnemyParty(int size, int level, MemberType type){
 		super();
 		if (level < 0){
 			throw new IllegalArgumentException("Level cannot be negativ");
@@ -26,7 +29,7 @@ public class EnemyParty extends Party {
 			throw new IllegalArgumentException("Size cannot be less than 1 or greater than 4");
 		}
 		for (int i = 0; i < size; i++){
-			Member member = createRandomEnemy();
+			Member member = new Member(type, level);
 			addMember(member);
 		}
 	}

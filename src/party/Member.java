@@ -6,9 +6,11 @@ import equipment.Armor;
 import equipment.Armor.ArmorType;
 import equipment.Equipment;
 import equipment.Weapon;
+import equipment.Weapon.DamageType;
 
 public class Member {
 	
+	private String name;
 	private int level;
 	private double defenceMod;
 	private double defence;
@@ -18,14 +20,16 @@ public class Member {
 	private double maxPower;
 	private double health;
 	private double power;
-	private double modIncrease = 0.5;
-	private double statIncrease = 5;
+	private double modIncrease;
+	private double statIncrease;
 	private Weapon weapon;
 	private Armor headGear;
 	private Armor chest;
 	private Armor hands;
 	private Armor shield;
 	private Armor boots;
+	private DamageType weaknessType;
+	public enum MemberType { HUMAN, ROBOT, SUPERROBOT, ZOMBIE, HERO}
 	
 	/**
 	 * returns the level of member
@@ -50,22 +54,29 @@ public class Member {
 	}
 	
 	/**
-	 * decreases member's health, and returns damage taken
+	 * decreases member's health dependent on the member's weakness and attacktype, and returns damage taken
 	 * @param damage the damage done to the member
+	 * @param type the type of damage the attack did
 	 * @return the damage taken by the member
 	 */
-	public double decreaseHealth(double damage){
+	public double decreaseHealth(double damage, DamageType type){
 		if(damage<0){
 			throw new IllegalArgumentException("damage cannot be negative, was " + damage);
 		}
 		double damageDone;
-		if(damage<this.defence){
-			damageDone = damage/2;
-			health -= damageDone;
+		if(type!=weaknessType){
+			if(damage<this.defence){
+				damageDone = damage/2;
+				health -= damageDone;
+			}
+			else{
+				damageDone = defence/2;
+				damageDone += damage-defence;
+				health -= damageDone;
+			}
 		}
 		else{
-			damageDone = defence/2;
-			damageDone += damage-defence;
+			damageDone = damage;
 			health -= damageDone;
 		}
 		return damageDone;
@@ -192,28 +203,91 @@ public class Member {
 	 * Creates all the equipment the member is going to have
 	 */
 	private void createEquipment(){
-		this.weapon = new Weapon(1);
-		this.headGear = new Armor(ArmorType.HEADGEAR, 1);
-		this.chest = new Armor(ArmorType.CHEST, 1);
-		this.hands = new Armor(ArmorType.HANDS, 1);
-		this.shield = new Armor(ArmorType.SHIELD, 1);
-		this.boots = new Armor(ArmorType.BOOTS, 1);
+		this.weapon = new Weapon(this.level);
+		this.headGear = new Armor(ArmorType.HEADGEAR, this.level);
+		this.chest = new Armor(ArmorType.CHEST, this.level);
+		this.hands = new Armor(ArmorType.HANDS, this.level);
+		this.shield = new Armor(ArmorType.SHIELD, this.level);
+		this.boots = new Armor(ArmorType.BOOTS, this.level);
 	}
 
 	/**
 	 * the constructor for member, it gives it the appropriate level and gives equipment and stats based on that
+	 * @param type the type of member
 	 * @param level the level the member is going to have
 	 */
-	public Member(int level){
+	public Member(MemberType type, int level){
+		switch(type){
+		case HERO:
+			weaknessType = null;
+			modIncrease = 0.8;
+			statIncrease = 8;
+			this.defenceMod = 2;
+			this.damageMod = 2;
+			this.maxHealth = 20;
+			this.maxPower = 20;
+			break;
+		case HUMAN:
+			name = "Human";
+			weaknessType = DamageType.REGULAR;
+			modIncrease = 0.5;
+			statIncrease = 5;
+			this.defenceMod = 1;
+			this.damageMod = 1;
+			this.maxHealth = 10;
+			this.maxPower = 10;
+			break;
+		case ROBOT:
+			name = "Robot";
+			weaknessType = DamageType.PLASMA;
+			modIncrease = 0.3;
+			statIncrease = 3;
+			this.defenceMod = 0.5;
+			this.damageMod = 0.5;
+			this.maxHealth = 15;
+			this.maxPower = 15;
+			break;
+		case SUPERROBOT:
+			name = "Super-robot";
+			weaknessType = DamageType.PLASMA;
+			modIncrease = 1;
+			statIncrease = 10;
+			this.defenceMod = 1;
+			this.damageMod = 1;
+			this.maxHealth = 50;
+			this.maxPower = 75;
+			break;
+		case ZOMBIE:
+			name = "Zombie";
+			weaknessType = DamageType.LASER;
+			modIncrease = 0.2;
+			statIncrease = 7;
+			this.defenceMod = 0.5;
+			this.damageMod = 0.2;
+			this.maxHealth = 30;
+			this.maxPower = 0;
+			break;
+		default:
+			throw new IllegalArgumentException("membertype is not recognized");
+		}
+		
+		
+		
 		this.level = 0;
-		this.defenceMod = 1;
-		this.damageMod = 1;
-		this.maxHealth = 10;
-		this.maxPower = 10;
+		
 		for(int i = 1 ; i <= level; i++){
 			this.increaseLevel();
 		}
 		this.createEquipment();
 		this.updateDamDef();
+	}
+
+	
+	/**
+	 * returns name of member
+	 * @return the name of member
+	 */
+	public String getName(){
+		return name;
 	}
 }
