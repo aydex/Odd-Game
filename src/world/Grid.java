@@ -20,6 +20,50 @@ public class Grid {
 	
 	
 	/**
+	 * changes the background in y, x with surrounding area's background
+	 * @param y coordinate
+	 * @param x coordinate
+	 */
+	private void copyProximityBackground(int y, int x){
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > y-1+i/3 || y-1+i/3 >= height || 0 > x-1+i%3 || x-1+i%3 >= width){
+				
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==0){
+					originalBoard[y][x] = originalBoard[posY-1+i/3][posX-1+i%3];
+					break;
+				}				
+			}
+		}
+	}
+	
+	/**
+	 * clears equipment and enemy parties in the players party proximity
+	 */
+	public void clearProximity(){
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+				
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]!=1 && collisionBoard[posY-1+i/3][posX-1+i%3]!=0){
+					this.copyProximityBackground(posY-1+i/3, posX-1+i%3);
+					collisionBoard[posY-1+i/3][posX-1+i%3] = 0;
+				}				
+			}
+		}
+	}
+	
+	/**
+	 * return direction the party is going to spawn in the next board
+	 * @return the direction the party is going to spawn in the next board
+	 */
+	private Direction getDirection(){
+		return boardDirection;
+	}
+	
+	/**
 	 * checks if the current position involves a fight
 	 * @return whether the current position involves a fight
 	 */
