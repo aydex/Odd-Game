@@ -2,10 +2,8 @@ package equipment;
 
 public class Equipment {
 	
-	/**
-	 * The name of the equipment
-	 */
 	private String name;
+	private int value;
 	
 	/**
 	 * Default constructor for equipment, constructs equipment with given name
@@ -29,6 +27,22 @@ public class Equipment {
 	 */
 	public String getName(){
 		return name;
+	}
+	
+	/**
+	 * Returns the value of the current equipment
+	 * @return The value of the equipment
+	 */
+	public int getValue(){
+		return value;
+	}
+	
+	
+	public void setValue(int value){
+		if (value <= 0){
+			throw new IllegalArgumentException("Equipment cannot have negative value");
+		}
+		this.value = value;
 	}
 
 }

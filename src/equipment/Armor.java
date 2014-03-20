@@ -6,20 +6,23 @@ public class Armor extends Equipment {
 	
 	private ArmorType type;
 	private int defenceBonus;
+	private int value;
 	
 	/**
 	 * Generates a spesific armor with given name, type, and defence value
 	 * @param name The name of the armor 
 	 * @param type The type of the armor
 	 * @param defence The defence bonus given by the armor
+	 * @param value The value of the armor
 	 */
-	public Armor(String name, ArmorType type, int defence) {
+	public Armor(String name, ArmorType type, int defence, int value) {
 		super(name);
 		if (defence < 0){
 			throw new IllegalArgumentException("Armor cannot have negative defence");
 		}
 		this.type = type;
 		this.defenceBonus = defence;
+		setValue(value);
 	}
 	
 	/**
@@ -30,7 +33,31 @@ public class Armor extends Equipment {
 	public Armor(ArmorType type, int level){
 		super("");
 		this.type = type;
-		String name = getRandomArmorName();
+		defenceBonus = getRandomInt(level*(1/2), level);
+		String name = getRandomNameFromFile("ArmorNames.txt");
+		switch(type){
+		case HEADGEAR:
+			defenceBonus += 2;
+			name += " helmet";
+			break;
+		case CHEST:
+			defenceBonus += 4;
+			name += " armor";
+			break;
+		case BOOTS:
+			defenceBonus += 3;
+			name += " boots";
+			break;
+		case HANDS:
+			defenceBonus += 1;
+			name += " gloves";
+			break;
+		case SHIELD:
+			defenceBonus += 3;
+			name += " shield";
+			break;
+		}
+		setValue(defenceBonus * 2);
 	}
 	
 	/**
