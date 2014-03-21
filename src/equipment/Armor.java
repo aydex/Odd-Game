@@ -1,5 +1,9 @@
 package equipment;
 
+import java.io.FileNotFoundException;
+
+import utils.RandomOdd;
+
 public class Armor extends Equipment {
 	
 	public enum ArmorType { HEADGEAR, CHEST, BOOTS, HANDS, SHIELD}
@@ -9,10 +13,10 @@ public class Armor extends Equipment {
 	private int value;
 	
 	/**
-	 * Generates a spesific armor with given name, type, and defence value
+	 * Generates a specific armor with given name, type, and defense value
 	 * @param name The name of the armor 
 	 * @param type The type of the armor
-	 * @param defence The defence bonus given by the armor
+	 * @param defence The defense bonus given by the armor
 	 * @param value The value of the armor
 	 */
 	public Armor(String name, ArmorType type, int defence, int value) {
@@ -29,12 +33,13 @@ public class Armor extends Equipment {
 	 * Generates a random piece of armor with given type and of given level
 	 * @param type The type of the armor to be generated
 	 * @param level The level of the armor
+	 * @throws FileNotFoundException 
 	 */
-	public Armor(ArmorType type, int level){
+	public Armor(ArmorType type, int level) throws FileNotFoundException{
 		super("");
 		this.type = type;
-		defenceBonus = getRandomInt(level*(1/2), level);
-		String name = getRandomNameFromFile("ArmorNames.txt");
+		defenceBonus = RandomOdd.getRandomInt(level*(1/2), level);
+		String name = RandomOdd.getRandomNameFromFile("ArmorNames.txt");
 		switch(type){
 		case HEADGEAR:
 			defenceBonus += 2;
@@ -69,8 +74,8 @@ public class Armor extends Equipment {
 	}
 	
 	/**
-	 * Returns the defence bonus provided by the armor
-	 * @return The armor's defence beonus
+	 * Returns the defense bonus provided by the armor
+	 * @return The armor's defense bonus
 	 */
 	public int getStat(){
 		return defenceBonus;

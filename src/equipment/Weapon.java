@@ -1,5 +1,9 @@
 package equipment;
 
+import java.io.FileNotFoundException;
+
+import utils.RandomOdd;
+
 public class Weapon extends Equipment {
 	
 	public enum WeaponType { CLUB, RIFLE, PISTOL, AUTOMATIC}
@@ -10,7 +14,7 @@ public class Weapon extends Equipment {
 	private DamageType damageType;
 	
 	/**
-	 * Generates a spesific weapon with given stats
+	 * Generates a specific weapon with given stats
 	 * @param name The name of the weapon
 	 * @param weaponType The WeaponType of the weapon
 	 * @param damageType The DamageType of the weapon
@@ -30,13 +34,14 @@ public class Weapon extends Equipment {
 	/**
 	 * Generates a random weapon of appropriate level
 	 * @param level The level of the weapon
+	 * @throws FileNotFoundException 
 	 */
-	public Weapon(int level){
+	public Weapon(int level) throws FileNotFoundException{
 		super("");
-		attack = getRandomInt(level*(1/2), level);
-		String name = getRandomNameFromFile("WeaponNames.txt");
-		int weapon = getRandomInt(1,4);
-		int damage = getRandomInt(1,3);
+		attack = RandomOdd.getRandomInt(level*(1/2), level);
+		String name = RandomOdd.getRandomNameFromFile("WeaponNames.txt");
+		int weapon = RandomOdd.getRandomInt(1,4);
+		int damage = RandomOdd.getRandomInt(1,3);
 		switch(damage){
 		case 1:
 			damageType = DamageType.REGULAR;
