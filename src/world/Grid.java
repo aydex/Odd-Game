@@ -1,12 +1,10 @@
 package world;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
-import party.Party;
+import java.util.InputMismatchException;
+
+import utilities.FileManager;
+
 
 public class Grid {
 	public enum Direction{ LEFT , UP , RIGHT , DOWN };
@@ -59,7 +57,7 @@ public class Grid {
 	 * return direction the party is going to spawn in the next board
 	 * @return the direction the party is going to spawn in the next board
 	 */
-	private Direction getDirection(){
+	public Direction getDirection(){
 		return boardDirection;
 	}
 	
@@ -67,7 +65,7 @@ public class Grid {
 	 * checks if the current position involves a fight
 	 * @return whether the current position involves a fight
 	 */
-	private boolean isFight(){
+	public boolean isFight(){
 		for(int i = 0; i < 9 ; i ++){
 			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
 				
@@ -183,47 +181,18 @@ public class Grid {
 	}
 	
 	/**
-	 * returns the string-representation from the given filename
-	 * @param fileName the filename of the file
-	 * @return the string-representation of the given filename
-	 */
-	private String getStringFromFile(String fileName){
-		String fileOutput = ""; 
-		Scanner in;
-		 try
-		 {
-			 in = new Scanner(new FileReader(fileName+".txt"));
-			 while(in.hasNext()){
-				 String tempString = in.nextLine();
-				 fileOutput+=tempString;
-				 fileOutput+="\n";
-			 }
-			 if (fileOutput.length() > 0 && fileOutput.charAt(fileOutput.length()-1)=='n' && fileOutput.charAt(fileOutput.length()-2)=='/') {
-				 fileOutput = fileOutput.substring(0, fileOutput.length()-2);
-				  }
-			 in.close();
-			 return fileOutput;
-		 }
-		 catch (FileNotFoundException e)
-		 {
-			 System.err.println("Error: file " + fileName + " could not be opened. Does it exist?");
-			 System.exit(1);
-		 }
-		 return fileOutput;
-	}
-	
-	/**
 	 * creates the board
 	 * @param fileName the filename that the board comes from
 	 */
 	private void createBoard(String fileName){
-		String str = getStringFromFile(fileName);
+		String str = FileManager.getStringFromFile(fileName);
 		for(int i = 0 ; i < height; i++){
 			for(int j = 0 ; j < width ; j++){
 				originalBoard[i][j] = str.charAt(width*i+j);
 				fillCollisionBoard(i, j);
 			}
 		}
+		
 	}
 	
 	/**
@@ -274,9 +243,30 @@ public class Grid {
 			posY = 0;
 			break;
 		default:
-			break;
+			throw new IllegalArgumentException("Something went wrong with direction in Grid()");
 		
 		}
 	}
 	
+	/**
+	 * toString method
+	 */
+	public String toString(){
+		String returnString = "";
+		for(int i = 0 ; i < height ; i++){
+			for(int j = 0 ; j < width ; j++){
+				returnString += originalBoard[i][j];
+			}
+			returnString += "\n";
+		}
+		return returnString.substring(0, returnString.length()-3);
+	}
+
+	/**
+	 * save the grid
+	 * @param fileName of where it is going to be saved
+	 */
+	public void saveGrid(String fileName){
+		FileManager.saveStringToFile(fileName,this.toString());
+	}
 }
