@@ -137,6 +137,14 @@ public class Member {
 	public double getPower(){
 		return power;
 	}
+	
+	/**
+	 * returns the current health of the member
+	 * @return the health of the member
+	 */
+	public double getHealth(){
+		return health;
+	}
 
 	/**
 	 * returns the member's equipment in the form of a list
@@ -289,5 +297,49 @@ public class Member {
 	 */
 	public String getName(){
 		return name;
+	}
+	
+	/**
+	 * Returns the damagetype of the currently equiped weapon
+	 * @return The damageType of the member's weapon
+	 */
+	public DamageType getDamageType(){
+		return weapon.getDamageType();
+	}
+	
+	/**
+	 * Calculates and returns the damage and power consumption of a simple attack
+	 * @return The damage and power consumption of simple attack
+	 */
+	public double[] getSimpleAttackStats(){
+		double[] attackStats = new double[2];
+		int[] weaponStats = weapon.getSimpleAttackMod();
+		attackStats[0] = getDamage();
+		attackStats[1] = weaponStats[1];
+		return attackStats;
+	}
+	
+	/**
+	 * Calculates and returns the damage and power consumption of a standard attack
+	 * @return The damage and power consumption of standard attack
+	 */
+	public double[] getStandardAttckStats(){
+		double[] attackStats = new double[2];
+		int[] weaponStats = weapon.getStandardAttackMod();
+		attackStats[0] = getDamage();
+		attackStats[1] = weaponStats[1];
+		return attackStats;
+	}
+	
+	/**
+	 * Calculates and returns the damage and power consumption of a heavy attack
+	 * @return The damage and power consumption of heavy attack
+	 */
+	public double[] getHeavyAttckStats(){
+		double[] attackStats = new double[2];
+		int[] weaponStats = weapon.getHeavyAttackMod();
+		attackStats[0] = getDamage();
+		attackStats[1] = weaponStats[1];
+		return attackStats;
 	}
 }

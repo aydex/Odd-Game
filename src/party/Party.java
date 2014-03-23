@@ -68,5 +68,21 @@ public class Party {
 		}
 		return members.get(index);
 	}
+	
+	/**
+	 * Returns the size of the party
+	 * @return Number of members in the party
+	 */
+	public int getSize(){
+		return members.size();
+	}
+	
+	/**
+	 * Returns true if the party is empty, else false
+	 * @return Whether the party is empty
+	 */
+	public boolean isEmpty(){
+		return members.isEmpty();
+	}
 
 }

@@ -36,10 +36,16 @@ public class Weapon extends Equipment {
 	 * @param level The level of the weapon
 	 * @throws FileNotFoundException 
 	 */
-	public Weapon(int level) throws FileNotFoundException{
+	public Weapon(int level){
 		super("");
+		String name = "";
 		attack = RandomOdd.getRandomInt(level*(1/2), level);
-		String name = RandomOdd.getRandomNameFromFile("WeaponNames.txt");
+		try{
+			name = RandomOdd.getRandomNameFromFile("WeaponNames.txt");			
+		}
+		catch (FileNotFoundException f){
+			name = "Generic";
+		}
 		int weapon = RandomOdd.getRandomInt(1,4);
 		int damage = RandomOdd.getRandomInt(1,3);
 		switch(damage){
@@ -78,6 +84,7 @@ public class Weapon extends Equipment {
 			break;
 		}
 		setValue(attack*2);
+		setName(name);
 	}
 	
 	/**

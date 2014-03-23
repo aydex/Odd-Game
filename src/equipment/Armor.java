@@ -10,7 +10,6 @@ public class Armor extends Equipment {
 	
 	private ArmorType type;
 	private int defenceBonus;
-	private int value;
 	
 	/**
 	 * Generates a specific armor with given name, type, and defense value
@@ -35,11 +34,17 @@ public class Armor extends Equipment {
 	 * @param level The level of the armor
 	 * @throws FileNotFoundException 
 	 */
-	public Armor(ArmorType type, int level) throws FileNotFoundException{
+	public Armor(ArmorType type, int level){
 		super("");
+		String name = "";
 		this.type = type;
 		defenceBonus = RandomOdd.getRandomInt(level*(1/2), level);
-		String name = RandomOdd.getRandomNameFromFile("ArmorNames.txt");
+		try{
+			name = RandomOdd.getRandomNameFromFile("ArmorNames.txt");			
+		}
+		catch (FileNotFoundException f) {
+			name = "Generic";
+		}
 		switch(type){
 		case HEADGEAR:
 			defenceBonus += 2;
@@ -63,6 +68,7 @@ public class Armor extends Equipment {
 			break;
 		}
 		setValue(defenceBonus * 2);
+		setName(name);
 	}
 	
 	/**
