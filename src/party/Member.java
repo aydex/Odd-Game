@@ -232,7 +232,7 @@ public class Member {
 		hands = new Armor(memberString.split(",")[5]);
 		shield = new Armor(memberString.split(",")[6]);
 		boots = new Armor(memberString.split(",")[7]);
-		this.updateDamDef();
+		this.updateDamDef(); 
 	}
 	
 	/**
