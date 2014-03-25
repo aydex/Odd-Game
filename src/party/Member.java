@@ -30,6 +30,7 @@ public class Member {
 	private Armor boots;
 	private DamageType weaknessType;
 	public enum MemberType { HUMAN, ROBOT, SUPERROBOT, ZOMBIE, HERO}
+	private MemberType memberType;
 	
 	/**
 	 * returns the level of member
@@ -220,11 +221,27 @@ public class Member {
 	}
 
 	/**
+	 * constructor taking in string from the toString to create member
+	 * @param memberString
+	 */
+	public Member(String memberString){
+		this(MemberType.valueOf(memberString.split(",")[0]),Integer.parseInt(memberString.split(",")[1]));
+		weapon = new Weapon(memberString.split(",")[2]);
+		headGear = new Armor(memberString.split(",")[3]);
+		chest = new Armor(memberString.split(",")[4]);
+		hands = new Armor(memberString.split(",")[5]);
+		shield = new Armor(memberString.split(",")[6]);
+		boots = new Armor(memberString.split(",")[7]);
+		this.updateDamDef();
+	}
+	
+	/**
 	 * the constructor for member, it gives it the appropriate level and gives equipment and stats based on that
 	 * @param type the type of member
 	 * @param level the level the member is going to have
 	 */
 	public Member(MemberType type, int level){
+		memberType = type;
 		switch(type){
 		case HERO:
 			weaknessType = null;
@@ -341,5 +358,12 @@ public class Member {
 		attackStats[0] = getDamage();
 		attackStats[1] = weaponStats[1];
 		return attackStats;
+	}
+	
+	/**
+	 * toString that can be used in member's constructor
+	 */
+	public String toString(){
+		return memberType+","+level+","+weapon+","+headGear+","+chest+","+hands+","+shield+","+boots;
 	}
 }
