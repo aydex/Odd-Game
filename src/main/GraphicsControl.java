@@ -42,7 +42,7 @@ public class GraphicsControl extends Application {
 				test = new ImageView(imageList[i]);
 				GridPane.setConstraints(test, i, j);
 				grid.getChildren().add(test);
-			}
+			} 
 		}
 		
 		
