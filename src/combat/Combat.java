@@ -8,6 +8,8 @@ public class Combat {
 	
 	private FriendlyParty party;
 	private EnemyParty enemy;
+	private Member target;
+	private String attack;
 	
 	/**
 	 * Constructs a combat object with two sides

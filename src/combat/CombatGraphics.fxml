@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <bottom>
+    <Pane prefHeight="200.0" prefWidth="200.0">
+      <children>
+        <Button layoutX="14.0" layoutY="137.0" mnemonicParsing="false" prefHeight="49.951171875" prefWidth="125.0" text="Surrender" />
+        <Button layoutX="661.0" layoutY="137.0" mnemonicParsing="false" prefHeight="49.951171875" prefWidth="125.0" text="Attack" />
+        <Button layoutX="180.0" layoutY="56.0" mnemonicParsing="false" prefWidth="125.0" text="Heavy" />
+        <Button layoutX="338.0" layoutY="56.0" mnemonicParsing="false" prefWidth="125.0" text="Standard" />
+        <Button layoutX="492.0" layoutY="56.0" mnemonicParsing="false" prefWidth="125.0" text="Simple" />
+      </children>
+    </Pane>
+  </bottom>
+  <center>
+    <GridPane prefHeight="400.0" prefWidth="460.0">
+      <children>
+        <Button mnemonicParsing="false" opacity="0.0" prefHeight="69.0" prefWidth="153.0" text="Enemy3" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Button mnemonicParsing="false" opacity="0.0" prefHeight="69.0" prefWidth="153.0" text="Enemy2" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Button mnemonicParsing="false" opacity="0.0" prefHeight="69.0" prefWidth="153.0" text="Enemy1" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Button mnemonicParsing="false" opacity="0.0" prefHeight="69.0" prefWidth="153.0" text="Enemy0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+  </center>
+  <left>
+    <Pane prefHeight="400.0" prefWidth="170.0">
+      <children>
+        <Pane layoutX="0.0" layoutY="0.0" prefHeight="100.0" prefWidth="170.0" />
+        <Pane layoutX="0.0" layoutY="100.0" prefHeight="100.0" prefWidth="170.0" />
+        <Pane layoutX="0.0" layoutY="200.0" prefHeight="100.0" prefWidth="170.0" />
+        <Pane layoutX="0.0" layoutY="300.0" prefHeight="100.0" prefWidth="170.0" />
+      </children>
+    </Pane>
+  </left>
+  <right>
+    <Pane prefHeight="400.0" prefWidth="170.0">
+      <children>
+        <Pane layoutX="0.0" layoutY="0.0" prefHeight="100.0" prefWidth="170.0" />
+        <Pane layoutX="0.0" layoutY="100.0" prefHeight="100.0" prefWidth="170.0" />
+        <Pane layoutX="0.0" layoutY="200.0" prefHeight="100.0" prefWidth="170.0" />
+        <Pane layoutX="0.0" layoutY="300.0" prefHeight="100.0" prefWidth="170.0" />
+      </children>
+    </Pane>
+  </right>
+</BorderPane>
