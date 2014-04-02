@@ -296,14 +296,14 @@ public class Member {
 			throw new IllegalArgumentException("membertype is not recognized");
 		}
 		
-		
+		this.level = level;
+		this.createEquipment();
 		
 		this.level = 0;
 		
 		for(int i = 1 ; i <= level; i++){
 			this.increaseLevel();
 		}
-		this.createEquipment();
 		this.updateDamDef();
 	}
 

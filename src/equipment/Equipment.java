@@ -39,7 +39,7 @@ public class Equipment {
 	
 	
 	public void setValue(int value){
-		if (value <= 0){
+		if (value < 0){
 			throw new IllegalArgumentException("Equipment cannot have negative value");
 		}
 		this.value = value;
