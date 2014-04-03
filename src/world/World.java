@@ -9,16 +9,17 @@ public class World {
 	private int width;
 	private int x;
 	private int y;
+	private Grid grid;
 	
 	/**
 	 * constructor for world, it overwrites the gridsfiles from previous games, and set the matrix for the overall world
 	 */
 	public World(){
-		//Add elements to nameMatrix, have to be made manually
 		height = nameMatrix.length;
 		width = nameMatrix[0].length;
-		
-		
+		String coordinateString = FileManager.getStringFromFile("playerCoordinates");
+		x = Character.getNumericValue(coordinateString.charAt(0));
+		y = Character.getNumericValue(coordinateString.charAt(1));
 		for(int i = 0; i < height ; i++){
 			for(int j = 0; j < width ; j++){
 				if(nameMatrix[i][j]!=""){
@@ -26,13 +27,23 @@ public class World {
 				}
 			}
 		}
+		grid = new Grid(nameMatrix[y][x],Direction.valueOf(coordinateString.substring(2)));
+	}
+	
+	public int move(Direction direction){
+		boolean[] moveBool = new boolean[2];
+		moveBool = grid.move(direction);
+		if(moveBool[0]==true){
+			return 1;
+		}
+		else if()
 	}
 	
 	/**
 	 * changes to new grid based on the grid argument
 	 * @param grid the old grid
 	 */
-	public void changeGrid(Grid grid){
+	public void changeGrid(){
 		Direction direction = grid.getDirection();
 		switch(direction){
 		case DOWN:

@@ -3,19 +3,24 @@ package world;
 
 import java.util.InputMismatchException;
 
+import main.GraphicsControl;
+import party.EnemyParty;
+import party.Party;
+import party.Member.MemberType;
 import utilities.FileManager;
+import utils.RandomOdd;
 
 
 public class Grid {
 	public enum Direction{ LEFT , UP , RIGHT , DOWN };
-	private int height = 21;
-	private int width = 31;
+	private int height = 15;
+	private int width = 20;
 	private char[][] originalBoard;
 	private int[][] collisionBoard;
 	private int posX;
 	private int posY;
 	private Direction boardDirection;
-	
+	private GraphicsControl control = new GraphicsControl();
 	
 	/**
 	 * changes the background in y, x with surrounding area's background
@@ -79,6 +84,59 @@ public class Grid {
 		return false;
 	}
 	
+	
+	public Party getEnemyParty(){
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+				
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
+					int level = control.playerParty.getLevel();
+					MemberType type;
+					int numberOfEnemies = 1;
+					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
+					case 'A':
+						type = MemberType.HUMAN;
+						numberOfEnemies = RandomOdd.getRandomInt(2, 4);
+					case 'B':
+						type = MemberType.ROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+					case 'C':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					case 'D':
+						type = MemberType.ZOMBIE;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+					case 'E':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					case 'F':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					case 'G':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					case 'H':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					case 'I':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					case 'J':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+					default:
+						type = MemberType.HUMAN;
+						numberOfEnemies = 3;
+					}
+						
+						
+					return new EnemyParty(numberOfEnemies, level, type);
+				}				
+			}
+		}
+ 	}
 	
 	/**
 	 * checks if party can move to the new coordinates
@@ -145,7 +203,7 @@ public class Grid {
 	/**
 	 * changes the posX and posY of the party from the given direction if possible, if out of board sets direction
 	 * @param direction the direction the party is moving in
-	 * @return whether the move was done, and whether the player is out of the board
+	 * @return whether the move instigated a fight, and whether the player is out of the board
 	 */
 	public boolean[] move(Direction direction){
 		boolean[] returnBool = {false, false};
@@ -169,13 +227,14 @@ public class Grid {
 				throw new InputMismatchException("Something went wrong when setting the direction, the coordinates was ["+posY+"]["+posX+"]");
 			}
 		}
-		if(this.isCollision(coordinates[0], coordinates[1])){
-			
-		}
 		else{
-			this.posY = coordinates[0];
-			this.posX = coordinates[1];
-			returnBool[0] = true;
+			if(!this.isCollision(coordinates[0], coordinates[1])){
+				this.posY = coordinates[0];
+				this.posX = coordinates[1];
+			}
+			if(this.isFight()){
+				returnBool[0] = true;
+			}
 		}
 		return returnBool;
 	}
