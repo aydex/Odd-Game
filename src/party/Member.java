@@ -10,18 +10,18 @@ import equipment.Weapon.DamageType;
 
 public class Member {
 	
-	private String name;
-	private int level;
-	private double defenceMod;
-	private double defence;
-	private double damageMod;
-	private double damage;
-	private double maxHealth;
-	private double maxPower;
-	private double health;
-	private double power;
-	private double modIncrease;
-	private double statIncrease;
+	private String name = "";
+	private int level = 0;
+	private double defenceMod = 0;
+	private double defence = 0;
+	private double damageMod = 0;
+	private double damage = 0;
+	private double maxHealth = 0;
+	private double maxPower = 0;
+	private double health = 0;
+	private double power = 0;
+	private double modIncrease = 0;
+	private double statIncrease = 0;
 	private Weapon weapon;
 	private Armor headGear;
 	private Armor chest;
@@ -119,8 +119,8 @@ public class Member {
 	 * updates damage and defence by modifiers and equipment
 	 */
 	private void updateDamDef(){
-		this.damage = damageMod + weapon.getStat();
-		this.defence = defenceMod + headGear.getStat() + boots.getStat() + chest.getStat() + hands.getStat() + shield.getStat();
+		this.damage = damageMod; //+ weapon.getStat();
+		this.defence = defenceMod; //+ headGear.getStat() + boots.getStat() + chest.getStat() + hands.getStat() + shield.getStat();
 	}
 
 	/**
@@ -317,6 +317,14 @@ public class Member {
 	}
 	
 	/**
+	 * sets the name of the current member
+	 * @param name the new name of the member
+	 */
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	/**
 	 * Returns the damagetype of the currently equiped weapon
 	 * @return The damageType of the member's weapon
 	 */
@@ -340,7 +348,7 @@ public class Member {
 	 * Calculates and returns the damage and power consumption of a standard attack
 	 * @return The damage and power consumption of standard attack
 	 */
-	public double[] getStandardAttckStats(){
+	public double[] getStandardAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getStandardAttackMod();
 		attackStats[0] = getDamage();
@@ -352,12 +360,43 @@ public class Member {
 	 * Calculates and returns the damage and power consumption of a heavy attack
 	 * @return The damage and power consumption of heavy attack
 	 */
-	public double[] getHeavyAttckStats(){
+	public double[] getHeavyAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getHeavyAttackMod();
 		attackStats[0] = getDamage();
 		attackStats[1] = weaponStats[1];
 		return attackStats;
+	}
+	
+	/**
+	 * Returns a string representation of the current member's weakness
+	 * @return The weaknessType of the member,in String form
+	 */
+	public String getWeakness(){
+		switch(weaknessType){
+		case REGULAR:
+			return "Regular";
+		case LASER:
+			return "Laser";
+		case PLASMA:
+			return "Plasma";
+		default:
+			return "";
+		}
+	}
+	
+	
+	public String getStringDamageType(){
+		switch(getDamageType()){
+		case REGULAR:
+			return "Regular";
+		case LASER:
+			return "Laser";
+		case PLASMA:
+			return "Plasma";
+		default:
+			return "";
+		}
 	}
 	
 	/**
