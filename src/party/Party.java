@@ -15,6 +15,16 @@ public class Party {
 	public Party(){
 		members = new ArrayList<Member>();
 	}
+
+	public int getLevel(){
+		int returnInt = 0;
+		for(int i = 0 ; i < this.getSize(); i ++){
+			if(returnInt<this.getMember(i).getLevel()){
+				returnInt = this.getMember(i).getLevel();
+			}
+		}
+		return returnInt;
+	}
 	
 	/**
 	 * Constructs a party consisting of the embers of the given ArrayList
