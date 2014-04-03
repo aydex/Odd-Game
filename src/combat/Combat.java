@@ -6,8 +6,14 @@ import party.Member;
 
 public class Combat {
 	
-	private FriendlyParty party;
-	private EnemyParty enemy;
+	public enum Attack {HEAVY,STANDRAD,SIMPLE};
+	
+	protected FriendlyParty party;
+	protected EnemyParty enemy;
+	private Member target;
+	private Attack attack;
+	private Member currentPlayer;
+	private boolean playerTurn;
 	
 	/**
 	 * Constructs a combat object with two sides
@@ -19,57 +25,17 @@ public class Combat {
 		this.enemy = enemy;
 	}
 	
-	/**
-	 * "Main" method in combat, resolves a combat, and performs necessary clean up, as well as handing out rewards etc.
-	 */
-	public void performCombat(){
-		
-		if(fight()){
-			//Party wins combat, display victory message. Give out exp., loot, reset health, etc.
-		}
-		else{
-			//Party is defeated, display game over message
-		}
-	}
-	
-	/**
-	 * Resolves a combat between the two sides in the object, returning who won
-	 * @return Won Which side won the fight, true if the friendly party won, else false
-	 */
-	private boolean fight(){
-		int nrFighters = party.getSize() + enemy.getSize();
-		while(true){
-			for (int i = 0; i < nrFighters; i++){
-				
-				if (i % 2 == 0){
-					performTurn(party.getMember(i));
-				}
-				else{
-					performAITurn(enemy.getMember(i-1));
-				}
-				if (party.isEmpty()){
-					return false;
-				}
-				if (enemy.isEmpty()){
-					return true;
-				}
-				nrFighters = party.getSize() + enemy.getSize();
-			}
-		}
-	}
 	
 	/**
 	 * Method for performing one player controlled character's turn in combat
 	 * @param member The Member character who's turn it is
 	 */
-	private void performTurn(Member member){
-		double[] attackStat = new double[2];
-		do{
-			attackStat = chooseAttack();			
-		} while (!member.decreasePower(attackStat[1]));
-		Member target = chooseTarget();
-		double damageDone = target.decreaseHealth(attackStat[0], member.getDamageType());
-		// Print damage done to screen, somewhere
+	protected void performTurn(Member member){
+		target = null;
+		attack = null;
+		currentPlayer = member;
+		playerTurn = true;
+		while(playerTurn){};
 		if (!target.isAlive()){
 			enemy.removeMember(target);
 		}
@@ -79,35 +45,14 @@ public class Combat {
 	 * Method for performing one AI controlled character's turn in combat
 	 * @param member The Member character who's turn it is
 	 */
-	private void performAITurn(Member member){
+	protected void performAITurn(Member member){
 		double[] attackStat = new double[2];
 		attackStat = aiChooseAttack();
 		Member target = aiChooseTarget();
-		double damageDone = target.decreaseHealth(attackStat[0], member.getDamageType());
-		// Print damage done to screen, somewhere
+		target.decreaseHealth(attackStat[0], member.getDamageType());
 		if (!target.isAlive()){
 			party.removeMember(target);
 		}
-	}
-	
-	/**
-	 * Method for allowing player controlled characters to choose a target for attack
-	 * @return The chosen target for the next attack
-	 */
-	private Member chooseTarget(){
-		//Not done
-		Member target = enemy.getMember(0);
-		return  target;
-	}
-	
-	/**
-	 * Method for allowing player controlled characters to choose which attack to use next
-	 * @return The damage and power consumption of chosen attack
-	 */
-	private double[] chooseAttack(){
-		//Not done
-		double [] returnValue = {1,2};
-		return returnValue;
 	}
 	
 	/**
@@ -133,4 +78,98 @@ public class Combat {
 		double [] returnValue = {1,2};
 		return returnValue;
 	}
+	
+	/**
+	 * Performs attack when attack button is pressed in combat graphics, target and attack must be set
+	 */
+	protected void performAttack(){
+		if (target != null && attack != null){
+			double[] attackStat;
+			if (attack == Attack.HEAVY){
+				attackStat = currentPlayer.getHeavyAttackStats();
+			}
+			else if (attack == Attack.STANDRAD){
+				attackStat = currentPlayer.getStandardAttackStats();
+			}
+			else{
+				attackStat = currentPlayer.getSimpleAttackStats();
+			}
+			playerTurn = false;
+			target.decreaseHealth(attackStat[0], currentPlayer.getDamageType());
+		}
+	}
+	
+	/**
+	 * Surrenders the battle, called when surrender button is clicked in combat graphics, currently not usable
+	 */
+	protected void surrender(){
+		
+	}
+	
+	/**
+	 * Sets the current player's target to enemy0, called from button in combat graphics
+	 */
+	protected void setTargetEnemy0(){
+		if (enemy.getMember(0).isAlive()){
+			target = enemy.getMember(0);			
+		}
+	}
+	
+	/**
+	 * Sets the current player's target to enemy1, called from button in combat graphics
+	 */
+	protected void setTargetEnemy1(){
+		if (enemy.getMember(1).isAlive()){
+			target = enemy.getMember(1);			
+		}
+	}
+	
+	/**
+	 * Sets the current player's target to enemy2, called from button in combat graphics
+	 */
+	protected void setTargetEnemy2(){
+		if (enemy.getMember(2).isAlive()){
+			target = enemy.getMember(2);			
+		}
+	}
+	
+	/**
+	 * Sets the current player's target to enemy3, called from button in combat graphics
+	 */
+	protected void setTargetEnemy3(){
+		if (enemy.getMember(3).isAlive()){
+			target = enemy.getMember(3);			
+		}
+	}
+	
+	/**
+	 * Sets the current player's attack type to heavy
+	 */
+	protected void setAttackHeavy(){
+		double[] attackStat = currentPlayer.getHeavyAttackStats();
+		if (attackStat[1] < currentPlayer.getPower()){
+			attack = Attack.HEAVY;			
+		}
+	}
+	
+	/**
+	 * Sets the current player's attack type to standard
+	 */
+	protected void setAttackStandard(){
+		double[] attackStat = currentPlayer.getStandardAttackStats();
+		if (attackStat[1] < currentPlayer.getPower()){
+			attack = Attack.STANDRAD;			
+		}
+	}
+	
+	/**
+	 * Sets the current player's attack type to simple
+	 */
+	protected void setAttackSimple(){
+		double[] attackStat = currentPlayer.getSimpleAttackStats();
+		if (attackStat[1] < currentPlayer.getPower()){
+			attack = Attack.SIMPLE;			
+		}		
+	}
+
 }

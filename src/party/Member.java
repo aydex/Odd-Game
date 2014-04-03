@@ -322,6 +322,14 @@ public class Member {
 	}
 	
 	/**
+	 * sets the name of the current member
+	 * @param name the new name of the member
+	 */
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	/**
 	 * Returns the damagetype of the currently equiped weapon
 	 * @return The damageType of the member's weapon
 	 */
@@ -363,6 +371,37 @@ public class Member {
 		attackStats[0] = getDamage();
 		attackStats[1] = weaponStats[1];
 		return attackStats;
+	}
+	
+	/**
+	 * Returns a string representation of the current member's weakness
+	 * @return The weaknessType of the member,in String form
+	 */
+	public String getWeakness(){
+		switch(weaknessType){
+		case REGULAR:
+			return "Regular";
+		case LASER:
+			return "Laser";
+		case PLASMA:
+			return "Plasma";
+		default:
+			return "";
+		}
+	}
+	
+	
+	public String getStringDamageType(){
+		switch(getDamageType()){
+		case REGULAR:
+			return "Regular";
+		case LASER:
+			return "Laser";
+		case PLASMA:
+			return "Plasma";
+		default:
+			return "";
+		}
 	}
 	
 	/**
