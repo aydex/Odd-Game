@@ -2,9 +2,7 @@ package combat;
 
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import equipment.Weapon.DamageType;
 import party.Member;
@@ -384,22 +382,19 @@ public class CombatGraphics extends Application{
 	
 	public boolean performCombat(FriendlyParty party, EnemyParty enemy){
 		Combat combat = new Combat(party,enemy);
-		int nrFighters = party.getSize() + enemy.getSize();
 		while(true){
-			for (int i = 0; i < nrFighters; i++){
-				
+			for (int i = 0; i < 8; i++){
 				if (i % 2 == 0){
-					if (party.getSize() > i-(i+1)/2){
-						//Not done
-						drawCombat(combat,party.getMember(i-(i+1)/2));
-						combat.performTurn(party.getMember(i));						
+					if (party.getSize() >= (i/2)){
+						drawCombat(combat,party.getMember(i/2));
+						combat.performTurn(party.getMember(i/2));
 					}
 				}
 				else{
-					if (party.getSize() > i - 1){
-						//Not done
-						drawCombat(combat,enemy.getMember(i-1));
-						combat.performAITurn(enemy.getMember(i-1));
+					int k = (int) ((i/2) - 0.5);
+					if (party.getSize() > k){
+						drawCombat(combat,enemy.getMember(k));
+						combat.performAITurn(enemy.getMember(k));
 					}
 				}
 				if (party.isEmpty()){
@@ -408,7 +403,6 @@ public class CombatGraphics extends Application{
 				if (enemy.isEmpty()){
 					return true;
 				}
-				nrFighters = party.getSize() + enemy.getSize();
 			}
 		}
 		

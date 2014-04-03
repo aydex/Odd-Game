@@ -35,6 +35,7 @@ public class Combat {
 		attack = null;
 		currentPlayer = member;
 		playerTurn = true;
+		//Not sure if...
 		while(playerTurn){};
 		if (!target.isAlive()){
 			enemy.removeMember(target);
@@ -46,6 +47,7 @@ public class Combat {
 	 * @param member The Member character who's turn it is
 	 */
 	protected void performAITurn(Member member){
+		currentPlayer = member;
 		double[] attackStat = new double[2];
 		attackStat = aiChooseAttack();
 		Member target = aiChooseTarget();
@@ -74,9 +76,15 @@ public class Combat {
 	 * @return The damage and power consumption of chosen attack
 	 */
 	private double[] aiChooseAttack(){
-		//Not done
-		double [] returnValue = {1,2};
-		return returnValue;
+		if (currentPlayer.getPower() > currentPlayer.getHeavyAttackStats()[1]){
+			return currentPlayer.getHeavyAttackStats();
+		}
+		else if (currentPlayer.getPower() > currentPlayer.getStandardAttackStats()[1]){
+			return currentPlayer.getStandardAttackStats();
+		}
+		else{
+			return currentPlayer.getSimpleAttackStats();
+		}
 	}
 	
 	/**
