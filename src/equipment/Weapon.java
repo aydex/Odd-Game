@@ -88,6 +88,14 @@ public class Weapon extends Equipment {
 	}
 	
 	/**
+	 * Constructor used for constructing a weapon from a string produced by the toString method, used in save/load. Not complete
+	 * @param string The string representation of the weapon
+	 */
+	public Weapon(String string){
+		super("");
+	}
+	
+	/**
 	 * Returns the attack bonus provided by the weapon
 	 * @return The attack bonus of the weapon
 	 */
@@ -232,6 +240,11 @@ public class Weapon extends Equipment {
 			break;
 		}
 		return returnValue;
+	}
+	
+	
+	public String toString(){
+		
 	}
 
 }

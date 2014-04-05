@@ -49,16 +49,6 @@ public class CombatGraphics extends Application{
 	private Button heavyButton;
 	private Button standardButton;
 	private Button simpleButton;
-	/*
-	private ImageView imageEnemy0;
-	private ImageView imageEnemy1;
-	private ImageView imageEnemy2;
-	private ImageView imageEnemy3;
-	private ImageView player0Image;
-	private ImageView player1Image;
-	private ImageView player2Image;
-	private ImageView player3Image;
-	*/
 	
 	
 	public void drawCombat(Combat combat, Member currentPlayer){
@@ -378,6 +368,9 @@ public class CombatGraphics extends Application{
 		combatRoot.setRight(right);
 		combatRoot.setCenter(center);
 		scene.setRoot(combatRoot);
+		
+		Color grey = Color.GRAY;
+		scene.setFill(grey);
 	}
 	
 	public boolean performCombat(FriendlyParty party, EnemyParty enemy){
@@ -515,18 +508,6 @@ public class CombatGraphics extends Application{
 	    		//combat.setAttackSimple();
 	    	}
 	    });
-		
-	    
-		Color grey = Color.GRAY;
-		scene.setFill(grey);
-	    stage.setScene(scene);
-	    stage.setTitle("Combat");
-	    stage.show();
-		
-	}
-	
-	public static void main(String[] args){
-		launch(args);
 	}
 	
 	

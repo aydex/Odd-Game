@@ -8,8 +8,8 @@ public class Combat {
 	
 	public enum Attack {HEAVY,STANDRAD,SIMPLE};
 	
-	protected FriendlyParty party;
-	protected EnemyParty enemy;
+	private FriendlyParty party;
+	private EnemyParty enemy;
 	private Member target;
 	private Attack attack;
 	private Member currentPlayer;
@@ -25,12 +25,27 @@ public class Combat {
 		this.enemy = enemy;
 	}
 	
+	/**
+	 * Returns the friendly party of the combat
+	 * @return The combat's party
+	 */
+	public FriendlyParty getParty(){
+		return party;
+	}
+	
+	/**
+	 * Returns the enemy party of the combat
+	 * @return The combat's enemy
+	 */
+	public EnemyParty getEnemy(){
+		return enemy;
+	}
 	
 	/**
 	 * Method for performing one player controlled character's turn in combat
 	 * @param member The Member character who's turn it is
 	 */
-	protected void performTurn(Member member){
+	public void performTurn(Member member){
 		target = null;
 		attack = null;
 		currentPlayer = member;
@@ -46,7 +61,7 @@ public class Combat {
 	 * Method for performing one AI controlled character's turn in combat
 	 * @param member The Member character who's turn it is
 	 */
-	protected void performAITurn(Member member){
+	public void performAITurn(Member member){
 		currentPlayer = member;
 		double[] attackStat = new double[2];
 		attackStat = aiChooseAttack();
@@ -90,7 +105,7 @@ public class Combat {
 	/**
 	 * Performs attack when attack button is pressed in combat graphics, target and attack must be set
 	 */
-	protected void performAttack(){
+	public void performAttack(){
 		if (target != null && attack != null){
 			double[] attackStat;
 			if (attack == Attack.HEAVY){
@@ -110,14 +125,14 @@ public class Combat {
 	/**
 	 * Surrenders the battle, called when surrender button is clicked in combat graphics, currently not usable
 	 */
-	protected void surrender(){
+	public void surrender(){
 		
 	}
 	
 	/**
 	 * Sets the current player's target to enemy0, called from button in combat graphics
 	 */
-	protected void setTargetEnemy0(){
+	public void setTargetEnemy0(){
 		if (enemy.getMember(0).isAlive()){
 			target = enemy.getMember(0);			
 		}
@@ -126,7 +141,7 @@ public class Combat {
 	/**
 	 * Sets the current player's target to enemy1, called from button in combat graphics
 	 */
-	protected void setTargetEnemy1(){
+	public void setTargetEnemy1(){
 		if (enemy.getMember(1).isAlive()){
 			target = enemy.getMember(1);			
 		}
@@ -135,7 +150,7 @@ public class Combat {
 	/**
 	 * Sets the current player's target to enemy2, called from button in combat graphics
 	 */
-	protected void setTargetEnemy2(){
+	public void setTargetEnemy2(){
 		if (enemy.getMember(2).isAlive()){
 			target = enemy.getMember(2);			
 		}
@@ -144,7 +159,7 @@ public class Combat {
 	/**
 	 * Sets the current player's target to enemy3, called from button in combat graphics
 	 */
-	protected void setTargetEnemy3(){
+	public void setTargetEnemy3(){
 		if (enemy.getMember(3).isAlive()){
 			target = enemy.getMember(3);			
 		}
@@ -153,7 +168,7 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to heavy
 	 */
-	protected void setAttackHeavy(){
+	public void setAttackHeavy(){
 		double[] attackStat = currentPlayer.getHeavyAttackStats();
 		if (attackStat[1] < currentPlayer.getPower()){
 			attack = Attack.HEAVY;			
@@ -163,7 +178,7 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to standard
 	 */
-	protected void setAttackStandard(){
+	public void setAttackStandard(){
 		double[] attackStat = currentPlayer.getStandardAttackStats();
 		if (attackStat[1] < currentPlayer.getPower()){
 			attack = Attack.STANDRAD;			
@@ -173,7 +188,7 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to simple
 	 */
-	protected void setAttackSimple(){
+	public void setAttackSimple(){
 		double[] attackStat = currentPlayer.getSimpleAttackStats();
 		if (attackStat[1] < currentPlayer.getPower()){
 			attack = Attack.SIMPLE;			
