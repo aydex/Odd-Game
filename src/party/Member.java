@@ -400,6 +400,26 @@ public class Member {
 	}
 	
 	/**
+	 * Returns the a string referring to the file location of the visual combat representation of the current member
+	 * @return Filepath to combat representation
+	 */
+	public String getCombatRepresentation(){
+		switch(memberType){
+		case HUMAN:
+			return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+		case ROBOT:
+			return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+		case SUPERROBOT:
+			return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+		case ZOMBIE:
+			return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+		case HERO:
+			return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+		}
+		return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+	}
+	
+	/**
 	 * toString that can be used in member's constructor
 	 */
 	public String toString(){
