@@ -7,7 +7,7 @@ import main.GraphicsControl;
 import party.EnemyParty;
 import party.Party;
 import party.Member.MemberType;
-import utilities.FileManager;
+import utils.FileManager;
 import utils.RandomOdd;
 
 
@@ -18,10 +18,19 @@ public class Grid {
 	private char[][] originalBoard;
 	private int[][] collisionBoard;
 	private int posX;
+	
+
 	private int posY;
 	private Direction boardDirection;
-	private GraphicsControl control = new GraphicsControl();
 	
+	
+	public int getPosX() {
+		return posX;
+	}
+	
+	public int getPosY() {
+		return posY;
+	}
 	/**
 	 * changes the background in y, x with surrounding area's background
 	 * @param y coordinate
@@ -77,6 +86,7 @@ public class Grid {
 			}
 			else{
 				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
+					System.out.println("isFight - x: "+(posX-1+i%3)+" y: "+(posY-1+i/3));
 					return true;
 				}				
 			}
@@ -84,58 +94,83 @@ public class Grid {
 		return false;
 	}
 	
-	
-	public Party getEnemyParty(){
-		for(int i = 0; i < 9 ; i ++){
+	public int[] getEnemyPlacement(){
+		int[] returnInt = new int[2];
+		for(int i = 0; i < 9 ; i++){
 			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
-				
 			}
 			else{
 				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
-					int level = control.playerParty.getLevel();
+					returnInt[0] =  posY-1+i/3;
+					returnInt[1] = posX-1+i%3;
+					
+				}				
+			}
+		}
+		return returnInt;
+	}
+	
+	public EnemyParty getEnemyParty(int level){
+		EnemyParty returnParty = null;
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
 					MemberType type;
 					int numberOfEnemies = 1;
 					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
 					case 'A':
 						type = MemberType.HUMAN;
 						numberOfEnemies = RandomOdd.getRandomInt(2, 4);
+						break;
 					case 'B':
 						type = MemberType.ROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+						break;
 					case 'C':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
 					case 'D':
 						type = MemberType.ZOMBIE;
 						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+						break;
 					case 'E':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
 					case 'F':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
 					case 'G':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
 					case 'H':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
 					case 'I':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
 					case 'J':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 					default:
 						type = MemberType.HUMAN;
 						numberOfEnemies = 3;
-					}
+						break;
+					} // end switch
 						
 						
-					return new EnemyParty(numberOfEnemies, level, type);
-				}				
-			}
-		}
+					returnParty = new EnemyParty(numberOfEnemies, level, type);
+				}	// end if(collisionBoard			
+			}	// end else
+		}	// end for
+		return returnParty;
  	}
 	
 	/**
@@ -163,35 +198,35 @@ public class Grid {
 		int[] coordinates = {this.posX, this.posY};
 		switch(direction){
 		case DOWN:
-			if(posY+1>=height){
-				coordinates[0] = -1;
-			}
-			else{
-				coordinates[0] ++;
-			}
-			break;
-		case LEFT:
-			if(posX-1<0){
-				coordinates[0] = -1;
-			}
-			else{
-				coordinates[1] --;
-			}
-			break;
-		case RIGHT:
-			if(posX+1>=width){
+			if(posY>=height){
 				coordinates[0] = -1;
 			}
 			else{
 				coordinates[1] ++;
 			}
 			break;
-		case UP:
-			if(posY-1<0){
+		case LEFT:
+			if(posX<0){
 				coordinates[0] = -1;
 			}
 			else{
 				coordinates[0] --;
+			}
+			break;
+		case RIGHT:
+			if(posX>=width){
+				coordinates[0] = -1;
+			}
+			else{
+				coordinates[0] ++;
+			}
+			break;
+		case UP:
+			if(posY<0){
+				coordinates[0] = -1;
+			}
+			else{
+				coordinates[1] --;
 			}
 			break;
 		default:
@@ -203,10 +238,10 @@ public class Grid {
 	/**
 	 * changes the posX and posY of the party from the given direction if possible, if out of board sets direction
 	 * @param direction the direction the party is moving in
-	 * @return whether the move instigated a fight, and whether the player is out of the board
+	 * @return whether the move instigated a fight, and whether the player is out of the board, and if the move was done
 	 */
 	public boolean[] move(Direction direction){
-		boolean[] returnBool = {false, false};
+		boolean[] returnBool = {false, false, false};
 		int[] coordinates = this.getCoordinates(direction);
 		if(coordinates[0] == -1){
 			returnBool[0] = false;
@@ -229,8 +264,11 @@ public class Grid {
 		}
 		else{
 			if(!this.isCollision(coordinates[0], coordinates[1])){
-				this.posY = coordinates[0];
-				this.posX = coordinates[1];
+				this.posX = coordinates[0];
+				this.posY = coordinates[1];
+			}
+			else{
+				returnBool[2] = true;
 			}
 			if(this.isFight()){
 				returnBool[0] = true;
@@ -247,6 +285,7 @@ public class Grid {
 		String str = FileManager.getStringFromFile(fileName);
 		for(int i = 0 ; i < height; i++){
 			for(int j = 0 ; j < width ; j++){
+				System.out.println("createboard - "+str.charAt(width*i+j));
 				originalBoard[i][j] = str.charAt(width*i+j);
 				fillCollisionBoard(i, j);
 			}
@@ -305,6 +344,17 @@ public class Grid {
 			throw new IllegalArgumentException("Something went wrong with direction in Grid()");
 		
 		}
+	}
+	
+	public char[] toChar(){
+		char[] returnChar = new char[height*width];
+		for(int i = 0 ; i < height ; i++){
+			for(int j = 0 ; j < width ; j++){
+				System.out.println(originalBoard[i][j]);
+				returnChar[i*width+j] = originalBoard[i][j];
+			}
+		}
+		return returnChar;
 	}
 	
 	/**
