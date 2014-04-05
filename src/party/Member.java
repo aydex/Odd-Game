@@ -421,7 +421,8 @@ public class Member {
  		return "C://Users/Odd/Pictures/Outfall/enemy0.png";
  	}
  	
- 	/**
+ 	
+	/**
 	 * toString that can be used in member's constructor
 	 */
 	public String toString(){
