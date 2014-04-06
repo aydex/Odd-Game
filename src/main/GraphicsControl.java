@@ -630,7 +630,7 @@ public class GraphicsControl extends Application {
     @Override
     public void start(Stage stage) {
     	
-    	
+    	System.out.println("whaaT!?");
     	enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
     		@Override
     		public void handle(ActionEvent arg0) {
@@ -718,7 +718,8 @@ public class GraphicsControl extends Application {
     } 
     
     public static void main(String[] args) {
-        launch(args);
+    	System.out.println("nonononono");
+    	launch(args);
         System.out.println("1");
     }
 

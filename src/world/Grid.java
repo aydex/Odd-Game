@@ -285,7 +285,7 @@ public class Grid {
 		String str = FileManager.getStringFromFile(fileName);
 		for(int i = 0 ; i < height; i++){
 			for(int j = 0 ; j < width ; j++){
-				System.out.println("createboard - "+str.charAt(width*i+j));
+				//System.out.println("createboard - "+str.charAt(width*i+j));
 				originalBoard[i][j] = str.charAt(width*i+j);
 				fillCollisionBoard(i, j);
 			}
@@ -300,7 +300,7 @@ public class Grid {
 	 */
 	private void fillCollisionBoard(int i , int j){
 		if(originalBoard[i][j]>='A' && originalBoard[i][j]<='J'){			
-			collisionBoard[i][j] = 1;
+			collisionBoard[i][j] = 0;
 		}
 		else if(originalBoard[i][j]>'J' && originalBoard[i][j]<='T'){			
 			collisionBoard[i][j] = 2;
@@ -309,7 +309,7 @@ public class Grid {
 			collisionBoard[i][j] = 3;
 		}
 		else{
-			collisionBoard[i][j] = 0;
+			collisionBoard[i][j] = 1;
 		}
 	}
 	
