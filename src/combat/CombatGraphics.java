@@ -37,7 +37,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class CombatGraphics extends Application{
-	
+	/*
 	private BorderPane combatRoot;
 	private Scene scene;
 	private Button enemy0Button;
@@ -510,6 +510,6 @@ public class CombatGraphics extends Application{
 	    });
 	}
 	
-	
+	*/
 
 }

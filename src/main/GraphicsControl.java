@@ -243,8 +243,8 @@ public class GraphicsControl extends Application {
 					grid();
 				}
 				else if(tempList[0]==1){
-					CombatGraphics tempComb = new CombatGraphics();
-					if(tempComb.performCombat(playerParty,world.getEnemyParty(playerParty.getLevel()))){
+					//CombatGraphics tempComb = new CombatGraphics();
+					if(performCombat(playerParty,world.getEnemyParty(playerParty.getLevel()))){
 						gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
 						int[] tempBackgroundList = world.getEnemyPlacement();
 						world.clearProximity();
@@ -602,10 +602,86 @@ public class GraphicsControl extends Application {
 	public boolean performCombat(FriendlyParty party, EnemyParty enemy){
 		combat = new Combat(party,enemy);
 		while(true){
+			
 			for (int i = 0; i < 8; i++){
 				if (i % 2 == 0){
 					if (party.getSize() >= (i/2)){
 						drawCombat(combat,party.getMember(i/2));
+						
+						
+						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy0");
+				    			combat.setTargetEnemy0();
+				    		}
+				    	});
+				    	
+				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy1");
+				    			combat.setTargetEnemy1();
+				    		}
+				    	});
+				    	
+				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy2");
+				    			combat.setTargetEnemy2();
+				    		}
+				    	});
+				    	
+				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy3");
+				    			combat.setTargetEnemy3();
+				    		}
+				    	});
+				    	
+				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("attack");
+				    			combat.performAttack();
+				    		}
+				    	});
+				    	
+				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("surrender");
+				    			combat.surrender();
+				    		}
+				    	});
+				    	
+				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("heavy");
+				    			combat.setAttackHeavy();
+				    		}
+				    	});
+				    	
+				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("standard");
+				    			combat.setAttackStandard();
+				    		}
+				    	});
+				    	
+				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("simple");
+				    			combat.setAttackSimple();
+				    		}
+				    	});
+						
+						
 						combat.performTurn(party.getMember(i/2));
 					}
 				}
@@ -613,6 +689,81 @@ public class GraphicsControl extends Application {
 					int k = (int) ((i/2) - 0.5);
 					if (party.getSize() > k){
 						drawCombat(combat,enemy.getMember(k));
+						
+						
+						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy0");
+				    			combat.setTargetEnemy0();
+				    		}
+				    	});
+				    	
+				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy1");
+				    			combat.setTargetEnemy1();
+				    		}
+				    	});
+				    	
+				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy2");
+				    			combat.setTargetEnemy2();
+				    		}
+				    	});
+				    	
+				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("enemy3");
+				    			combat.setTargetEnemy3();
+				    		}
+				    	});
+				    	
+				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("attack");
+				    			combat.performAttack();
+				    		}
+				    	});
+				    	
+				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("surrender");
+				    			combat.surrender();
+				    		}
+				    	});
+				    	
+				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("heavy");
+				    			combat.setAttackHeavy();
+				    		}
+				    	});
+				    	
+				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("standard");
+				    			combat.setAttackStandard();
+				    		}
+				    	});
+				    	
+				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
+				    		@Override
+				    		public void handle(ActionEvent arg0) {
+				    			System.out.println("simple");
+				    			combat.setAttackSimple();
+				    		}
+				    	});
+						
+						
 						combat.performAITurn(enemy.getMember(k));
 					}
 				}
@@ -627,82 +778,9 @@ public class GraphicsControl extends Application {
 	}
 	
 	
+	
     @Override
     public void start(Stage stage) {
-    	
-    	System.out.println("whaaT!?");
-    	enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("enemy0");
-    			combat.setTargetEnemy0();
-    		}
-    	});
-    	
-    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("enemy1");
-    			combat.setTargetEnemy1();
-    		}
-    	});
-    	
-    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("enemy2");
-    			combat.setTargetEnemy2();
-    		}
-    	});
-    	
-    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("enemy3");
-    			combat.setTargetEnemy3();
-    		}
-    	});
-    	
-    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("attack");
-    			combat.performAttack();
-    		}
-    	});
-    	
-    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("surrender");
-    			combat.surrender();
-    		}
-    	});
-    	
-    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("heavy");
-    			combat.setAttackHeavy();
-    		}
-    	});
-    	
-    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("standard");
-    			combat.setAttackStandard();
-    		}
-    	});
-    	
-    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
-    		@Override
-    		public void handle(ActionEvent arg0) {
-    			System.out.println("simple");
-    			combat.setAttackSimple();
-    		}
-    	});
-    	
     	
     	System.out.println("preInit");
     	scene = new Scene(new Region(), width, height);
