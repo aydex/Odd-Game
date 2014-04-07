@@ -41,6 +41,8 @@ public class GraphicsControl extends Application {
 	private final int sceneX = 20;
 	private final int sceneY = 15;
 	
+	private int[] tempList = new int[5];
+	
 	private Scene scene;
 	private boolean keyActive = true;
 	private KeyCode left = KeyCode.getKeyCode("A");
@@ -237,7 +239,6 @@ public class GraphicsControl extends Application {
 			//gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
 			//gridChange(0, 1,'@');
 			if(direction!=null){
-				int[] tempList = new int[5];
 				tempList = world.move(direction);
 				//System.out.println("templist[0]: "+tempList[0]);
 				if(tempList[0]==2){
@@ -246,19 +247,10 @@ public class GraphicsControl extends Application {
 				}
 				else if(tempList[0]==1){
 					//CombatGraphics tempComb = new CombatGraphics();
-					if(performCombat(playerParty,world.getEnemyParty(playerParty.getLevel()))){
-						scene.setRoot(gridPane);
-						grid();
-						gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
-						int[] tempBackgroundList = world.getEnemyPlacement();
-						world.clearProximity();
-						gridList = world.toChar();
-						gridChange(tempList[3], tempList[4],'@');
-						gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
-					}
-					else{
-						System.out.println("Odd er en pudding");
-					}
+					scene.setOnKeyPressed(null);
+					performCombat(playerParty,world.getEnemyParty(playerParty.getLevel()));
+					
+					
 				}
 				else if(tempList[0]==-1){
 					
@@ -622,22 +614,12 @@ public class GraphicsControl extends Application {
 		System.out.println("drawCombat");
 	}
 	
-	private Boolean isWakeupNeeded = false;
 	
 	
 	
-	public boolean performCombat(FriendlyParty party, EnemyParty enemy){
+	public void performCombat(FriendlyParty party, EnemyParty enemy){
 		
-		
-		final Object lock = new Object();
-		
-
-		
-		
-		
-		
-		
-		boolean returnBool = true;
+				
 		enemyParty = enemy;
 		playerParty = party;
 		currentEnemy = 0;
@@ -687,12 +669,28 @@ public class GraphicsControl extends Application {
     		public void handle(ActionEvent arg0) {
     			
     			
+    			
+    			
+    			
+    			
+    			
     			System.out.println("attack");
     			combat.performAttack();
     			if(currentEnemy<enemyParty.getSize()){
     				combat.performAITurn(enemyParty.getMember(currentEnemy));
     				if(enemyParty.isEmpty()){
-    					
+    					scene.setRoot(gridPane);
+    					scene.setOnKeyPressed(keyEventHandler);
+    					grid();
+    					gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
+    					int[] tempBackgroundList = world.getEnemyPlacement();
+    					world.clearProximity();
+    					gridList = world.toChar();
+    					gridChange(tempList[3], tempList[4],'@');
+    					gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
+    				}
+    				else if(playerParty.isEmpty()){
+    					//endgame
     				}
     			}
     			currentEnemy++;
@@ -700,6 +698,20 @@ public class GraphicsControl extends Application {
     			if(currentMember>=playerParty.getSize()){
     				while(currentEnemy<enemyParty.getSize()){
     					combat.performAITurn(enemyParty.getMember(currentEnemy));
+    					if(enemyParty.isEmpty()){
+        					scene.setRoot(gridPane);
+        					scene.setOnKeyPressed(keyEventHandler);
+        					grid();
+        					gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
+        					int[] tempBackgroundList = world.getEnemyPlacement();
+        					world.clearProximity();
+        					gridList = world.toChar();
+        					gridChange(tempList[3], tempList[4],'@');
+        					gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
+        				}
+    					else if(playerParty.isEmpty()){
+        					//endgame
+        				}
     					currentEnemy++;
     				}
     				currentEnemy = 0;
@@ -744,7 +756,6 @@ public class GraphicsControl extends Application {
 		
     	
     	
-		return false;
 		
 		//drawCombat(enemy.getMember(currentEnemy));
 		//combat.performAITurn(enemy.getMember(currentEnemy));
