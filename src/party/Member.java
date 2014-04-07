@@ -408,17 +408,17 @@ public class Member {
  	public String getCombatRepresentation(){
  		switch(memberType){
  		case HUMAN:
- 			return "/combatImages/Human.png";
+ 			return "combatImages/Human.png";
  		case ROBOT:
- 			return "/combatImages/Robot.png";
+ 			return "combatImages/Robot.png";
  		case SUPERROBOT:
- 			return "/combatImages/Superrobot.png";
+ 			return "combatImages/Superrobot.png";
  		case ZOMBIE:
- 			return "/combatImages/Zombie.png";
+ 			return "combatImages/Zombie.png";
  		case HERO:
- 			return "/combatImages/Hero.png";
+ 			return "combatImages/Hero.png";
  		}
- 		return "/combatImages/Human.png";
+ 		return "combatImages/Human.png";
  	}
  	
  	

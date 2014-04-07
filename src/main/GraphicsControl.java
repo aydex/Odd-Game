@@ -57,15 +57,15 @@ public class GraphicsControl extends Application {
 	
 	private Combat combat;
 	private BorderPane combatRoot;
-	private Button enemy0Button;
-	private Button enemy1Button;
-	private Button enemy2Button;
-	private Button enemy3Button;
-	private Button attackButton;
-	private Button surrenderButton;
-	private Button heavyButton;
-	private Button standardButton;
-	private Button simpleButton;
+	private Button enemy0Button = new Button();
+	private Button enemy1Button = new Button();
+	private Button enemy2Button = new Button();
+	private Button enemy3Button = new Button();
+	private Button attackButton = new Button();
+	private Button surrenderButton = new Button();
+	private Button heavyButton = new Button();
+	private Button standardButton = new Button();
+	private Button simpleButton = new Button();
 	
 	private int currentMember = 0;
 	private int currentEnemy = 0;
@@ -286,7 +286,7 @@ public class GraphicsControl extends Application {
 		turnOrder.setLayoutX(20);
 		turnOrder.setLayoutY(100);
 		
-		surrenderButton = new Button();
+		//surrenderButton = new Button();
 		surrenderButton.setLayoutX(14);
 		surrenderButton.setLayoutY(137);
 		surrenderButton.setMnemonicParsing(false);
@@ -294,7 +294,7 @@ public class GraphicsControl extends Application {
 		surrenderButton.setPrefWidth(125);
 		surrenderButton.setText("Surrender");
 		
-		attackButton = new Button();
+		//attackButton = new Button();
 		attackButton.setLayoutX(661);
 		attackButton.setLayoutY(137);
 		attackButton.setMnemonicParsing(false);
@@ -302,21 +302,21 @@ public class GraphicsControl extends Application {
 		attackButton.setPrefWidth(125);
 		attackButton.setText("Attack");
 		
-		heavyButton = new Button();
+		//heavyButton = new Button();
 		heavyButton.setLayoutX(180);
 		heavyButton.setLayoutY(56);
 		heavyButton.setMnemonicParsing(false);
 		heavyButton.setPrefWidth(125);
 		heavyButton.setText("Heavy");
 		
-		standardButton = new Button();
+		//standardButton = new Button();
 		standardButton.setLayoutX(338);
 		standardButton.setLayoutY(56);
 		standardButton.setMnemonicParsing(false);
 		standardButton.setPrefWidth(125);
 		standardButton.setText("Standard");
 		
-		simpleButton = new Button();
+		//simpleButton = new Button();
 		simpleButton.setLayoutX(492);
 		simpleButton.setLayoutY(56);
 		simpleButton.setMnemonicParsing(false);
@@ -470,10 +470,11 @@ public class GraphicsControl extends Application {
 			center.getColumnConstraints().add(column);
 		}
 		
-		center.setGridLinesVisible(true);
+		center.setGridLinesVisible(false);
 		
 		if (combat.getEnemy().getSize() > 0) {
 			if (combat.getEnemy().getMember(0).isAlive()) {
+				System.out.println("Image enemy 0");
 				File fileEnemy0 = new File(combat.getEnemy().getMember(0).getCombatRepresentation());
 				Image enemy0Im = new Image(fileEnemy0.toURI().toString());
 				ImageView imageEnemy0 = new ImageView(enemy0Im);
@@ -588,7 +589,7 @@ public class GraphicsControl extends Application {
 			}
 		}
 		
-		enemy0Button = new Button();
+		//enemy0Button = new Button();
 		enemy0Button.setMnemonicParsing(false);
 		enemy0Button.setOpacity(0);
 		enemy0Button.setPrefHeight(69);
@@ -596,7 +597,7 @@ public class GraphicsControl extends Application {
 		enemy0Button.setText("Enemy0");
 		center.add(enemy0Button, 0, 0);
 		
-		enemy1Button = new Button();
+		//enemy1Button = new Button();
 		enemy1Button.setMnemonicParsing(false);
 		enemy1Button.setOpacity(0);
 		enemy1Button.setPrefHeight(69);
@@ -604,7 +605,7 @@ public class GraphicsControl extends Application {
 		enemy1Button.setText("Enemy1");
 		center.add(enemy1Button, 0, 1);
 		
-		enemy2Button = new Button();
+		//enemy2Button = new Button();
 		enemy2Button.setMnemonicParsing(false);
 		enemy2Button.setOpacity(0);
 		enemy2Button.setPrefHeight(69);
@@ -612,7 +613,7 @@ public class GraphicsControl extends Application {
 		enemy2Button.setText("Enemy2");
 		center.add(enemy2Button, 0, 2);
 		
-		enemy3Button = new Button();
+		//enemy3Button = new Button();
 		enemy3Button.setMnemonicParsing(false);
 		enemy3Button.setOpacity(0);
 		enemy3Button.setPrefHeight(69);
@@ -686,9 +687,32 @@ public class GraphicsControl extends Application {
     		public void handle(ActionEvent arg0) {
     			
     			System.out.println("attack");
-    			combat.performAttack();
-    			if(currentEnemy<enemyParty.getSize()){
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.performAttack(currentPlayer);
+    			if(currentEnemy < enemyParty.getAlive()){
     				combat.performAITurn(enemyParty.getMember(currentEnemy));
+    			}
+    			if(enemyParty.isDead()){
+    				scene.setRoot(gridPane);
+    				scene.setOnKeyPressed(keyEventHandler);
+    				grid();
+    				gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
+    				int[] tempBackgroundList = world.getEnemyPlacement();
+    				world.clearProximity();
+    				gridList = world.toChar();
+    				gridChange(tempList[3], tempList[4],'@');
+    				gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
+    			}
+    			else if(playerParty.isDead()){
+    				//endgame
+    			}
+    			currentEnemy++;
+    			currentMember++;
+    			if(currentMember >= playerParty.getAlive()){
+    				while(currentEnemy < enemyParty.getAlive()){
+    					combat.performAITurn(enemyParty.getMember(currentEnemy));
+    					currentEnemy++;
+    				}
     				if(enemyParty.isDead()){
     					scene.setRoot(gridPane);
     					scene.setOnKeyPressed(keyEventHandler);
@@ -702,28 +726,6 @@ public class GraphicsControl extends Application {
     				}
     				else if(playerParty.isDead()){
     					//endgame
-    				}
-    			}
-    			currentEnemy++;
-    			currentMember++;
-    			if(currentMember>=playerParty.getSize()){
-    				while(currentEnemy<enemyParty.getSize()){
-    					combat.performAITurn(enemyParty.getMember(currentEnemy));
-    					if(enemyParty.isDead()){
-        					scene.setRoot(gridPane);
-        					scene.setOnKeyPressed(keyEventHandler);
-        					grid();
-        					gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
-        					int[] tempBackgroundList = world.getEnemyPlacement();
-        					world.clearProximity();
-        					gridList = world.toChar();
-        					gridChange(tempList[3], tempList[4],'@');
-        					gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
-        				}
-    					else if(playerParty.isDead()){
-        					//endgame
-        				}
-    					currentEnemy++;
     				}
     				currentEnemy = 0;
     				currentMember = 0;
@@ -745,7 +747,8 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			System.out.println("heavy");
-    			combat.setAttackHeavy();
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.setAttackHeavy(currentPlayer);
     		}
     	});
     	
@@ -753,7 +756,8 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			System.out.println("standard");
-    			combat.setAttackStandard();
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.setAttackStandard(currentPlayer);
     		}
     	});
     	
@@ -761,7 +765,8 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			System.out.println("simple");
-    			combat.setAttackSimple();
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.setAttackSimple(currentPlayer);
     		}
     	});
 		
