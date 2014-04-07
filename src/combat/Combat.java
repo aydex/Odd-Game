@@ -64,9 +64,9 @@ public class Combat {
 		Member target = aiChooseTarget();
 		System.out.println("Target: "+target.getName());
 		target.decreaseHealth(attackStat[0], member.getDamageType());
-		if (!target.isAlive()){
-			party.removeMember(target);
-		}
+		//if (!target.isAlive()){
+		//	party.removeMember(target);
+		//}
 	}
 	
 	/**
@@ -116,9 +116,9 @@ public class Combat {
 			}
 			playerTurn = false;
 			target.decreaseHealth(attackStat[0], currentPlayer.getDamageType());
-			if (!target.isAlive()){
-				enemy.removeMember(target);
-			}
+			//if (!target.isAlive()){
+			//	enemy.removeMember(target);
+			//}
 		}
 	}
 	

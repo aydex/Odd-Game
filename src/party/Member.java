@@ -410,15 +410,15 @@ public class Member {
  		case HUMAN:
  			return "/combatImages/Human.png";
  		case ROBOT:
- 			return "C://Users/Odd/Pictures/Outfall/Robot.png";
+ 			return "/combatImages/Robot.png";
  		case SUPERROBOT:
- 			return "C://Users/Odd/Pictures/Outfall/Robot.png";
+ 			return "/combatImages/Superrobot.png";
  		case ZOMBIE:
- 			return "C://Users/Odd/Pictures/Outfall/Zombie.png";
+ 			return "/combatImages/Zombie.png";
  		case HERO:
- 			return "C://Users/Odd/Pictures/Outfall/Human.png";
+ 			return "/combatImages/Hero.png";
  		}
- 		return "C://Users/Odd/Pictures/Outfall/enemy0.png";
+ 		return "/combatImages/Human.png";
  	}
  	
  	

@@ -94,5 +94,16 @@ public class Party {
 	public boolean isEmpty(){
 		return members.isEmpty();
 	}
+	
+	
+	public boolean isDead(){
+		boolean returnValue = true;
+		for (int i = 0; i < getSize(); i++){
+			if (getMember(i).isAlive()){
+				returnValue = false;
+			}
+		}
+		return returnValue;
+	}
 
 }
