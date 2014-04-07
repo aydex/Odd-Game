@@ -50,11 +50,6 @@ public class Combat {
 		attack = null;
 		currentPlayer = member;
 		playerTurn = true;
-		//Not sure if...
-		while(playerTurn){};
-		if (!target.isAlive()){
-			enemy.removeMember(target);
-		}
 	}
 	
 	/**
@@ -62,10 +57,12 @@ public class Combat {
 	 * @param member The Member character who's turn it is
 	 */
 	public void performAITurn(Member member){
+		System.out.println("performAITurn");
 		currentPlayer = member;
 		double[] attackStat = new double[2];
 		attackStat = aiChooseAttack();
 		Member target = aiChooseTarget();
+		System.out.println("Target: "+target.getName());
 		target.decreaseHealth(attackStat[0], member.getDamageType());
 		if (!target.isAlive()){
 			party.removeMember(target);
@@ -77,8 +74,8 @@ public class Combat {
 	 * @return The chosen target for the next attack
 	 */
 	private Member aiChooseTarget(){
-		Member target = party.getMember(0);
-		for (int i = 0; i < party.getSize(); i++){
+		Member target = party.getMember(party.getSize()-1);
+		for (int i = party.getSize() - 1; i >= 0; i--){
 			if (party.getMember(i).getHealth() < target.getHealth()){
 				target = party.getMember(i);
 			}
@@ -119,6 +116,9 @@ public class Combat {
 			}
 			playerTurn = false;
 			target.decreaseHealth(attackStat[0], currentPlayer.getDamageType());
+			if (!target.isAlive()){
+				enemy.removeMember(target);
+			}
 		}
 	}
 	

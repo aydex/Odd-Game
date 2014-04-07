@@ -85,7 +85,7 @@ public class Grid {
 				
 			}
 			else{
-				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==2){
 					System.out.println("isFight - x: "+(posX-1+i%3)+" y: "+(posY-1+i/3));
 					return true;
 				}				
@@ -100,7 +100,7 @@ public class Grid {
 			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
 			}
 			else{
-				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==2){
 					returnInt[0] =  posY-1+i/3;
 					returnInt[1] = posX-1+i%3;
 					
@@ -116,47 +116,47 @@ public class Grid {
 			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
 			}
 			else{
-				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==2){
 					MemberType type;
 					int numberOfEnemies = 1;
 					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
-					case 'A':
+					case 'K':
 						type = MemberType.HUMAN;
 						numberOfEnemies = RandomOdd.getRandomInt(2, 4);
 						break;
-					case 'B':
+					case 'L':
 						type = MemberType.ROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
 						break;
-					case 'C':
+					case 'M':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
-					case 'D':
+					case 'N':
 						type = MemberType.ZOMBIE;
 						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
 						break;
-					case 'E':
+					case 'O':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
-					case 'F':
+					case 'P':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
-					case 'G':
+					case 'Q':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
-					case 'H':
+					case 'R':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
-					case 'I':
+					case 'S':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
-					case 'J':
+					case 'T':
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 					default:

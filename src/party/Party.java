@@ -73,8 +73,8 @@ public class Party {
 	 * @return Member at given index
 	 */
 	public Member getMember(int index){
-		if (index > members.size() || index < 0){
-			throw new IndexOutOfBoundsException("Index out of bounds");
+		if (index >= members.size() || index < 0){
+			throw new IndexOutOfBoundsException("Index out of bounds, was: "+index+" members.size(): "+members.size());
 		}
 		return members.get(index);
 	}

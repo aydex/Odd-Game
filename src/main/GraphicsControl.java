@@ -65,11 +65,13 @@ public class GraphicsControl extends Application {
 	private Button standardButton;
 	private Button simpleButton;
 	
-	
+	private int currentMember = 0;
+	private int currentEnemy = 0;
 	
 	
 	
 	public FriendlyParty playerParty;
+	private EnemyParty enemyParty;
 	
 	private char[] gridList = new char[sceneX*sceneY];
 	private Image[] imageList = new Image[52];
@@ -181,7 +183,7 @@ public class GraphicsControl extends Application {
 		gridPane.setVgap(0);
 		gridPane.setHgap(0);
       	gridList = world.toChar();
-		System.out.println(world.toChar());
+		//System.out.println(world.toChar());
 		createGrid();
 		scene.setOnKeyPressed(keyEventHandler);
 		//gridChange(world.getPosX(),world.getPosY(),'@');
@@ -237,7 +239,7 @@ public class GraphicsControl extends Application {
 			if(direction!=null){
 				int[] tempList = new int[5];
 				tempList = world.move(direction);
-				System.out.println("templist[0]: "+tempList[0]);
+				//System.out.println("templist[0]: "+tempList[0]);
 				if(tempList[0]==2){
 					gridList = world.toChar();
 					grid();
@@ -245,6 +247,8 @@ public class GraphicsControl extends Application {
 				else if(tempList[0]==1){
 					//CombatGraphics tempComb = new CombatGraphics();
 					if(performCombat(playerParty,world.getEnemyParty(playerParty.getLevel()))){
+						scene.setRoot(gridPane);
+						grid();
 						gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
 						int[] tempBackgroundList = world.getEnemyPlacement();
 						world.clearProximity();
@@ -253,7 +257,7 @@ public class GraphicsControl extends Application {
 						gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
 					}
 					else{
-						//gameEnded();
+						System.out.println("Odd er en pudding");
 					}
 				}
 				else if(tempList[0]==-1){
@@ -276,7 +280,7 @@ public class GraphicsControl extends Application {
 		}
 	};
 	
-	public void drawCombat(Combat combat, Member currentPlayer){
+	public void drawCombat(Member currentPlayer){
 		BorderPane combatRoot = new BorderPane();
 		combatRoot.setPrefHeight(600);
 		combatRoot.setPrefWidth(800);
@@ -476,85 +480,104 @@ public class GraphicsControl extends Application {
 		
 		center.setGridLinesVisible(true);
 		
-		File fileEnemy0 = new File(combat.getEnemy().getMember(0).getCombatRepresentation());
-		Image enemy0Im = new Image(fileEnemy0.toURI().toString());
-		ImageView imageEnemy0 = new ImageView(enemy0Im);
-		imageEnemy0.setFitHeight(100);
-		imageEnemy0.setFitWidth(153);
-		imageEnemy0.setPickOnBounds(true);
-		imageEnemy0.setPreserveRatio(true);
-		center.add(imageEnemy0, 0, 0);
-		GridPane.setHalignment(imageEnemy0, HPos.CENTER);
+		if (combat.getEnemy().getSize() > 0) {
+			File fileEnemy0 = new File(combat.getEnemy().getMember(0).getCombatRepresentation());
+			Image enemy0Im = new Image(fileEnemy0.toURI().toString());
+			ImageView imageEnemy0 = new ImageView(enemy0Im);
+			imageEnemy0.setFitHeight(100);
+			imageEnemy0.setFitWidth(153);
+			imageEnemy0.setPickOnBounds(true);
+			imageEnemy0.setPreserveRatio(true);
+			center.add(imageEnemy0, 0, 0);
+			GridPane.setHalignment(imageEnemy0, HPos.CENTER);
+		}
 		
-		File fileEnemy1 = new File(combat.getEnemy().getMember(1).getCombatRepresentation());
-		Image enemy1Im = new Image(fileEnemy1.toURI().toString());
-		ImageView imageEnemy1 = new ImageView(enemy1Im);
-		imageEnemy1.setFitHeight(100);
-		imageEnemy1.setFitWidth(153);
-		imageEnemy1.setPickOnBounds(true);
-		imageEnemy1.setPreserveRatio(true);
-		center.add(imageEnemy1, 0, 1);
-		GridPane.setHalignment(imageEnemy1, HPos.CENTER);
 		
-		File fileEnemy2 = new File(combat.getEnemy().getMember(2).getCombatRepresentation());
-		Image enemy2Im = new Image(fileEnemy2.toURI().toString());
-		ImageView imageEnemy2 = new ImageView(enemy2Im);
-		imageEnemy2.setFitHeight(100);
-		imageEnemy2.setFitWidth(153);
-		imageEnemy2.setPickOnBounds(true);
-		imageEnemy2.setPreserveRatio(true);
-		center.add(imageEnemy2, 0, 2);
-		GridPane.setHalignment(imageEnemy2, HPos.CENTER);
+		if (combat.getEnemy().getSize() > 1) {
+			File fileEnemy1 = new File(combat.getEnemy().getMember(1).getCombatRepresentation());
+			Image enemy1Im = new Image(fileEnemy1.toURI().toString());
+			ImageView imageEnemy1 = new ImageView(enemy1Im);
+			imageEnemy1.setFitHeight(100);
+			imageEnemy1.setFitWidth(153);
+			imageEnemy1.setPickOnBounds(true);
+			imageEnemy1.setPreserveRatio(true);
+			center.add(imageEnemy1, 0, 1);
+			GridPane.setHalignment(imageEnemy1, HPos.CENTER);
+		}
 		
-		File fileEnemy3 = new File(combat.getEnemy().getMember(3).getCombatRepresentation());
-		Image enemy3Im = new Image(fileEnemy3.toURI().toString());
-		ImageView imageEnemy3 = new ImageView(enemy3Im);
-		imageEnemy3.setFitHeight(100);
-		imageEnemy3.setFitWidth(153);
-		imageEnemy3.setPickOnBounds(true);
-		imageEnemy3.setPreserveRatio(true);
-		center.add(imageEnemy3, 0, 3);
-		GridPane.setHalignment(imageEnemy3, HPos.CENTER);
+		if (combat.getEnemy().getSize() > 2) {
+			File fileEnemy2 = new File(combat.getEnemy().getMember(2).getCombatRepresentation());
+			Image enemy2Im = new Image(fileEnemy2.toURI().toString());
+			ImageView imageEnemy2 = new ImageView(enemy2Im);
+			imageEnemy2.setFitHeight(100);
+			imageEnemy2.setFitWidth(153);
+			imageEnemy2.setPickOnBounds(true);
+			imageEnemy2.setPreserveRatio(true);
+			center.add(imageEnemy2, 0, 2);
+			GridPane.setHalignment(imageEnemy2, HPos.CENTER);
+		}
 		
-		File filePlayer0 = new File(combat.getParty().getMember(0).getCombatRepresentation());
-		Image Player0Im = new Image(filePlayer0.toURI().toString());
-		ImageView imagePlayer0 = new ImageView(Player0Im);
-		imagePlayer0.setFitHeight(100);
-		imagePlayer0.setFitWidth(153);
-		imagePlayer0.setPickOnBounds(true);
-		imagePlayer0.setPreserveRatio(true);
-		center.add(imagePlayer0, 2, 0);
-		GridPane.setHalignment(imagePlayer0, HPos.CENTER);
+		if (combat.getEnemy().getSize() > 3) {
+			File fileEnemy3 = new File(combat.getEnemy().getMember(3).getCombatRepresentation());
+			Image enemy3Im = new Image(fileEnemy3.toURI().toString());
+			ImageView imageEnemy3 = new ImageView(enemy3Im);
+			imageEnemy3.setFitHeight(100);
+			imageEnemy3.setFitWidth(153);
+			imageEnemy3.setPickOnBounds(true);
+			imageEnemy3.setPreserveRatio(true);
+			center.add(imageEnemy3, 0, 3);
+			GridPane.setHalignment(imageEnemy3, HPos.CENTER);
+		}
 		
-		File filePlayer1 = new File(combat.getParty().getMember(1).getCombatRepresentation());
-		Image Player1Im = new Image(filePlayer1.toURI().toString());
-		ImageView imagePlayer1 = new ImageView(Player1Im);
-		imagePlayer1.setFitHeight(100);
-		imagePlayer1.setFitWidth(153);
-		imagePlayer1.setPickOnBounds(true);
-		imagePlayer1.setPreserveRatio(true);
-		center.add(imagePlayer1, 2, 1);
-		GridPane.setHalignment(imagePlayer1, HPos.CENTER);
+		if (combat.getParty().getSize() > 0) {
+			File filePlayer0 = new File(combat.getParty().getMember(0).getCombatRepresentation());
+			Image Player0Im = new Image(filePlayer0.toURI().toString());
+			ImageView imagePlayer0 = new ImageView(Player0Im);
+			imagePlayer0.setFitHeight(100);
+			imagePlayer0.setFitWidth(153);
+			imagePlayer0.setPickOnBounds(true);
+			imagePlayer0.setPreserveRatio(true);
+			center.add(imagePlayer0, 2, 0);
+			GridPane.setHalignment(imagePlayer0, HPos.CENTER);
+		}
 		
-		File filePlayer2 = new File(combat.getParty().getMember(2).getCombatRepresentation());
-		Image Player2Im = new Image(filePlayer2.toURI().toString());
-		ImageView imagePlayer2 = new ImageView(Player2Im);
-		imagePlayer2.setFitHeight(100);
-		imagePlayer2.setFitWidth(153);
-		imagePlayer2.setPickOnBounds(true);
-		imagePlayer2.setPreserveRatio(true);
-		center.add(imagePlayer2, 2, 2);
-		GridPane.setHalignment(imagePlayer2, HPos.CENTER);
 		
-		File filePlayer3 = new File(combat.getParty().getMember(3).getCombatRepresentation());
-		Image Player3Im = new Image(filePlayer3.toURI().toString());
-		ImageView imagePlayer3 = new ImageView(Player3Im);
-		imagePlayer3.setFitHeight(100);
-		imagePlayer3.setFitWidth(153);
-		imagePlayer3.setPickOnBounds(true);
-		imagePlayer3.setPreserveRatio(true);
-		center.add(imagePlayer3, 2, 3);
-		GridPane.setHalignment(imagePlayer3, HPos.CENTER);
+		if (combat.getParty().getSize() > 1) {
+			File filePlayer1 = new File(combat.getParty().getMember(1).getCombatRepresentation());
+			Image Player1Im = new Image(filePlayer1.toURI().toString());
+			ImageView imagePlayer1 = new ImageView(Player1Im);
+			imagePlayer1.setFitHeight(100);
+			imagePlayer1.setFitWidth(153);
+			imagePlayer1.setPickOnBounds(true);
+			imagePlayer1.setPreserveRatio(true);
+			center.add(imagePlayer1, 2, 1);
+			GridPane.setHalignment(imagePlayer1, HPos.CENTER);
+		}
+		
+		
+		if (combat.getParty().getSize() > 2) {
+			File filePlayer2 = new File(combat.getParty().getMember(2).getCombatRepresentation());
+			Image Player2Im = new Image(filePlayer2.toURI().toString());
+			ImageView imagePlayer2 = new ImageView(Player2Im);
+			imagePlayer2.setFitHeight(100);
+			imagePlayer2.setFitWidth(153);
+			imagePlayer2.setPickOnBounds(true);
+			imagePlayer2.setPreserveRatio(true);
+			center.add(imagePlayer2, 2, 2);
+			GridPane.setHalignment(imagePlayer2, HPos.CENTER);
+		}
+		
+		if (combat.getParty().getSize() > 3) {
+			File filePlayer3 = new File(combat.getParty().getMember(3).getCombatRepresentation());
+			Image Player3Im = new Image(filePlayer3.toURI().toString());
+			ImageView imagePlayer3 = new ImageView(Player3Im);
+			imagePlayer3.setFitHeight(100);
+			imagePlayer3.setFitWidth(153);
+			imagePlayer3.setPickOnBounds(true);
+			imagePlayer3.setPreserveRatio(true);
+			center.add(imagePlayer3, 2, 3);
+			GridPane.setHalignment(imagePlayer3, HPos.CENTER);
+		}
 		
 		enemy0Button = new Button();
 		enemy0Button.setMnemonicParsing(false);
@@ -596,185 +619,310 @@ public class GraphicsControl extends Application {
 		
 		Color grey = Color.GRAY;
 		scene.setFill(grey);
+		System.out.println("drawCombat");
 	}
+	
+	private Boolean isWakeupNeeded = false;
+	
 	
 	
 	public boolean performCombat(FriendlyParty party, EnemyParty enemy){
+		
+		
+		final Object lock = new Object();
+		
+
+		
+		
+		
+		
+		
+		boolean returnBool = true;
+		enemyParty = enemy;
+		playerParty = party;
+		currentEnemy = 0;
+		currentMember = 0;
 		combat = new Combat(party,enemy);
-		while(true){
+		
+		
+		
+		
+		drawCombat(party.getMember(currentMember));
+		combat.performTurn(party.getMember(currentMember));
+
+		enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("enemy0");
+    			combat.setTargetEnemy0();
+    		}
+    	});
+    	
+    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("enemy1");
+    			combat.setTargetEnemy1();
+    		}
+    	});
+    	
+    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("enemy2");
+    			combat.setTargetEnemy2();
+    		}
+    	});
+    	
+    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("enemy3");
+    			combat.setTargetEnemy3();
+    		}
+    	});
+    	
+    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			
+    			
+    			System.out.println("attack");
+    			combat.performAttack();
+    			if(currentEnemy<enemyParty.getSize()){
+    				combat.performAITurn(enemyParty.getMember(currentEnemy));
+    				if(enemyParty.isEmpty()){
+    					
+    				}
+    			}
+    			currentEnemy++;
+    			currentMember++;
+    			if(currentMember>=playerParty.getSize()){
+    				while(currentEnemy<enemyParty.getSize()){
+    					combat.performAITurn(enemyParty.getMember(currentEnemy));
+    					currentEnemy++;
+    				}
+    				currentEnemy = 0;
+    				currentMember = 0;
+    			}
+    			drawCombat(playerParty.getMember(currentMember));
+    			
+    		}
+    	});
+    	
+    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("surrender");
+    			combat.surrender();
+    		}
+    	});
+    	
+    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("heavy");
+    			combat.setAttackHeavy();
+    		}
+    	});
+    	
+    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("standard");
+    			combat.setAttackStandard();
+    		}
+    	});
+    	
+    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("simple");
+    			combat.setAttackSimple();
+    		}
+    	});
+		
+    	
+    	
+		return false;
+		
+		//drawCombat(enemy.getMember(currentEnemy));
+		//combat.performAITurn(enemy.getMember(currentEnemy));
+		//return returnBool;
+		//while(true){
 			
-			for (int i = 0; i < 8; i++){
-				if (i % 2 == 0){
-					if (party.getSize() >= (i/2)){
-						drawCombat(combat,party.getMember(i/2));
-						
-						
-						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy0");
-				    			combat.setTargetEnemy0();
-				    		}
-				    	});
-				    	
-				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy1");
-				    			combat.setTargetEnemy1();
-				    		}
-				    	});
-				    	
-				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy2");
-				    			combat.setTargetEnemy2();
-				    		}
-				    	});
-				    	
-				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy3");
-				    			combat.setTargetEnemy3();
-				    		}
-				    	});
-				    	
-				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("attack");
-				    			combat.performAttack();
-				    		}
-				    	});
-				    	
-				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("surrender");
-				    			combat.surrender();
-				    		}
-				    	});
-				    	
-				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("heavy");
-				    			combat.setAttackHeavy();
-				    		}
-				    	});
-				    	
-				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("standard");
-				    			combat.setAttackStandard();
-				    		}
-				    	});
-				    	
-				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("simple");
-				    			combat.setAttackSimple();
-				    		}
-				    	});
-						
-						
-						combat.performTurn(party.getMember(i/2));
-					}
-				}
-				else{
-					int k = (int) ((i/2) - 0.5);
-					if (party.getSize() > k){
-						drawCombat(combat,enemy.getMember(k));
-						
-						
-						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy0");
-				    			combat.setTargetEnemy0();
-				    		}
-				    	});
-				    	
-				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy1");
-				    			combat.setTargetEnemy1();
-				    		}
-				    	});
-				    	
-				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy2");
-				    			combat.setTargetEnemy2();
-				    		}
-				    	});
-				    	
-				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("enemy3");
-				    			combat.setTargetEnemy3();
-				    		}
-				    	});
-				    	
-				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("attack");
-				    			combat.performAttack();
-				    		}
-				    	});
-				    	
-				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("surrender");
-				    			combat.surrender();
-				    		}
-				    	});
-				    	
-				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("heavy");
-				    			combat.setAttackHeavy();
-				    		}
-				    	});
-				    	
-				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("standard");
-				    			combat.setAttackStandard();
-				    		}
-				    	});
-				    	
-				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
-				    		@Override
-				    		public void handle(ActionEvent arg0) {
-				    			System.out.println("simple");
-				    			combat.setAttackSimple();
-				    		}
-				    	});
-						
-						
-						combat.performAITurn(enemy.getMember(k));
-					}
-				}
-				if (party.isEmpty()){
-					return false;
-				}
-				if (enemy.isEmpty()){
-					return true;
-				}
-			}
-		}
+//			for (int i = 0; i < 8; i++){
+//				if (i % 2 == 0){
+//					if (party.getSize() > (i/2)){
+//						drawCombat(combat,party.getMember(i/2));
+//						
+//						
+//						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy0");
+//				    			combat.setTargetEnemy0();
+//				    		}
+//				    	});
+//				    	
+//				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy1");
+//				    			combat.setTargetEnemy1();
+//				    		}
+//				    	});
+//				    	
+//				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy2");
+//				    			combat.setTargetEnemy2();
+//				    		}
+//				    	});
+//				    	
+//				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy3");
+//				    			combat.setTargetEnemy3();
+//				    		}
+//				    	});
+//				    	
+//				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("attack");
+//				    			combat.performAttack();
+//				    		}
+//				    	});
+//				    	
+//				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("surrender");
+//				    			combat.surrender();
+//				    		}
+//				    	});
+//				    	
+//				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("heavy");
+//				    			combat.setAttackHeavy();
+//				    		}
+//				    	});
+//				    	
+//				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("standard");
+//				    			combat.setAttackStandard();
+//				    		}
+//				    	});
+//				    	
+//				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("simple");
+//				    			combat.setAttackSimple();
+//				    		}
+//				    	});
+//						
+//						
+//						combat.performTurn(party.getMember(i/2));
+//					}
+//				}
+//				if(2<1){
+//					int k = (int) ((i/2));
+//					if (enemy.getSize() > k){
+//						drawCombat(combat,enemy.getMember(k));
+//						
+//						
+//						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy0");
+//				    			combat.setTargetEnemy0();
+//				    		}
+//				    	});
+//				    	
+//				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy1");
+//				    			combat.setTargetEnemy1();
+//				    		}
+//				    	});
+//				    	
+//				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy2");
+//				    			combat.setTargetEnemy2();
+//				    		}
+//				    	});
+//				    	
+//				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("enemy3");
+//				    			combat.setTargetEnemy3();
+//				    		}
+//				    	});
+//				    	
+//				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("attack");
+//				    			combat.performAttack();
+//				    		}
+//				    	});
+//				    	
+//				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("surrender");
+//				    			combat.surrender();
+//				    		}
+//				    	});
+//				    	
+//				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("heavy");
+//				    			combat.setAttackHeavy();
+//				    		}
+//				    	});
+//				    	
+//				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("standard");
+//				    			combat.setAttackStandard();
+//				    		}
+//				    	});
+//				    	
+//				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
+//				    		@Override
+//				    		public void handle(ActionEvent arg0) {
+//				    			System.out.println("simple");
+//				    			combat.setAttackSimple();
+//				    		}
+//				    	});
+//						
+//						
+//						combat.performAITurn(enemy.getMember(k));
+//					}
+//				}
+//				if (party.isEmpty()){
+//					return false;
+//				}
+//				if (enemy.isEmpty()){
+//					return true;
+//				}
+//			}
+//		}
 	}
 	
 	
@@ -791,7 +939,7 @@ public class GraphicsControl extends Application {
       	stage.show();
       	scene.setRoot(new BorderPane());
       	playGame();
-      	scene.setOnKeyReleased(keyReleaseHandler);
+      	//scene.setOnKeyReleased(keyReleaseHandler);
       	
     } 
     
