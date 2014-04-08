@@ -86,5 +86,10 @@ public class Armor extends Equipment {
 	public int getStat(){
 		return defenceBonus;
 	}
+	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 
 }

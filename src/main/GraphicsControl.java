@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.TextField;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -845,6 +846,11 @@ public class GraphicsControl extends Application {
 		exit = new Button();
 		
 		//The party inventory
+		Text party = new Text();
+		party.setText("Party");
+		right.getChildren().add(party);
+		party.setLayoutX(90);
+		party.setLayoutY(25);
 		ListView<Equipment> inventory = new ListView<Equipment>();
 		System.out.println(playerParty.getInventory());
 		ObservableList<Equipment> invItems =FXCollections.observableArrayList (
@@ -860,20 +866,30 @@ public class GraphicsControl extends Application {
 	        }
 	        });
 		
+		inventory.setLayoutX(-20);
+		inventory.setLayoutY(40);
+		
 		//Individual player inventory
+		Text person = new Text();
+		person.setText("Person");
+		left.getChildren().add(person);
+		person.setLayoutX(120);
+		person.setLayoutY(25);
 		ListView<Equipment> currentInventory = new ListView<Equipment>();
 		ObservableList<Equipment> items =FXCollections.observableArrayList (
 		    currentMember.getInventory());
 		currentInventory.setItems(items);
 		left.getChildren().add(currentInventory);
 		
-		currentInventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>(){
-	        @Override public void changed(ObservableValue o, Object oldVal, 
-	                 Object newVal){
-	        	currentItem = (Equipment) newVal;
+		currentInventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Equipment>(){
+	        @Override public void changed(ObservableValue o, Equipment oldVal, 
+	                 Equipment newVal){
+	        	currentItem = newVal;
 	        }
 	        });
 		
+		currentInventory.setLayoutX(20);
+		currentInventory.setLayoutY(40);
 		
 		player0inv.setLayoutX(164);
 		player0inv.setLayoutY(130);
@@ -904,7 +920,7 @@ public class GraphicsControl extends Application {
 		player3inv.setText(playerParty.getMember(3).getName());
 		
 		swapItem.setLayoutX(340);
-		swapItem.setLayoutY(150);
+		swapItem.setLayoutY(200);
 		swapItem.setMnemonicParsing(false);
 		swapItem.setPrefHeight(50);
 		swapItem.setPrefWidth(125);

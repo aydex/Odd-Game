@@ -242,5 +242,9 @@ public class Weapon extends Equipment {
 		return returnValue;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 
 }
