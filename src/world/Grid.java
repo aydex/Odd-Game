@@ -3,20 +3,38 @@ package world;
 
 import java.util.InputMismatchException;
 
-import utilities.FileManager;
+import equipment.Armor;
+import equipment.Armor.ArmorType;
+import equipment.Equipment;
+import equipment.Weapon;
+import main.GraphicsControl;
+import party.EnemyParty;
+import party.Party;
+import party.Member.MemberType;
+import utils.FileManager;
+import utils.RandomOdd;
 
 
 public class Grid {
 	public enum Direction{ LEFT , UP , RIGHT , DOWN };
-	private int height = 21;
-	private int width = 31;
+	private int height = 15;
+	private int width = 20;
 	private char[][] originalBoard;
 	private int[][] collisionBoard;
 	private int posX;
+	
+
 	private int posY;
 	private Direction boardDirection;
 	
 	
+	public int getPosX() {
+		return posX;
+	}
+	
+	public int getPosY() {
+		return posY;
+	}
 	/**
 	 * changes the background in y, x with surrounding area's background
 	 * @param y coordinate
@@ -58,6 +76,7 @@ public class Grid {
 	 * @return the direction the party is going to spawn in the next board
 	 */
 	public Direction getDirection(){
+		System.out.println("Direction: "+boardDirection);
 		return boardDirection;
 	}
 	
@@ -71,7 +90,8 @@ public class Grid {
 				
 			}
 			else{
-				if(collisionBoard[posY-1+i/3][posX-1+i%3]==1){
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==2){
+					System.out.println("isFight - x: "+(posX-1+i%3)+" y: "+(posY-1+i/3));
 					return true;
 				}				
 			}
@@ -79,6 +99,148 @@ public class Grid {
 		return false;
 	}
 	
+	public boolean isEquipment(){
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+				
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==3){
+					System.out.println("isFight - x: "+(posX-1+i%3)+" y: "+(posY-1+i/3));
+					return true;
+				}				
+			}
+		}
+		return false;
+	}
+	
+	public int[] getEnemyPlacement(){
+		int[] returnInt = new int[2];
+		for(int i = 0; i < 9 ; i++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==2){
+					returnInt[0] =  posY-1+i/3;
+					returnInt[1] = posX-1+i%3;
+					
+				}				
+			}
+		}
+		return returnInt;
+	}
+	
+	public boolean isWon(){
+		if(originalBoard[posY][posX]=='q'){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public Equipment getEquipment(int level){
+		int[] returnInt = new int[2];
+		Equipment returnEq = new Equipment("temp");
+		for(int i = 0; i < 9 ; i++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==3){
+					returnInt[0] =  posY-1+i/3;
+					returnInt[1] = posX-1+i%3;
+
+					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
+						case 'U':
+							returnEq = new Weapon(level);
+							break;
+						case 'V':
+							returnEq = new Armor(ArmorType.HEADGEAR, level);
+							break;
+						case 'W':
+							returnEq = new Armor(ArmorType.CHEST, level);
+							break;
+						case 'X':
+							returnEq = new Armor(ArmorType.HANDS, level);
+							break;
+						case 'Y':
+							returnEq = new Armor(ArmorType.SHIELD, level);
+							break;
+						case 'Z':
+							returnEq = new Armor(ArmorType.BOOTS, level);
+							break;
+					}
+				}				
+			}
+		}
+		return returnEq;
+	}
+	
+	public EnemyParty getEnemyParty(int level){
+		EnemyParty returnParty = null;
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==2){
+					MemberType type;
+					int numberOfEnemies = 1;
+					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
+					case 'K':
+						type = MemberType.HUMAN;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
+					case 'L':
+						type = MemberType.HUMAN;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+						break;
+					case 'M':
+						type = MemberType.ZOMBIE;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
+					case 'N':
+						type = MemberType.ZOMBIE;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+						break;
+					case 'O':
+						type = MemberType.ROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
+					case 'P':
+						type = MemberType.ROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+						break;
+					case 'Q':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						break;
+					case 'R':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
+						break;
+					case 'S':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = 1;
+						level+=5;
+						break;
+					case 'T':
+						type = MemberType.SUPERROBOT;
+						numberOfEnemies = 1;
+						level+=10;
+						break;
+					default:
+						type = MemberType.HUMAN;
+						numberOfEnemies = 1;
+						break;
+					} // end switch
+						
+						
+					returnParty = new EnemyParty(numberOfEnemies, level, type);
+				}	// end if(collisionBoard			
+			}	// end else
+		}	// end for
+		return returnParty;
+ 	}
 	
 	/**
 	 * checks if party can move to the new coordinates
@@ -109,7 +271,7 @@ public class Grid {
 				coordinates[0] = -1;
 			}
 			else{
-				coordinates[0] ++;
+				coordinates[1] ++;
 			}
 			break;
 		case LEFT:
@@ -117,7 +279,7 @@ public class Grid {
 				coordinates[0] = -1;
 			}
 			else{
-				coordinates[1] --;
+				coordinates[0] --;
 			}
 			break;
 		case RIGHT:
@@ -125,7 +287,7 @@ public class Grid {
 				coordinates[0] = -1;
 			}
 			else{
-				coordinates[1] ++;
+				coordinates[0] ++;
 			}
 			break;
 		case UP:
@@ -133,7 +295,7 @@ public class Grid {
 				coordinates[0] = -1;
 			}
 			else{
-				coordinates[0] --;
+				coordinates[1] --;
 			}
 			break;
 		default:
@@ -145,10 +307,10 @@ public class Grid {
 	/**
 	 * changes the posX and posY of the party from the given direction if possible, if out of board sets direction
 	 * @param direction the direction the party is moving in
-	 * @return whether the move was done, and whether the player is out of the board
+	 * @return whether the move instigated a fight, and whether the player is out of the board, and if the move was done
 	 */
 	public boolean[] move(Direction direction){
-		boolean[] returnBool = {false, false};
+		boolean[] returnBool = {false, false, false};
 		int[] coordinates = this.getCoordinates(direction);
 		if(coordinates[0] == -1){
 			returnBool[0] = false;
@@ -163,19 +325,23 @@ public class Grid {
 				boardDirection = Direction.DOWN;
 			}
 			else if(posY==height-1){
-				boardDirection = Direction.RIGHT;
+				boardDirection = Direction.UP;
 			}
 			else{
 				throw new InputMismatchException("Something went wrong when setting the direction, the coordinates was ["+posY+"]["+posX+"]");
 			}
 		}
-		if(this.isCollision(coordinates[0], coordinates[1])){
-			
-		}
 		else{
-			this.posY = coordinates[0];
-			this.posX = coordinates[1];
-			returnBool[0] = true;
+			if(!this.isCollision(coordinates[0], coordinates[1])){
+				this.posX = coordinates[0];
+				this.posY = coordinates[1];
+			}
+			else{
+				returnBool[2] = true;
+			}
+			if(this.isFight()){
+				returnBool[0] = true;
+			}
 		}
 		return returnBool;
 	}
@@ -185,9 +351,14 @@ public class Grid {
 	 * @param fileName the filename that the board comes from
 	 */
 	private void createBoard(String fileName){
+		System.out.println("CreateBoard - fileName: "+fileName);
 		String str = FileManager.getStringFromFile(fileName);
+		//System.out.println("Stringsize: "+str.length());
+		//System.out.println("str: "+str);
 		for(int i = 0 ; i < height; i++){
 			for(int j = 0 ; j < width ; j++){
+				//System.out.println("width*i+j: "+(width*i+j));
+				//System.out.print("createboard - "+str.charAt(width*i+j)+" , ");
 				originalBoard[i][j] = str.charAt(width*i+j);
 				fillCollisionBoard(i, j);
 			}
@@ -202,7 +373,7 @@ public class Grid {
 	 */
 	private void fillCollisionBoard(int i , int j){
 		if(originalBoard[i][j]>='A' && originalBoard[i][j]<='J'){			
-			collisionBoard[i][j] = 1;
+			collisionBoard[i][j] = 0;
 		}
 		else if(originalBoard[i][j]>'J' && originalBoard[i][j]<='T'){			
 			collisionBoard[i][j] = 2;
@@ -211,6 +382,9 @@ public class Grid {
 			collisionBoard[i][j] = 3;
 		}
 		else{
+			collisionBoard[i][j] = 1;
+		}
+		if(originalBoard[i][j]=='q'){
 			collisionBoard[i][j] = 0;
 		}
 	}
@@ -221,6 +395,7 @@ public class Grid {
 	 * @param directon what direction the party is coming from
 	 */
 	public Grid(String fileName, Direction direction){
+		System.out.println("Grid - fileName: "+fileName);
 		boardDirection = null;
 		originalBoard = new char[height][width];
 		collisionBoard = new int[height][width];
@@ -246,6 +421,17 @@ public class Grid {
 			throw new IllegalArgumentException("Something went wrong with direction in Grid()");
 		
 		}
+	}
+	
+	public char[] toChar(){
+		char[] returnChar = new char[height*width];
+		for(int i = 0 ; i < height ; i++){
+			for(int j = 0 ; j < width ; j++){
+				//System.out.println(originalBoard[i][j]);
+				returnChar[i*width+j] = originalBoard[i][j];
+			}
+		}
+		return returnChar;
 	}
 	
 	/**

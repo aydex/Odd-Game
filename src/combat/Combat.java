@@ -8,8 +8,8 @@ public class Combat {
 	
 	public enum Attack {HEAVY,STANDRAD,SIMPLE};
 	
-	protected FriendlyParty party;
-	protected EnemyParty enemy;
+	private FriendlyParty party;
+	private EnemyParty enemy;
 	private Member target;
 	private Attack attack;
 	private Member currentPlayer;
@@ -25,34 +25,49 @@ public class Combat {
 		this.enemy = enemy;
 	}
 	
+	/**
+	 * Returns the friendly party of the combat
+	 * @return The combat's party
+	 */
+	public FriendlyParty getParty(){
+		return party;
+	}
+	
+	/**
+	 * Returns the enemy party of the combat
+	 * @return The combat's enemy
+	 */
+	public EnemyParty getEnemy(){
+		return enemy;
+	}
 	
 	/**
 	 * Method for performing one player controlled character's turn in combat
 	 * @param member The Member character who's turn it is
 	 */
-	protected void performTurn(Member member){
+	public void performTurn(Member member){
 		target = null;
 		attack = null;
 		currentPlayer = member;
 		playerTurn = true;
-		while(playerTurn){};
-		if (!target.isAlive()){
-			enemy.removeMember(target);
-		}
 	}
 	
 	/**
 	 * Method for performing one AI controlled character's turn in combat
 	 * @param member The Member character who's turn it is
 	 */
-	protected void performAITurn(Member member){
+	public void performAITurn(Member member){
+		System.out.println("performAITurn");
+		currentPlayer = member;
 		double[] attackStat = new double[2];
 		attackStat = aiChooseAttack();
 		Member target = aiChooseTarget();
+		System.out.println("Target: "+target.getName());
+		currentPlayer.decreasePower(attackStat[1]);
 		target.decreaseHealth(attackStat[0], member.getDamageType());
-		if (!target.isAlive()){
-			party.removeMember(target);
-		}
+		//if (!target.isAlive()){
+		//	party.removeMember(target);
+		//}
 	}
 	
 	/**
@@ -60,9 +75,9 @@ public class Combat {
 	 * @return The chosen target for the next attack
 	 */
 	private Member aiChooseTarget(){
-		Member target = party.getMember(0);
-		for (int i = 0; i < party.getSize(); i++){
-			if (party.getMember(i).getHealth() < target.getHealth()){
+		Member target = party.getMember(party.getSize()-1);
+		for (int i = party.getSize() - 1; i >= 0; i--){
+			if (party.getMember(i).getHealth() < target.getHealth() || target.getHealth() <= 0){
 				target = party.getMember(i);
 			}
 		}
@@ -74,15 +89,22 @@ public class Combat {
 	 * @return The damage and power consumption of chosen attack
 	 */
 	private double[] aiChooseAttack(){
-		//Not done
-		double [] returnValue = {1,2};
-		return returnValue;
+		if (currentPlayer.getPower() > currentPlayer.getHeavyAttackStats()[1]){
+			return currentPlayer.getHeavyAttackStats();
+		}
+		else if (currentPlayer.getPower() > currentPlayer.getStandardAttackStats()[1]){
+			return currentPlayer.getStandardAttackStats();
+		}
+		else{
+			return currentPlayer.getSimpleAttackStats();
+		}
 	}
 	
 	/**
 	 * Performs attack when attack button is pressed in combat graphics, target and attack must be set
 	 */
-	protected void performAttack(){
+	public void performAttack(Member currentPlayer){
+		this.currentPlayer = currentPlayer;
 		if (target != null && attack != null){
 			double[] attackStat;
 			if (attack == Attack.HEAVY){
@@ -95,21 +117,26 @@ public class Combat {
 				attackStat = currentPlayer.getSimpleAttackStats();
 			}
 			playerTurn = false;
+			currentPlayer.decreasePower(attackStat[1]);
 			target.decreaseHealth(attackStat[0], currentPlayer.getDamageType());
+			//if (!target.isAlive()){
+			//	enemy.removeMember(target);
+			//}
 		}
 	}
 	
 	/**
 	 * Surrenders the battle, called when surrender button is clicked in combat graphics, currently not usable
 	 */
-	protected void surrender(){
+	public void surrender(){
 		
 	}
 	
 	/**
 	 * Sets the current player's target to enemy0, called from button in combat graphics
 	 */
-	protected void setTargetEnemy0(){
+	public void setTargetEnemy0(){
+		target = null;
 		if (enemy.getMember(0).isAlive()){
 			target = enemy.getMember(0);			
 		}
@@ -118,7 +145,8 @@ public class Combat {
 	/**
 	 * Sets the current player's target to enemy1, called from button in combat graphics
 	 */
-	protected void setTargetEnemy1(){
+	public void setTargetEnemy1(){
+		target = null;
 		if (enemy.getMember(1).isAlive()){
 			target = enemy.getMember(1);			
 		}
@@ -127,7 +155,8 @@ public class Combat {
 	/**
 	 * Sets the current player's target to enemy2, called from button in combat graphics
 	 */
-	protected void setTargetEnemy2(){
+	public void setTargetEnemy2(){
+		target = null;
 		if (enemy.getMember(2).isAlive()){
 			target = enemy.getMember(2);			
 		}
@@ -136,7 +165,8 @@ public class Combat {
 	/**
 	 * Sets the current player's target to enemy3, called from button in combat graphics
 	 */
-	protected void setTargetEnemy3(){
+	public void setTargetEnemy3(){
+		target = null;
 		if (enemy.getMember(3).isAlive()){
 			target = enemy.getMember(3);			
 		}
@@ -145,9 +175,10 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to heavy
 	 */
-	protected void setAttackHeavy(){
+	public void setAttackHeavy(Member currentPlayer){
+		attack = Attack.SIMPLE;
 		double[] attackStat = currentPlayer.getHeavyAttackStats();
-		if (attackStat[1] < currentPlayer.getPower()){
+		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.HEAVY;			
 		}
 	}
@@ -155,9 +186,10 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to standard
 	 */
-	protected void setAttackStandard(){
+	public void setAttackStandard(Member currentPlayer){
+		attack = Attack.SIMPLE;
 		double[] attackStat = currentPlayer.getStandardAttackStats();
-		if (attackStat[1] < currentPlayer.getPower()){
+		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.STANDRAD;			
 		}
 	}
@@ -165,9 +197,10 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to simple
 	 */
-	protected void setAttackSimple(){
+	public void setAttackSimple(Member currentPlayer){
+		attack = Attack.SIMPLE;
 		double[] attackStat = currentPlayer.getSimpleAttackStats();
-		if (attackStat[1] < currentPlayer.getPower()){
+		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.SIMPLE;			
 		}		
 	}

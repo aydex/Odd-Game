@@ -2,6 +2,7 @@ package party;
 
 import java.util.ArrayList;
 
+import javafx.util.Callback;
 import equipment.Armor;
 import equipment.Armor.ArmorType;
 import equipment.Equipment;
@@ -31,6 +32,8 @@ public class Member {
 	private DamageType weaknessType;
 	public enum MemberType { HUMAN, ROBOT, SUPERROBOT, ZOMBIE, HERO}
 	private MemberType memberType;
+
+	
 	
 	/**
 	 * returns the level of member
@@ -119,8 +122,8 @@ public class Member {
 	 * updates damage and defence by modifiers and equipment
 	 */
 	private void updateDamDef(){
-		this.damage = damageMod; //+ weapon.getStat();
-		this.defence = defenceMod; //+ headGear.getStat() + boots.getStat() + chest.getStat() + hands.getStat() + shield.getStat();
+		this.damage = damageMod + weapon.getStat();
+		this.defence = defenceMod + headGear.getStat() + boots.getStat() + chest.getStat() + hands.getStat() + shield.getStat();
 	}
 
 	/**
@@ -202,6 +205,7 @@ public class Member {
 	 * @return the old weapon
 	 */
 	public Equipment changeEquipment(Weapon weapon){
+		System.out.println("changing weapon " + this.weapon + " to " + weapon);
 		Weapon returnWeapon = this.weapon;
 		this.weapon = weapon;
 		this.updateDamDef();
@@ -296,14 +300,14 @@ public class Member {
 			throw new IllegalArgumentException("membertype is not recognized");
 		}
 		
-		
+		this.level = level;
+		this.createEquipment();
 		
 		this.level = 0;
 		
 		for(int i = 1 ; i <= level; i++){
 			this.increaseLevel();
 		}
-		this.createEquipment();
 		this.updateDamDef();
 	}
 
@@ -332,6 +336,23 @@ public class Member {
 		return weapon.getDamageType();
 	}
 	
+	
+	public int getExperienceValue(){
+		switch(memberType){
+ 		case HUMAN:
+ 			return 15;
+ 		case ROBOT:
+ 			return 25;
+ 		case SUPERROBOT:
+ 			return 50;
+ 		case ZOMBIE:
+ 			return 20;
+ 		case HERO:
+ 			return 1;
+ 		}
+ 		return 0;
+	}
+	
 	/**
 	 * Calculates and returns the damage and power consumption of a simple attack
 	 * @return The damage and power consumption of simple attack
@@ -339,7 +360,7 @@ public class Member {
 	public double[] getSimpleAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getSimpleAttackMod();
-		attackStats[0] = getDamage();
+		attackStats[0] = damageMod + weaponStats[0];
 		attackStats[1] = weaponStats[1];
 		return attackStats;
 	}
@@ -351,7 +372,7 @@ public class Member {
 	public double[] getStandardAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getStandardAttackMod();
-		attackStats[0] = getDamage();
+		attackStats[0] = damageMod + weaponStats[0];
 		attackStats[1] = weaponStats[1];
 		return attackStats;
 	}
@@ -363,7 +384,7 @@ public class Member {
 	public double[] getHeavyAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getHeavyAttackMod();
-		attackStats[0] = getDamage();
+		attackStats[0] = damageMod + weaponStats[0];
 		attackStats[1] = weaponStats[1];
 		return attackStats;
 	}
@@ -400,9 +421,46 @@ public class Member {
 	}
 	
 	/**
+	 * Returns the a string referring to the file location of the visual combat representation of the current member
+ 	 * @return Filepath to combat representation
+ 	 */
+ 	public String getCombatRepresentation(){
+ 		switch(memberType){
+ 		case HUMAN:
+ 			return "combatImages/Human.png";
+ 		case ROBOT:
+ 			return "combatImages/Robot.png";
+ 		case SUPERROBOT:
+ 			return "combatImages/Superrobot.png";
+ 		case ZOMBIE:
+ 			return "combatImages/Zombie.png";
+ 		case HERO:
+ 			return "combatImages/Hero.png";
+ 		}
+ 		return "combatImages/Human.png";
+ 	}
+ 	
+ 	
+ 	public String getWeaponName(){
+ 		return weapon.getName();
+ 	}
+ 	
+ 	
+	/**
 	 * toString that can be used in member's constructor
 	 */
 	public String toString(){
 		return memberType+","+level+","+weapon+","+headGear+","+chest+","+hands+","+shield+","+boots;
+	}
+
+	public ArrayList<Equipment> getInventory() {
+		ArrayList<Equipment> inventory = new ArrayList<Equipment>();
+		inventory.add(chest);
+		inventory.add(boots);
+		inventory.add(hands);
+		inventory.add(headGear);
+		inventory.add(shield);
+		inventory.add(weapon);
+		return inventory;
 	}
 }

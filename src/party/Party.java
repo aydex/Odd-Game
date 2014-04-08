@@ -15,6 +15,16 @@ public class Party {
 	public Party(){
 		members = new ArrayList<Member>();
 	}
+
+	public int getLevel(){
+		int returnInt = 0;
+		for(int i = 0 ; i < this.getSize(); i ++){
+			if(returnInt<this.getMember(i).getLevel()){
+				returnInt = this.getMember(i).getLevel();
+			}
+		}
+		return returnInt;
+	}
 	
 	/**
 	 * Constructs a party consisting of the embers of the given ArrayList
@@ -63,8 +73,8 @@ public class Party {
 	 * @return Member at given index
 	 */
 	public Member getMember(int index){
-		if (index > members.size() || index < 0){
-			throw new IndexOutOfBoundsException("Index out of bounds");
+		if (index >= members.size() || index < 0){
+			throw new IndexOutOfBoundsException("Index out of bounds, was: "+index+" members.size(): "+members.size());
 		}
 		return members.get(index);
 	}
@@ -83,6 +93,34 @@ public class Party {
 	 */
 	public boolean isEmpty(){
 		return members.isEmpty();
+	}
+	
+	/**
+	 * Returns true if all the members of the given party is dead
+	 * @return whether the entire party is dead
+	 */
+	public boolean isDead(){
+		boolean returnValue = true;
+		for (int i = 0; i < getSize(); i++){
+			if (getMember(i).isAlive()){
+				returnValue = false;
+			}
+		}
+		return returnValue;
+	}
+	
+	/**
+	 * Returns the number of living members of the party
+	 * @return the number of living members of the party
+	 */
+	public int getAlive(){
+		int k = 0;
+		for (int i = 0; i < getSize(); i++){
+			if (getMember(i).isAlive()){
+				k += 1;
+			}
+		}
+		return k;
 	}
 
 }

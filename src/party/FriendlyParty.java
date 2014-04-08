@@ -1,6 +1,8 @@
 package party;
 
 import java.util.ArrayList;
+
+import javafx.util.Callback;
 import equipment.Equipment;
 
 public class FriendlyParty extends Party {
@@ -13,6 +15,8 @@ public class FriendlyParty extends Party {
 	 * The amount of money currently carried by the party
 	 */
 	private int money;
+	
+	private int experience;
 
 	/**
 	 * Default constructor for friendly party, consisting of given members, with empty inventory and 0 money
@@ -40,7 +44,19 @@ public class FriendlyParty extends Party {
 	 * @param item The equipment to be added to the inventory
 	 */
 	public void addItem(Equipment item){
+		System.out.println("adding " + item + " to inventory");
 		inventory.add(item);
+	}
+	
+	
+	public void increaseExp(int exp){
+		experience += exp;
+		while (experience >= 100){
+			for (int i = 0; i < this.getSize(); i++){
+				this.getMember(i).increaseLevel();
+				experience -= 100;
+			}
+		}
 	}
 	
 	/**
@@ -60,6 +76,7 @@ public class FriendlyParty extends Party {
 	 * @param item The equipment to be removed
 	 */
 	public void removeItem(Equipment item){
+		System.out.println("removing " + item + " from inventory");
 		inventory.remove(item);
 	}
 	
@@ -102,6 +119,11 @@ public class FriendlyParty extends Party {
 	 */
 	public int getMoney(){
 		return money;
+	}
+
+	public ArrayList<Equipment> getInventory() {
+		System.out.println("inventory contains" + inventory);
+		return inventory;
 	}
 
 }

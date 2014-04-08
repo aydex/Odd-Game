@@ -2,9 +2,7 @@ package combat;
 
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import equipment.Weapon.DamageType;
 import party.Member;
@@ -39,7 +37,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class CombatGraphics extends Application{
-	
+	/*
 	private BorderPane combatRoot;
 	private Scene scene;
 	private Button enemy0Button;
@@ -51,16 +49,6 @@ public class CombatGraphics extends Application{
 	private Button heavyButton;
 	private Button standardButton;
 	private Button simpleButton;
-	/*
-	private ImageView imageEnemy0;
-	private ImageView imageEnemy1;
-	private ImageView imageEnemy2;
-	private ImageView imageEnemy3;
-	private ImageView player0Image;
-	private ImageView player1Image;
-	private ImageView player2Image;
-	private ImageView player3Image;
-	*/
 	
 	
 	public void drawCombat(Combat combat, Member currentPlayer){
@@ -73,7 +61,7 @@ public class CombatGraphics extends Application{
 		bottom.setPrefHeight(200);
 		bottom.setPrefWidth(200);
 		
-		Text turnOrder = new Text("Hello");
+		Text turnOrder = new Text("Turn: " + currentPlayer.getName());
 		turnOrder.setLayoutX(20);
 		turnOrder.setLayoutY(100);
 		
@@ -263,7 +251,7 @@ public class CombatGraphics extends Application{
 		
 		center.setGridLinesVisible(true);
 		
-		File fileEnemy0 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File fileEnemy0 = new File(combat.enemy.getMember(0).getCombatRepresentation());
 		Image enemy0Im = new Image(fileEnemy0.toURI().toString());
 		ImageView imageEnemy0 = new ImageView(enemy0Im);
 		imageEnemy0.setFitHeight(100);
@@ -273,7 +261,7 @@ public class CombatGraphics extends Application{
 		center.add(imageEnemy0, 0, 0);
 		GridPane.setHalignment(imageEnemy0, HPos.CENTER);
 		
-		File fileEnemy1 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File fileEnemy1 = new File(combat.enemy.getMember(1).getCombatRepresentation());
 		Image enemy1Im = new Image(fileEnemy1.toURI().toString());
 		ImageView imageEnemy1 = new ImageView(enemy1Im);
 		imageEnemy1.setFitHeight(100);
@@ -283,7 +271,7 @@ public class CombatGraphics extends Application{
 		center.add(imageEnemy1, 0, 1);
 		GridPane.setHalignment(imageEnemy1, HPos.CENTER);
 		
-		File fileEnemy2 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File fileEnemy2 = new File(combat.enemy.getMember(2).getCombatRepresentation());
 		Image enemy2Im = new Image(fileEnemy2.toURI().toString());
 		ImageView imageEnemy2 = new ImageView(enemy2Im);
 		imageEnemy2.setFitHeight(100);
@@ -293,7 +281,7 @@ public class CombatGraphics extends Application{
 		center.add(imageEnemy2, 0, 2);
 		GridPane.setHalignment(imageEnemy2, HPos.CENTER);
 		
-		File fileEnemy3 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File fileEnemy3 = new File(combat.enemy.getMember(3).getCombatRepresentation());
 		Image enemy3Im = new Image(fileEnemy3.toURI().toString());
 		ImageView imageEnemy3 = new ImageView(enemy3Im);
 		imageEnemy3.setFitHeight(100);
@@ -303,7 +291,7 @@ public class CombatGraphics extends Application{
 		center.add(imageEnemy3, 0, 3);
 		GridPane.setHalignment(imageEnemy3, HPos.CENTER);
 		
-		File filePlayer0 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File filePlayer0 = new File(combat.party.getMember(0).getCombatRepresentation());
 		Image Player0Im = new Image(filePlayer0.toURI().toString());
 		ImageView imagePlayer0 = new ImageView(Player0Im);
 		imagePlayer0.setFitHeight(100);
@@ -313,7 +301,7 @@ public class CombatGraphics extends Application{
 		center.add(imagePlayer0, 2, 0);
 		GridPane.setHalignment(imagePlayer0, HPos.CENTER);
 		
-		File filePlayer1 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File filePlayer1 = new File(combat.party.getMember(1).getCombatRepresentation());
 		Image Player1Im = new Image(filePlayer1.toURI().toString());
 		ImageView imagePlayer1 = new ImageView(Player1Im);
 		imagePlayer1.setFitHeight(100);
@@ -323,7 +311,7 @@ public class CombatGraphics extends Application{
 		center.add(imagePlayer1, 2, 1);
 		GridPane.setHalignment(imagePlayer1, HPos.CENTER);
 		
-		File filePlayer2 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File filePlayer2 = new File(combat.party.getMember(2).getCombatRepresentation());
 		Image Player2Im = new Image(filePlayer2.toURI().toString());
 		ImageView imagePlayer2 = new ImageView(Player2Im);
 		imagePlayer2.setFitHeight(100);
@@ -333,7 +321,7 @@ public class CombatGraphics extends Application{
 		center.add(imagePlayer2, 2, 2);
 		GridPane.setHalignment(imagePlayer2, HPos.CENTER);
 		
-		File filePlayer3 = new File("C://Users/Odd/Pictures/Outfall/enemy0.png");
+		File filePlayer3 = new File(combat.party.getMember(3).getCombatRepresentation());
 		Image Player3Im = new Image(filePlayer3.toURI().toString());
 		ImageView imagePlayer3 = new ImageView(Player3Im);
 		imagePlayer3.setFitHeight(100);
@@ -380,26 +368,26 @@ public class CombatGraphics extends Application{
 		combatRoot.setRight(right);
 		combatRoot.setCenter(center);
 		scene.setRoot(combatRoot);
+		
+		Color grey = Color.GRAY;
+		scene.setFill(grey);
 	}
 	
 	public boolean performCombat(FriendlyParty party, EnemyParty enemy){
 		Combat combat = new Combat(party,enemy);
-		int nrFighters = party.getSize() + enemy.getSize();
 		while(true){
-			for (int i = 0; i < nrFighters; i++){
-				
+			for (int i = 0; i < 8; i++){
 				if (i % 2 == 0){
-					if (party.getSize() > i-(i+1)/2){
-						//Not done
-						drawCombat(combat,party.getMember(i-(i+1)/2));
-						combat.performTurn(party.getMember(i));						
+					if (party.getSize() >= (i/2)){
+						drawCombat(combat,party.getMember(i/2));
+						combat.performTurn(party.getMember(i/2));
 					}
 				}
 				else{
-					if (party.getSize() > i - 1){
-						//Not done
-						drawCombat(combat,enemy.getMember(i-1));
-						combat.performAITurn(enemy.getMember(i-1));
+					int k = (int) ((i/2) - 0.5);
+					if (party.getSize() > k){
+						drawCombat(combat,enemy.getMember(k));
+						combat.performAITurn(enemy.getMember(k));
 					}
 				}
 				if (party.isEmpty()){
@@ -408,7 +396,6 @@ public class CombatGraphics extends Application{
 				if (enemy.isEmpty()){
 					return true;
 				}
-				nrFighters = party.getSize() + enemy.getSize();
 			}
 		}
 		
@@ -521,20 +508,8 @@ public class CombatGraphics extends Application{
 	    		//combat.setAttackSimple();
 	    	}
 	    });
-		
-	    
-		Color grey = Color.GRAY;
-		scene.setFill(grey);
-	    stage.setScene(scene);
-	    stage.setTitle("Combat");
-	    stage.show();
-		
 	}
 	
-	public static void main(String[] args){
-		launch(args);
-	}
-	
-	
+	*/
 
 }

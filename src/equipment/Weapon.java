@@ -6,7 +6,7 @@ import utils.RandomOdd;
 
 public class Weapon extends Equipment {
 	
-	public enum WeaponType { CLUB, RIFLE, PISTOL, AUTOMATIC}
+	public enum WeaponType { KNIFE, RIFLE, PISTOL, AUTOMATIC}
 	public enum DamageType { REGULAR, LASER, PLASMA }
 	
 	private int attack;
@@ -39,7 +39,7 @@ public class Weapon extends Equipment {
 	public Weapon(int level){
 		super("");
 		String name = "";
-		attack = RandomOdd.getRandomInt(level*(1/2), level);
+		attack = RandomOdd.getRandomInt(level*(1/2)+1, level);
 		try{
 			name = RandomOdd.getRandomNameFromFile("WeaponNames.txt");			
 		}
@@ -63,9 +63,9 @@ public class Weapon extends Equipment {
 		}
 		switch(weapon){
 		case 1:
-			weaponType = WeaponType.CLUB;
+			weaponType = WeaponType.KNIFE;
 			attack += 0;
-			name += " club";
+			name += " knife";
 			break;
 		case 2:
 			weaponType = WeaponType.PISTOL;
@@ -85,6 +85,14 @@ public class Weapon extends Equipment {
 		}
 		setValue(attack*2);
 		setName(name);
+	}
+	
+	/**
+	 * Constructor used for constructing a weapon from a string produced by the toString method, used in save/load. Not complete
+	 * @param string The string representation of the weapon
+	 */
+	public Weapon(String string){
+		super("");
 	}
 	
 	/**
@@ -118,35 +126,35 @@ public class Weapon extends Equipment {
 	public int[] getSimpleAttackMod(){
 		int[] returnValue = new int[2];
 		switch(weaponType){
-		case CLUB:
-			returnValue[0] = (1/2) * getStat() * 1;
+		case KNIFE:
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		case PISTOL:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		case RIFLE:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		case AUTOMATIC:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		}
 		switch (damageType){
 		case REGULAR:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 1;
 			returnValue[1] += 0;
 			break;
 		case LASER:
-			returnValue[0] += (1/2) * getStat() * 1;
-			returnValue[1] += 2;
+			returnValue[0] += (1.0/2) * getStat() * 1;
+			returnValue[1] += 0;
 			break;
 		case PLASMA:
-			returnValue[0] += (1/2) * getStat() * 1;
-			returnValue[1] += 4;
+			returnValue[0] += (1.0/2) * getStat() * 1;
+			returnValue[1] += 0;
 			break;
 		}
 		return returnValue;
@@ -159,34 +167,34 @@ public class Weapon extends Equipment {
 	public int[] getStandardAttackMod(){
 		int[] returnValue = new int[2];
 		switch(weaponType){
-		case CLUB:
-			returnValue[0] += (1/2) * getStat() * (3/2);
-			returnValue[1] += 2;
+		case KNIFE:
+			returnValue[0] = (int) ((1.0/2) * getStat() * (3/2));
+			returnValue[1] = 2;
 			break;
 		case PISTOL:
-			returnValue[0] += (1/2) * getStat() * 2;
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 2);
+			returnValue[1] = 2;
 			break;
 		case RIFLE:
-			returnValue[0] += (1/2) * getStat() * 3;
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 3);
+			returnValue[1] = 2;
 			break;
 		case AUTOMATIC:
-			returnValue[0] += (1/2) * getStat() * 4;
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 4);
+			returnValue[1] = 2;
 			break;
 		}
 		switch (damageType){
 		case REGULAR:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 1;
 			returnValue[1] += 0;
 			break;
 		case LASER:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 2;
 			returnValue[1] += 4;
 			break;
 		case PLASMA:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 3;
 			returnValue[1] += 8;
 			break;
 		}
@@ -200,38 +208,51 @@ public class Weapon extends Equipment {
 	public int[] getHeavyAttackMod(){
 		int[] returnValue = new int[2];
 		switch(weaponType){
-		case CLUB:
-			returnValue[0] += (1/2) * getStat() * 2;
-			returnValue[1] += 4;
+		case KNIFE:
+			returnValue[0] = (int) ((1.0/2) * getStat() * 2);
+			returnValue[1] = 4;
 			break;
 		case PISTOL:
-			returnValue[0] += (1/2) * getStat() * 4;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 4);
+			returnValue[1] = 4;
 			break;
 		case RIFLE:
-			returnValue[0] += (1/2) * getStat() * 6;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 6);
+			returnValue[1] = 4;
 			break;
 		case AUTOMATIC:
-			returnValue[0] += (1/2) * getStat() * 8;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 8);
+			returnValue[1] = 4;
 			break;
 		}
 		switch (damageType){
 		case REGULAR:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 1;
 			returnValue[1] += 0;
 			break;
 		case LASER:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 3;
 			returnValue[1] += 8;
 			break;
 		case PLASMA:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 4;
 			returnValue[1] += 10;
 			break;
 		}
 		return returnValue;
+	}
+	
+	public boolean isArmor() {
+		return false;
+	}
+	
+	public boolean isWeapon() {
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }
