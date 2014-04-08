@@ -88,6 +88,9 @@ public class GraphicsControl extends Application {
 	
 	private Member currentOdd;
 	
+	private Armor testArmor = new Armor(ArmorType.BOOTS, 2);
+	private Weapon testWeapon = new Weapon(2);
+	
 	private Equipment currentItem;
 	private Equipment inventoryItem;
 	
@@ -858,20 +861,38 @@ public class GraphicsControl extends Application {
 		inventory.setItems(invItems);
 		right.getChildren().add(inventory);
 		
-		inventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>(){
-	        @Override public void changed(ObservableValue o,Object oldVal, 
-	                 Object newVal){
+		final Text personName = new Text();
+		final Text personStats = new Text();
+		
+		inventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Equipment>(){
+	        @Override public void changed(ObservableValue o,Equipment oldVal, 
+	                 Equipment newVal){
 	        	System.out.println(o + " + " + oldVal + " + " + newVal);
-	        	inventoryItem = (Equipment) newVal;
+	        	inventoryItem = newVal;
+	        	if (newVal.getClass() == testArmor.getClass()) {
+	        		personName.setText("Name: " + newVal.getName());
+	        		personStats.setText("Stats: +" + String.valueOf(((Armor) newVal).getStat())+ " Health");
+	        	} else if (newVal.getClass() == testWeapon.getClass()) {
+	        		personName.setText("Name: " + newVal.getName());
+	        		personStats.setText("Stats: +" + String.valueOf(((Weapon) newVal).getStat()) + " Damage");
+	        	}
 	        }
 	        });
+		
+		left.getChildren().add(personName);
+		left.getChildren().add(personStats);
+		personName.setLayoutX(300);
+		personName.setLayoutY(100);
+		personStats.setLayoutX(300);
+		personStats.setLayoutY(130);
+		
 		
 		inventory.setLayoutX(-20);
 		inventory.setLayoutY(40);
 		
 		//Individual player inventory
 		Text person = new Text();
-		person.setText("Person");
+		person.setText(currentOdd.getName());
 		left.getChildren().add(person);
 		person.setLayoutX(120);
 		person.setLayoutY(25);
@@ -881,12 +902,29 @@ public class GraphicsControl extends Application {
 		currentInventory.setItems(items);
 		left.getChildren().add(currentInventory);
 		
+		final Text partyName = new Text();
+		final Text partyStats = new Text();
+		
 		currentInventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Equipment>(){
 	        @Override public void changed(ObservableValue o, Equipment oldVal, 
 	                 Equipment newVal){
 	        	currentItem = newVal;
+	        	if (newVal.getClass() == testArmor.getClass()) {
+	        		partyName.setText("Name: " + newVal.getName());
+	        		partyStats.setText("Stats: +" + String.valueOf(((Armor) newVal).getStat())+ " Health");
+	        	} else if (newVal.getClass() == testWeapon.getClass()) {
+	        		partyName.setText("Name: " + newVal.getName());
+	        		partyStats.setText("Stats: +" + String.valueOf(((Weapon) newVal).getStat()) + " Damage");
+	        	}
 	        }
 	        });
+		
+		left.getChildren().add(partyName);
+		left.getChildren().add(partyStats);
+		partyName.setLayoutX(300);
+		partyName.setLayoutY(320);
+		partyStats.setLayoutX(300);
+		partyStats.setLayoutY(350);
 		
 		currentInventory.setLayoutX(20);
 		currentInventory.setLayoutY(40);

@@ -242,6 +242,14 @@ public class Weapon extends Equipment {
 		return returnValue;
 	}
 	
+	public boolean isArmor() {
+		return false;
+	}
+	
+	public boolean isWeapon() {
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return this.getName();

@@ -87,6 +87,14 @@ public class Armor extends Equipment {
 		return defenceBonus;
 	}
 	
+	public boolean isArmor() {
+		return true;
+	}
+	
+	public boolean isWeapon() {
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		return this.getName();
