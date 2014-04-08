@@ -179,14 +179,14 @@ public class Grid {
 					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
 					case 'K':
 						type = MemberType.HUMAN;
-						numberOfEnemies = RandomOdd.getRandomInt(2, 4);
+						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
 					case 'L':
-						type = MemberType.ROBOT;
+						type = MemberType.HUMAN;
 						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
 						break;
 					case 'M':
-						type = MemberType.SUPERROBOT;
+						type = MemberType.ZOMBIE;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
 					case 'N':
@@ -194,12 +194,12 @@ public class Grid {
 						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
 						break;
 					case 'O':
-						type = MemberType.SUPERROBOT;
+						type = MemberType.ROBOT;
 						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
 						break;
 					case 'P':
-						type = MemberType.SUPERROBOT;
-						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						type = MemberType.ROBOT;
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
 						break;
 					case 'Q':
 						type = MemberType.SUPERROBOT;
@@ -207,15 +207,17 @@ public class Grid {
 						break;
 					case 'R':
 						type = MemberType.SUPERROBOT;
-						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						numberOfEnemies = RandomOdd.getRandomInt(3, 4);
 						break;
 					case 'S':
 						type = MemberType.SUPERROBOT;
-						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						numberOfEnemies = 1;
+						level+=5;
 						break;
 					case 'T':
 						type = MemberType.SUPERROBOT;
-						numberOfEnemies = RandomOdd.getRandomInt(1, 2);
+						numberOfEnemies = 1;
+						level+=10;
 					default:
 						type = MemberType.HUMAN;
 						numberOfEnemies = 3;
