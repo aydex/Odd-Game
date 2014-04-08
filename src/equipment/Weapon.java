@@ -127,34 +127,34 @@ public class Weapon extends Equipment {
 		int[] returnValue = new int[2];
 		switch(weaponType){
 		case KNIFE:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		case PISTOL:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		case RIFLE:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		case AUTOMATIC:
-			returnValue[0] = (1/2) * getStat() * 1;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 1);
 			returnValue[1] = 0;
 			break;
 		}
 		switch (damageType){
 		case REGULAR:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 1;
 			returnValue[1] += 0;
 			break;
 		case LASER:
-			returnValue[0] += (1/2) * getStat() * 1;
-			returnValue[1] += 2;
+			returnValue[0] += (1.0/2) * getStat() * 1;
+			returnValue[1] += 0;
 			break;
 		case PLASMA:
-			returnValue[0] += (1/2) * getStat() * 1;
-			returnValue[1] += 4;
+			returnValue[0] += (1.0/2) * getStat() * 1;
+			returnValue[1] += 0;
 			break;
 		}
 		return returnValue;
@@ -168,33 +168,33 @@ public class Weapon extends Equipment {
 		int[] returnValue = new int[2];
 		switch(weaponType){
 		case KNIFE:
-			returnValue[0] += (1/2) * getStat() * (3/2);
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * (3/2));
+			returnValue[1] = 2;
 			break;
 		case PISTOL:
-			returnValue[0] += (1/2) * getStat() * 2;
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 2);
+			returnValue[1] = 2;
 			break;
 		case RIFLE:
-			returnValue[0] += (1/2) * getStat() * 3;
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 3);
+			returnValue[1] = 2;
 			break;
 		case AUTOMATIC:
-			returnValue[0] += (1/2) * getStat() * 4;
-			returnValue[1] += 2;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 4);
+			returnValue[1] = 2;
 			break;
 		}
 		switch (damageType){
 		case REGULAR:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 1;
 			returnValue[1] += 0;
 			break;
 		case LASER:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 2;
 			returnValue[1] += 4;
 			break;
 		case PLASMA:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 3;
 			returnValue[1] += 8;
 			break;
 		}
@@ -209,33 +209,33 @@ public class Weapon extends Equipment {
 		int[] returnValue = new int[2];
 		switch(weaponType){
 		case KNIFE:
-			returnValue[0] += (1/2) * getStat() * 2;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 2);
+			returnValue[1] = 4;
 			break;
 		case PISTOL:
-			returnValue[0] += (1/2) * getStat() * 4;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 4);
+			returnValue[1] = 4;
 			break;
 		case RIFLE:
-			returnValue[0] += (1/2) * getStat() * 6;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 6);
+			returnValue[1] = 4;
 			break;
 		case AUTOMATIC:
-			returnValue[0] += (1/2) * getStat() * 8;
-			returnValue[1] += 4;
+			returnValue[0] = (int) ((1.0/2) * getStat() * 8);
+			returnValue[1] = 4;
 			break;
 		}
 		switch (damageType){
 		case REGULAR:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 1;
 			returnValue[1] += 0;
 			break;
 		case LASER:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 3;
 			returnValue[1] += 8;
 			break;
 		case PLASMA:
-			returnValue[0] += (1/2) * getStat() * 1;
+			returnValue[0] += (1.0/2) * getStat() * 4;
 			returnValue[1] += 10;
 			break;
 		}

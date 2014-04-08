@@ -121,8 +121,8 @@ public class Member {
 	 * updates damage and defence by modifiers and equipment
 	 */
 	private void updateDamDef(){
-		this.damage = damageMod; //+ weapon.getStat();
-		this.defence = defenceMod; //+ headGear.getStat() + boots.getStat() + chest.getStat() + hands.getStat() + shield.getStat();
+		this.damage = damageMod + weapon.getStat();
+		this.defence = defenceMod + headGear.getStat() + boots.getStat() + chest.getStat() + hands.getStat() + shield.getStat();
 	}
 
 	/**
@@ -334,6 +334,23 @@ public class Member {
 		return weapon.getDamageType();
 	}
 	
+	
+	public int getExperienceValue(){
+		switch(memberType){
+ 		case HUMAN:
+ 			return 15;
+ 		case ROBOT:
+ 			return 25;
+ 		case SUPERROBOT:
+ 			return 50;
+ 		case ZOMBIE:
+ 			return 20;
+ 		case HERO:
+ 			return 1;
+ 		}
+ 		return 0;
+	}
+	
 	/**
 	 * Calculates and returns the damage and power consumption of a simple attack
 	 * @return The damage and power consumption of simple attack
@@ -341,7 +358,7 @@ public class Member {
 	public double[] getSimpleAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getSimpleAttackMod();
-		attackStats[0] = getDamage();
+		attackStats[0] = damageMod + weaponStats[0];
 		attackStats[1] = weaponStats[1];
 		return attackStats;
 	}
@@ -353,7 +370,7 @@ public class Member {
 	public double[] getStandardAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getStandardAttackMod();
-		attackStats[0] = getDamage();
+		attackStats[0] = damageMod + weaponStats[0];
 		attackStats[1] = weaponStats[1];
 		return attackStats;
 	}
@@ -365,7 +382,7 @@ public class Member {
 	public double[] getHeavyAttackStats(){
 		double[] attackStats = new double[2];
 		int[] weaponStats = weapon.getHeavyAttackMod();
-		attackStats[0] = getDamage();
+		attackStats[0] = damageMod + weaponStats[0];
 		attackStats[1] = weaponStats[1];
 		return attackStats;
 	}
@@ -419,6 +436,11 @@ public class Member {
  			return "combatImages/Hero.png";
  		}
  		return "combatImages/Human.png";
+ 	}
+ 	
+ 	
+ 	public String getWeaponName(){
+ 		return weapon.getName();
  	}
  	
  	

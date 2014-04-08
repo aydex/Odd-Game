@@ -78,7 +78,7 @@ public class FileManager {
 		try
 	        {
 	            PrintWriter outFile = new PrintWriter(fileDirectory+fileName+".txt");
-	            for(int i = 0 ; i < 15; i++){
+	            for(int i = 0 ; i < 300; i+=20){
 	            	//System.out.println("saveStringToFile("+fileName+","+file+") - "+file.substring(i, i+20));
 	            	outFile.println(file.substring(i, i+20));
 	            }

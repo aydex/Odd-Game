@@ -1,5 +1,6 @@
 package world;
 
+import equipment.Equipment;
 import party.EnemyParty;
 import party.Party;
 import utils.FileManager;
@@ -26,6 +27,13 @@ public class World {
 		return grid.getPosY();
 	}
 	
+	public boolean isEquipment(){
+		return grid.isEquipment();
+	}
+	
+	public Equipment getEquipment(int level){
+		return grid.getEquipment(level);
+	}
 	
 	/**
 	 * constructor for world, it overwrites the gridsfiles from previous games, and set the matrix for the overall world
@@ -49,6 +57,7 @@ public class World {
 		}
 		//System.out.println("world - pre grid = new Grid()");
 		grid = new Grid(fileLocation+"saveMaps/"+nameMatrix[y][x],Direction.DOWN);//Direction.valueOf(coordinateString.split(",")[2]));
+		
 	}
 	
 	/**
@@ -95,6 +104,7 @@ public class World {
 	 */
 	public void changeGrid(){
 		Direction direction = grid.getDirection();
+		FileManager.saveStringToFile(fileLocation+"saveMaps/"+nameMatrix[y][x], String.valueOf(toChar()));
 		switch(direction){
 		case DOWN:
 			y--;
@@ -112,8 +122,8 @@ public class World {
 			throw new IllegalArgumentException("You done fucked up, something went wrong with the grid in changeGrid");
 		}
 		System.out.println("x: "+x+" y: "+y);
-		grid.saveGrid(nameMatrix[y][x]);
-		grid = new Grid(nameMatrix[y][x],direction);
+		System.out.println("ChangeGrid - nameMatrix["+y+"]["+x+"]: "+nameMatrix[y][x]);
+		grid = new Grid(fileLocation+"saveMaps/"+nameMatrix[y][x],direction);
 	}
 	
 	public int[] getEnemyPlacement(){

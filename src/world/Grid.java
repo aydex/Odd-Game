@@ -3,6 +3,10 @@ package world;
 
 import java.util.InputMismatchException;
 
+import equipment.Armor;
+import equipment.Armor.ArmorType;
+import equipment.Equipment;
+import equipment.Weapon;
 import main.GraphicsControl;
 import party.EnemyParty;
 import party.Party;
@@ -95,6 +99,21 @@ public class Grid {
 		return false;
 	}
 	
+	public boolean isEquipment(){
+		for(int i = 0; i < 9 ; i ++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+				
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==3){
+					System.out.println("isFight - x: "+(posX-1+i%3)+" y: "+(posY-1+i/3));
+					return true;
+				}				
+			}
+		}
+		return false;
+	}
+	
 	public int[] getEnemyPlacement(){
 		int[] returnInt = new int[2];
 		for(int i = 0; i < 9 ; i++){
@@ -109,6 +128,43 @@ public class Grid {
 			}
 		}
 		return returnInt;
+	}
+	
+	public Equipment getEquipment(int level){
+		int[] returnInt = new int[2];
+		Equipment returnEq = new Equipment("temp");
+		for(int i = 0; i < 9 ; i++){
+			if(0 > posY-1+i/3 || posY-1+i/3 >= height || 0 > posX-1+i%3 || posX-1+i%3 >= width){
+			}
+			else{
+				if(collisionBoard[posY-1+i/3][posX-1+i%3]==3){
+					returnInt[0] =  posY-1+i/3;
+					returnInt[1] = posX-1+i%3;
+
+					switch(originalBoard[posY-1+i/3][posX-1+i%3]){
+						case 'U':
+							returnEq = new Weapon(level);
+							break;
+						case 'V':
+							returnEq = new Armor(ArmorType.HEADGEAR, level);
+							break;
+						case 'W':
+							returnEq = new Armor(ArmorType.CHEST, level);
+							break;
+						case 'X':
+							returnEq = new Armor(ArmorType.HANDS, level);
+							break;
+						case 'Y':
+							returnEq = new Armor(ArmorType.SHIELD, level);
+							break;
+						case 'Z':
+							returnEq = new Armor(ArmorType.BOOTS, level);
+							break;
+					}
+				}				
+			}
+		}
+		return returnEq;
 	}
 	
 	public EnemyParty getEnemyParty(int level){
@@ -324,6 +380,7 @@ public class Grid {
 	 * @param directon what direction the party is coming from
 	 */
 	public Grid(String fileName, Direction direction){
+		System.out.println("Grid - fileName: "+fileName);
 		boardDirection = null;
 		originalBoard = new char[height][width];
 		collisionBoard = new int[height][width];

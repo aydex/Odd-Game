@@ -83,7 +83,7 @@ public class GraphicsControl extends Application {
 	private String fileLocation = "image/";
 	File file;
 	
-	public void init(){
+	public void initGraphics(){
 		Member player0 = new Member(MemberType.HERO,1);
 		player0.setName("Odd");
 		Member player1 = new Member(MemberType.HERO,1);
@@ -165,6 +165,7 @@ public class GraphicsControl extends Application {
 			tempView = new ImageView(imageList[charIndex]);
 		}
 		else{
+			tempView = new ImageView(imageList[charIndex]);
 			tempView = playerImageView;
 		}
 		
@@ -188,12 +189,16 @@ public class GraphicsControl extends Application {
 		//System.out.println(world.toChar());
 		createGrid();
 		scene.setOnKeyPressed(keyEventHandler);
-		gridChange(world.getPosX(), world.getPosY(),'@');
-		//gridChange(world.getPosX(),world.getPosY(),'@');
+		gridChange(world.getPosX(),world.getPosY(),'@');
 	}
 
 	private void createGrid() {
 		System.out.println("createGrid");
+		gridPane = new GridPane();
+		scene.setRoot(gridPane);
+		gridPane.setPadding(new Insets(0, 0, 0, 0));
+		gridPane.setVgap(0);
+		gridPane.setHgap(0);
 		ImageView tempView = new ImageView(imageList[0]);
 		for(int i = 0; i < sceneY;i++){
 			for(int j = 0 ; j < sceneX ; j++){
@@ -229,6 +234,18 @@ public class GraphicsControl extends Application {
 				break;
 			case I:
 				System.out.println("hmm");
+				break;
+			case F:
+				if(world.isEquipment()){
+					playerParty.addItem(world.getEquipment(playerParty.getLevel()));
+					int tempX = world.getPosX();
+					int tempY = world.getPosY();
+					world.clearProximity();grid();
+					grid();
+					gridChange(world.getPosX(),world.getPosY(),gridList[world.getPosY()*sceneX+world.getPosX()]);
+					gridChange(tempX, tempY,'@');
+					
+				}
 				break;
 			case ESCAPE:
 				break;
@@ -311,12 +328,26 @@ public class GraphicsControl extends Application {
 		heavyButton.setPrefWidth(125);
 		heavyButton.setText("Heavy");
 		
+		Text heavyAttack = new Text("Attack: " + currentPlayer.getHeavyAttackStats()[0]);
+		heavyAttack.setLayoutX(180);
+		heavyAttack.setLayoutY(100);
+		Text heavyPower = new Text("Power cost: " + currentPlayer.getHeavyAttackStats()[1]);
+		heavyPower.setLayoutX(180);
+		heavyPower.setLayoutY(110);
+		
 		//standardButton = new Button();
 		standardButton.setLayoutX(338);
 		standardButton.setLayoutY(56);
 		standardButton.setMnemonicParsing(false);
 		standardButton.setPrefWidth(125);
 		standardButton.setText("Standard");
+		
+		Text standardAttack = new Text("Attack: " + currentPlayer.getStandardAttackStats()[0]);
+		standardAttack.setLayoutX(338);
+		standardAttack.setLayoutY(100);
+		Text standardPower = new Text("Power cost: " + currentPlayer.getStandardAttackStats()[1]);
+		standardPower.setLayoutX(338);
+		standardPower.setLayoutY(110);
 		
 		//simpleButton = new Button();
 		simpleButton.setLayoutX(492);
@@ -325,12 +356,25 @@ public class GraphicsControl extends Application {
 		simpleButton.setPrefWidth(125);
 		simpleButton.setText("Simple");
 		
+		Text simpleAttack = new Text("Attack: " + currentPlayer.getSimpleAttackStats()[0]);
+		simpleAttack.setLayoutX(492);
+		simpleAttack.setLayoutY(100);
+		Text simplePower = new Text("Power cost: " + currentPlayer.getSimpleAttackStats()[1]);
+		simplePower.setLayoutX(492);
+		simplePower.setLayoutY(110);
+		
 		bottom.getChildren().add(turnOrder);
 		bottom.getChildren().add(surrenderButton);
 		bottom.getChildren().add(attackButton);
 		bottom.getChildren().add(heavyButton);
+		bottom.getChildren().add(heavyAttack);
+		bottom.getChildren().add(heavyPower);
 		bottom.getChildren().add(standardButton);
+		bottom.getChildren().add(standardAttack);
+		bottom.getChildren().add(standardPower);
 		bottom.getChildren().add(simpleButton);
+		bottom.getChildren().add(simpleAttack);
+		bottom.getChildren().add(simplePower);
 		
 		
 		//Left pane
@@ -413,7 +457,7 @@ public class GraphicsControl extends Application {
 			gridPlayer0.add(new Text("Name: " + combat.getParty().getMember(0).getName()), 0, 0);
 			gridPlayer0.add(new Text("HP: " + combat.getParty().getMember(0).getHealth()), 0, 1);
 			gridPlayer0.add(new Text("Power: " + combat.getParty().getMember(0).getPower()), 0, 2);
-			gridPlayer0.add(new Text("Damagetype: " + combat.getParty().getMember(0).getStringDamageType()), 0, 3);			
+			gridPlayer0.add(new Text(combat.getParty().getMember(0).getWeaponName()), 0, 3);			
 		}
 		
 		GridPane gridPlayer1 = new GridPane();
@@ -426,7 +470,7 @@ public class GraphicsControl extends Application {
 				gridPlayer1.add(new Text("Name: " + combat.getParty().getMember(1).getName()), 0, 0);
 				gridPlayer1.add(new Text("HP: " + combat.getParty().getMember(1).getHealth()), 0, 1);
 				gridPlayer1.add(new Text("Power: " + combat.getParty().getMember(1).getPower()), 0, 2);
-				gridPlayer1.add(new Text("Damagetype: " + combat.getParty().getMember(1).getStringDamageType()), 0, 3);
+				gridPlayer1.add(new Text(combat.getParty().getMember(1).getWeaponName()), 0, 3);
 			}			
 		}
 		
@@ -440,7 +484,7 @@ public class GraphicsControl extends Application {
 				gridPlayer2.add(new Text("Name: " + combat.getParty().getMember(2).getName()), 0, 0);
 				gridPlayer2.add(new Text("HP: " + combat.getParty().getMember(2).getHealth()), 0, 1);
 				gridPlayer2.add(new Text("Power: " + combat.getParty().getMember(2).getPower()), 0, 2);
-				gridPlayer2.add(new Text("Damagetype: " + combat.getParty().getMember(2).getStringDamageType()), 0, 3);
+				gridPlayer2.add(new Text(combat.getParty().getMember(2).getWeaponName()), 0, 3);
 			}
 		}
 		
@@ -454,7 +498,7 @@ public class GraphicsControl extends Application {
 				gridPlayer3.add(new Text("Name: " + combat.getParty().getMember(3).getName()), 0, 0);
 				gridPlayer3.add(new Text("HP: " + combat.getParty().getMember(3).getHealth()), 0, 1);
 				gridPlayer3.add(new Text("Power: " + combat.getParty().getMember(3).getPower()), 0, 2);
-				gridPlayer3.add(new Text("Damagetype: " + combat.getParty().getMember(3).getStringDamageType()), 0, 3);
+				gridPlayer3.add(new Text(combat.getParty().getMember(3).getWeaponName()), 0, 3);
 			}
 		}
 		
@@ -695,15 +739,18 @@ public class GraphicsControl extends Application {
     				combat.performAITurn(enemyParty.getMember(currentEnemy));
     			}
     			if(enemyParty.isDead()){
-    				scene.setRoot(gridPane);
-    				scene.setOnKeyPressed(keyEventHandler);
-    				grid();
-    				gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
-    				int[] tempBackgroundList = world.getEnemyPlacement();
+    				int expValue = 0;
+    				for (int j = 0; j < enemyParty.getSize(); j++){
+    					System.out.println("Player " + j + ", level " + playerParty.getMember(j).getLevel());
+    					expValue += enemyParty.getMember(j).getExperienceValue();
+    				}
+    				playerParty.increaseExp(expValue);
+    				System.out.println("Experience" + expValue);
+    				
     				world.clearProximity();
-    				gridList = world.toChar();
-    				gridChange(tempList[3], tempList[4],'@');
-    				gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
+					grid();
+					gridChange(world.getPosX(),world.getPosY(),gridList[world.getPosY()*sceneX+world.getPosX()]);
+					gridChange(tempList[3], tempList[4],'@');
     			}
     			else if(playerParty.isDead()){
     				//endgame
@@ -715,24 +762,14 @@ public class GraphicsControl extends Application {
     					combat.performAITurn(enemyParty.getMember(currentEnemy));
     					currentEnemy++;
     				}
-    				if(enemyParty.isDead()){
-    					scene.setRoot(gridPane);
-    					scene.setOnKeyPressed(keyEventHandler);
-    					grid();
-    					gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
-    					int[] tempBackgroundList = world.getEnemyPlacement();
-    					world.clearProximity();
-    					gridList = world.toChar();
-    					gridChange(tempList[3], tempList[4],'@');
-    					gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
-    				}
-    				else if(playerParty.isDead()){
-    					//endgame
-    				}
+    				
     				currentEnemy = 0;
     				currentMember = 0;
     			}
-    			drawCombat(playerParty.getMember(currentMember));
+    			if(!playerParty.isDead() && !enemyParty.isDead()){
+    				
+    				drawCombat(playerParty.getMember(currentMember));
+    			}
     			
     		}
     	});
@@ -775,183 +812,7 @@ public class GraphicsControl extends Application {
     	
     	
 		
-		//drawCombat(enemy.getMember(currentEnemy));
-		//combat.performAITurn(enemy.getMember(currentEnemy));
-		//return returnBool;
-		//while(true){
-			
-//			for (int i = 0; i < 8; i++){
-//				if (i % 2 == 0){
-//					if (party.getSize() > (i/2)){
-//						drawCombat(combat,party.getMember(i/2));
-//						
-//						
-//						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy0");
-//				    			combat.setTargetEnemy0();
-//				    		}
-//				    	});
-//				    	
-//				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy1");
-//				    			combat.setTargetEnemy1();
-//				    		}
-//				    	});
-//				    	
-//				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy2");
-//				    			combat.setTargetEnemy2();
-//				    		}
-//				    	});
-//				    	
-//				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy3");
-//				    			combat.setTargetEnemy3();
-//				    		}
-//				    	});
-//				    	
-//				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("attack");
-//				    			combat.performAttack();
-//				    		}
-//				    	});
-//				    	
-//				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("surrender");
-//				    			combat.surrender();
-//				    		}
-//				    	});
-//				    	
-//				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("heavy");
-//				    			combat.setAttackHeavy();
-//				    		}
-//				    	});
-//				    	
-//				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("standard");
-//				    			combat.setAttackStandard();
-//				    		}
-//				    	});
-//				    	
-//				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("simple");
-//				    			combat.setAttackSimple();
-//				    		}
-//				    	});
-//						
-//						
-//						combat.performTurn(party.getMember(i/2));
-//					}
-//				}
-//				if(2<1){
-//					int k = (int) ((i/2));
-//					if (enemy.getSize() > k){
-//						drawCombat(combat,enemy.getMember(k));
-//						
-//						
-//						enemy0Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy0");
-//				    			combat.setTargetEnemy0();
-//				    		}
-//				    	});
-//				    	
-//				    	enemy1Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy1");
-//				    			combat.setTargetEnemy1();
-//				    		}
-//				    	});
-//				    	
-//				    	enemy2Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy2");
-//				    			combat.setTargetEnemy2();
-//				    		}
-//				    	});
-//				    	
-//				    	enemy3Button.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("enemy3");
-//				    			combat.setTargetEnemy3();
-//				    		}
-//				    	});
-//				    	
-//				    	attackButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("attack");
-//				    			combat.performAttack();
-//				    		}
-//				    	});
-//				    	
-//				    	surrenderButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("surrender");
-//				    			combat.surrender();
-//				    		}
-//				    	});
-//				    	
-//				    	heavyButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("heavy");
-//				    			combat.setAttackHeavy();
-//				    		}
-//				    	});
-//				    	
-//				    	standardButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("standard");
-//				    			combat.setAttackStandard();
-//				    		}
-//				    	});
-//				    	
-//				    	simpleButton.setOnAction(new EventHandler<ActionEvent>() {
-//				    		@Override
-//				    		public void handle(ActionEvent arg0) {
-//				    			System.out.println("simple");
-//				    			combat.setAttackSimple();
-//				    		}
-//				    	});
-//						
-//						
-//						combat.performAITurn(enemy.getMember(k));
-//					}
-//				}
-//				if (party.isEmpty()){
-//					return false;
-//				}
-//				if (enemy.isEmpty()){
-//					return true;
-//				}
-//			}
-//		}
+		
 	}
 	
 	
@@ -961,7 +822,7 @@ public class GraphicsControl extends Application {
     	
     	System.out.println("preInit!");
     	scene = new Scene(new Region(), width, height);
-    	this.init();
+    	this.initGraphics();
     	System.out.println("start");
         stage.setScene(scene);
         stage.setTitle("The Final Outfall");

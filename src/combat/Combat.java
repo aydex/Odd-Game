@@ -77,7 +77,7 @@ public class Combat {
 	private Member aiChooseTarget(){
 		Member target = party.getMember(party.getSize()-1);
 		for (int i = party.getSize() - 1; i >= 0; i--){
-			if (party.getMember(i).getHealth() < target.getHealth()){
+			if (party.getMember(i).getHealth() < target.getHealth() || target.getHealth() <= 0){
 				target = party.getMember(i);
 			}
 		}
@@ -176,7 +176,7 @@ public class Combat {
 	 * Sets the current player's attack type to heavy
 	 */
 	public void setAttackHeavy(Member currentPlayer){
-		attack = null;
+		attack = Attack.SIMPLE;
 		double[] attackStat = currentPlayer.getHeavyAttackStats();
 		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.HEAVY;			
@@ -187,7 +187,7 @@ public class Combat {
 	 * Sets the current player's attack type to standard
 	 */
 	public void setAttackStandard(Member currentPlayer){
-		attack = null;
+		attack = Attack.SIMPLE;
 		double[] attackStat = currentPlayer.getStandardAttackStats();
 		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.STANDRAD;			
@@ -198,7 +198,7 @@ public class Combat {
 	 * Sets the current player's attack type to simple
 	 */
 	public void setAttackSimple(Member currentPlayer){
-		attack = null;
+		attack = Attack.SIMPLE;
 		double[] attackStat = currentPlayer.getSimpleAttackStats();
 		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.SIMPLE;			
