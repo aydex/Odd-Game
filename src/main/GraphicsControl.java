@@ -45,7 +45,7 @@ public class GraphicsControl extends Application {
 	
 	private Scene scene;
 	private boolean keyActive = true;
-	private KeyCode left = KeyCode.getKeyCode("A");
+	private KeyCode left = KeyCode.A;
 	private KeyCode up = KeyCode.W;
 	private KeyCode right = KeyCode.D;
 	private KeyCode down = KeyCode.S;
@@ -188,6 +188,7 @@ public class GraphicsControl extends Application {
 		//System.out.println(world.toChar());
 		createGrid();
 		scene.setOnKeyPressed(keyEventHandler);
+		gridChange(world.getPosX(), world.getPosY(),'@');
 		//gridChange(world.getPosX(),world.getPosY(),'@');
 	}
 
@@ -242,6 +243,7 @@ public class GraphicsControl extends Application {
 				tempList = world.move(direction);
 				//System.out.println("templist[0]: "+tempList[0]);
 				if(tempList[0]==2){
+					world.changeGrid();
 					gridList = world.toChar();
 					grid();
 				}
@@ -259,7 +261,7 @@ public class GraphicsControl extends Application {
 					gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
 					gridChange(tempList[3], tempList[4],'@');
 				}
-				System.out.println(direction);
+				//System.out.println(direction);
 			}
 			keyActive = false;
 		}
@@ -941,7 +943,7 @@ public class GraphicsControl extends Application {
     @Override
     public void start(Stage stage) {
     	
-    	System.out.println("preInit");
+    	System.out.println("preInit!");
     	scene = new Scene(new Region(), width, height);
     	this.init();
     	System.out.println("start");
@@ -955,7 +957,6 @@ public class GraphicsControl extends Application {
     } 
     
     public static void main(String[] args) {
-    	System.out.println("nonononono");
     	launch(args);
         System.out.println("1");
     }

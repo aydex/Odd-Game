@@ -7,9 +7,9 @@ import world.Grid.Direction;
 
 public class World {
 	private String fileLocation = "mapfolder/";
-	private String[][] nameMatrix = {{"testGrid"}};
-	private int height;
-	private int width;
+	private String[][] nameMatrix = {{"","","","a1","","",""},{"","","b1","b2","b3","b4",""},{"c1","c2","c3","c4","","c5","c6"},{"","","","d1","d2","d3",""}};
+	private int height = 4;
+	private int width = 7;
 	private int x;
 	private int y;
 	private Grid grid;
@@ -31,23 +31,24 @@ public class World {
 	 * constructor for world, it overwrites the gridsfiles from previous games, and set the matrix for the overall world
 	 */
 	public World(){
-		height = nameMatrix.length;
-		width = nameMatrix[0].length;
+		System.out.println("world()");
+		//height = nameMatrix.length;
+		//width = nameMatrix[0].length;
 		String coordinateString = FileManager.getStringFromFile(fileLocation+"playercoordinates");
 		//System.out.println("coordinateString: "+coordinateString.split(",")[0]+" , "+coordinateString.split(",")[1]+" , "+coordinateString.split(",")[2]);
 		x = Integer.parseInt(coordinateString.split(",")[0]);
 		y = Integer.parseInt(coordinateString.split(",")[1]);
-		for(int i = 0; i < height ; i++){ 
+		for(int i = 0; i < height ; i++){
 			for(int j = 0; j < width ; j++){
 				if(nameMatrix[i][j]!=""){
-					//System.out.println("2");
-					FileManager.saveStringToFile(nameMatrix[i][j], FileManager.getStringFromFile(fileLocation+"Original-"+nameMatrix[i][j]));
+					//System.out.println("nameMatrix["+i+"]["+j+"]: "+nameMatrix[i][j]);
+					//System.out.println("world - for(for(if");
+					FileManager.saveStringToFile(fileLocation+"saveMaps/"+nameMatrix[i][j], FileManager.getStringFromFile(fileLocation+"Original-"+nameMatrix[i][j]));
 				}
 			}
 		}
-		System.out.println("3");
-		grid = new Grid(nameMatrix[y][x],Direction.LEFT);//Direction.valueOf(coordinateString.split(",")[2]));
-		System.out.println("4");
+		//System.out.println("world - pre grid = new Grid()");
+		grid = new Grid(fileLocation+"saveMaps/"+nameMatrix[y][x],Direction.DOWN);//Direction.valueOf(coordinateString.split(",")[2]));
 	}
 	
 	/**
@@ -96,7 +97,7 @@ public class World {
 		Direction direction = grid.getDirection();
 		switch(direction){
 		case DOWN:
-			y++;
+			y--;
 			break;
 		case LEFT:
 			x++;
@@ -105,11 +106,12 @@ public class World {
 			x--;
 			break;
 		case UP:
-			y--;
+			y++;
 			break;
 		default:
 			throw new IllegalArgumentException("You done fucked up, something went wrong with the grid in changeGrid");
 		}
+		System.out.println("x: "+x+" y: "+y);
 		grid.saveGrid(nameMatrix[y][x]);
 		grid = new Grid(nameMatrix[y][x],direction);
 	}

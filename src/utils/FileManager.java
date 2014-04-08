@@ -22,9 +22,11 @@ public class FileManager {
 			 in = new Scanner(new FileReader(fileDirectory+fileName+".txt"));
 			 while(in.hasNext()){
 				 String tempString = in.nextLine();
+				 //System.out.println("getStringFromFile("+fileName+") - tempString: "+tempString);
 				 fileOutput+=tempString;
 			 }
 			 in.close();
+			 //System.out.println("getStringFromFile - done with stringappend");
 			 return fileOutput;
 		 }
 		 catch (FileNotFoundException e)
@@ -76,14 +78,15 @@ public class FileManager {
 		try
 	        {
 	            PrintWriter outFile = new PrintWriter(fileDirectory+fileName+".txt");
-	            for(int i = 0 ; i < file.split("\n").length; i++){
-	            	outFile.println(file.split("\n")[i]);
+	            for(int i = 0 ; i < 15; i++){
+	            	//System.out.println("saveStringToFile("+fileName+","+file+") - "+file.substring(i, i+20));
+	            	outFile.println(file.substring(i, i+20));
 	            }
 	            outFile.close();
 	        }
 	        catch (FileNotFoundException e)
 	        {
-	            System.err.println("Error: file 'test.txt' could not be opened for writing.");
+	            System.err.println("Error: file '"+fileName+"' could not be opened for writing.");
 	            System.exit(1);
 	        }
 	}

@@ -72,6 +72,7 @@ public class Grid {
 	 * @return the direction the party is going to spawn in the next board
 	 */
 	public Direction getDirection(){
+		System.out.println("Direction: "+boardDirection);
 		return boardDirection;
 	}
 	
@@ -198,7 +199,7 @@ public class Grid {
 		int[] coordinates = {this.posX, this.posY};
 		switch(direction){
 		case DOWN:
-			if(posY>=height){
+			if(posY+1>=height){
 				coordinates[0] = -1;
 			}
 			else{
@@ -206,7 +207,7 @@ public class Grid {
 			}
 			break;
 		case LEFT:
-			if(posX<0){
+			if(posX-1<0){
 				coordinates[0] = -1;
 			}
 			else{
@@ -214,7 +215,7 @@ public class Grid {
 			}
 			break;
 		case RIGHT:
-			if(posX>=width){
+			if(posX+1>=width){
 				coordinates[0] = -1;
 			}
 			else{
@@ -222,7 +223,7 @@ public class Grid {
 			}
 			break;
 		case UP:
-			if(posY<0){
+			if(posY-1<0){
 				coordinates[0] = -1;
 			}
 			else{
@@ -256,7 +257,7 @@ public class Grid {
 				boardDirection = Direction.DOWN;
 			}
 			else if(posY==height-1){
-				boardDirection = Direction.RIGHT;
+				boardDirection = Direction.UP;
 			}
 			else{
 				throw new InputMismatchException("Something went wrong when setting the direction, the coordinates was ["+posY+"]["+posX+"]");
@@ -282,10 +283,14 @@ public class Grid {
 	 * @param fileName the filename that the board comes from
 	 */
 	private void createBoard(String fileName){
+		System.out.println("CreateBoard - fileName: "+fileName);
 		String str = FileManager.getStringFromFile(fileName);
+		//System.out.println("Stringsize: "+str.length());
+		//System.out.println("str: "+str);
 		for(int i = 0 ; i < height; i++){
 			for(int j = 0 ; j < width ; j++){
-				//System.out.println("createboard - "+str.charAt(width*i+j));
+				//System.out.println("width*i+j: "+(width*i+j));
+				//System.out.print("createboard - "+str.charAt(width*i+j)+" , ");
 				originalBoard[i][j] = str.charAt(width*i+j);
 				fillCollisionBoard(i, j);
 			}
@@ -350,7 +355,7 @@ public class Grid {
 		char[] returnChar = new char[height*width];
 		for(int i = 0 ; i < height ; i++){
 			for(int j = 0 ; j < width ; j++){
-				System.out.println(originalBoard[i][j]);
+				//System.out.println(originalBoard[i][j]);
 				returnChar[i*width+j] = originalBoard[i][j];
 			}
 		}
