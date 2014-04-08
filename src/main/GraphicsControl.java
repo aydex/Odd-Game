@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.TextField;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -86,6 +87,9 @@ public class GraphicsControl extends Application {
 	private int currentEnemy = 0;
 	
 	private Member currentOdd;
+	
+	private Armor testArmor = new Armor(ArmorType.BOOTS, 2);
+	private Weapon testWeapon = new Weapon(2);
 	
 	private Equipment currentItem;
 	private Equipment inventoryItem;
@@ -845,6 +849,11 @@ public class GraphicsControl extends Application {
 		exit = new Button();
 		
 		//The party inventory
+		Text party = new Text();
+		party.setText("Party");
+		right.getChildren().add(party);
+		party.setLayoutX(90);
+		party.setLayoutY(25);
 		ListView<Equipment> inventory = new ListView<Equipment>();
 		System.out.println(playerParty.getInventory());
 		ObservableList<Equipment> invItems =FXCollections.observableArrayList (
@@ -852,28 +861,73 @@ public class GraphicsControl extends Application {
 		inventory.setItems(invItems);
 		right.getChildren().add(inventory);
 		
-		inventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>(){
-	        @Override public void changed(ObservableValue o,Object oldVal, 
-	                 Object newVal){
+		final Text personName = new Text();
+		final Text personStats = new Text();
+		
+		inventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Equipment>(){
+	        @Override public void changed(ObservableValue o,Equipment oldVal, 
+	                 Equipment newVal){
 	        	System.out.println(o + " + " + oldVal + " + " + newVal);
-	        	inventoryItem = (Equipment) newVal;
+	        	inventoryItem = newVal;
+	        	if (newVal.getClass() == testArmor.getClass()) {
+	        		personName.setText("Name: " + newVal.getName());
+	        		personStats.setText("Stats: +" + String.valueOf(((Armor) newVal).getStat())+ " Health");
+	        	} else if (newVal.getClass() == testWeapon.getClass()) {
+	        		personName.setText("Name: " + newVal.getName());
+	        		personStats.setText("Stats: +" + String.valueOf(((Weapon) newVal).getStat()) + " Damage");
+	        	}
 	        }
 	        });
 		
+		left.getChildren().add(personName);
+		left.getChildren().add(personStats);
+		personName.setLayoutX(300);
+		personName.setLayoutY(100);
+		personStats.setLayoutX(300);
+		personStats.setLayoutY(130);
+		
+		
+		inventory.setLayoutX(-20);
+		inventory.setLayoutY(40);
+		
 		//Individual player inventory
+		Text person = new Text();
+		person.setText(currentOdd.getName());
+		left.getChildren().add(person);
+		person.setLayoutX(120);
+		person.setLayoutY(25);
 		ListView<Equipment> currentInventory = new ListView<Equipment>();
 		ObservableList<Equipment> items =FXCollections.observableArrayList (
 		    currentMember.getInventory());
 		currentInventory.setItems(items);
 		left.getChildren().add(currentInventory);
 		
-		currentInventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>(){
-	        @Override public void changed(ObservableValue o, Object oldVal, 
-	                 Object newVal){
-	        	currentItem = (Equipment) newVal;
+		final Text partyName = new Text();
+		final Text partyStats = new Text();
+		
+		currentInventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Equipment>(){
+	        @Override public void changed(ObservableValue o, Equipment oldVal, 
+	                 Equipment newVal){
+	        	currentItem = newVal;
+	        	if (newVal.getClass() == testArmor.getClass()) {
+	        		partyName.setText("Name: " + newVal.getName());
+	        		partyStats.setText("Stats: +" + String.valueOf(((Armor) newVal).getStat())+ " Health");
+	        	} else if (newVal.getClass() == testWeapon.getClass()) {
+	        		partyName.setText("Name: " + newVal.getName());
+	        		partyStats.setText("Stats: +" + String.valueOf(((Weapon) newVal).getStat()) + " Damage");
+	        	}
 	        }
 	        });
 		
+		left.getChildren().add(partyName);
+		left.getChildren().add(partyStats);
+		partyName.setLayoutX(300);
+		partyName.setLayoutY(320);
+		partyStats.setLayoutX(300);
+		partyStats.setLayoutY(350);
+		
+		currentInventory.setLayoutX(20);
+		currentInventory.setLayoutY(40);
 		
 		player0inv.setLayoutX(164);
 		player0inv.setLayoutY(130);
@@ -904,7 +958,7 @@ public class GraphicsControl extends Application {
 		player3inv.setText(playerParty.getMember(3).getName());
 		
 		swapItem.setLayoutX(340);
-		swapItem.setLayoutY(150);
+		swapItem.setLayoutY(200);
 		swapItem.setMnemonicParsing(false);
 		swapItem.setPrefHeight(50);
 		swapItem.setPrefWidth(125);
