@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 import combat.Combat;
 import combat.CombatGraphics;
+import equipment.Armor;
+import equipment.Armor.ArmorType;
+import equipment.Equipment;
+import equipment.Weapon;
 import party.EnemyParty;
 import party.FriendlyParty;
 import party.Member;
@@ -13,6 +17,10 @@ import party.Party;
 import world.Grid.Direction;
 import world.World;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -20,6 +28,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -66,11 +75,20 @@ public class GraphicsControl extends Application {
 	private Button heavyButton = new Button();
 	private Button standardButton = new Button();
 	private Button simpleButton = new Button();
+	private Button player0inv = new Button();
+	private Button player1inv = new Button();
+	private Button player2inv = new Button();
+	private Button player3inv = new Button();
+	private Button swapItem = new Button();
+	private Button exit = new Button();
 	
 	private int currentMember = 0;
 	private int currentEnemy = 0;
 	
+	private Member currentOdd;
 	
+	private Equipment currentItem;
+	private Equipment inventoryItem;
 	
 	public FriendlyParty playerParty;
 	private EnemyParty enemyParty;
@@ -98,7 +116,7 @@ public class GraphicsControl extends Application {
 		players.add(player2);
 		players.add(player3);
 		playerParty = new FriendlyParty(players);
-		
+		playerParty.addItem(new Weapon(2));
 		world = new World();
 		
 		System.out.println("1");
@@ -229,6 +247,9 @@ public class GraphicsControl extends Application {
 				break;
 			case I:
 				System.out.println("hmm");
+				drawInventory(playerParty.getMember(0));
+
+				inventoryControl();
 				break;
 			case ESCAPE:
 				break;
@@ -634,9 +655,6 @@ public class GraphicsControl extends Application {
 		System.out.println("drawCombat");
 	}
 	
-	
-	
-	
 	public void performCombat(FriendlyParty party, EnemyParty enemy){
 		
 				
@@ -954,7 +972,185 @@ public class GraphicsControl extends Application {
 //		}
 	}
 	
+	public void drawInventory(Member currentMember) {
+		currentOdd = currentMember;
+		BorderPane inventoryRoot = new BorderPane();
+		inventoryRoot.setPrefHeight(600);
+		inventoryRoot.setPrefWidth(800);
+		
+		Pane bottom = new Pane();
+		bottom.setPrefHeight(200);
+		bottom.setPrefWidth(200);
+		
+		Pane left = new Pane();
+		Pane right = new Pane();
+		exit = new Button();
+		
+		//The party inventory
+		ListView<Equipment> inventory = new ListView<Equipment>();
+		System.out.println(playerParty.getInventory());
+		ObservableList<Equipment> invItems =FXCollections.observableArrayList (
+		    playerParty.getInventory());
+		inventory.setItems(invItems);
+		right.getChildren().add(inventory);
+		
+		inventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>(){
+	        @Override public void changed(ObservableValue o,Object oldVal, 
+	                 Object newVal){
+	        	System.out.println(o + " + " + oldVal + " + " + newVal);
+	        	inventoryItem = (Equipment) newVal;
+	        }
+	        });
+		
+		//Individual player inventory
+		ListView<Equipment> currentInventory = new ListView<Equipment>();
+		ObservableList<Equipment> items =FXCollections.observableArrayList (
+		    currentMember.getInventory());
+		currentInventory.setItems(items);
+		left.getChildren().add(currentInventory);
+		
+		currentInventory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>(){
+	        @Override public void changed(ObservableValue o, Object oldVal, 
+	                 Object newVal){
+	        	currentItem = (Equipment) newVal;
+	        }
+	        });
+		
+		
+		player0inv.setLayoutX(164);
+		player0inv.setLayoutY(130);
+		player0inv.setMnemonicParsing(false);
+		player0inv.setPrefHeight(50);
+		player0inv.setPrefWidth(125);
+		player0inv.setText(playerParty.getMember(0).getName());
+		
+		player1inv.setLayoutX(314);
+		player1inv.setLayoutY(130);
+		player1inv.setMnemonicParsing(false);
+		player1inv.setPrefHeight(50);
+		player1inv.setPrefWidth(125);
+		player1inv.setText(playerParty.getMember(1).getName());
+		
+		player2inv.setLayoutX(464);
+		player2inv.setLayoutY(130);
+		player2inv.setMnemonicParsing(false);
+		player2inv.setPrefHeight(50);
+		player2inv.setPrefWidth(125);
+		player2inv.setText(playerParty.getMember(2).getName());
+		
+		player3inv.setLayoutX(614);
+		player3inv.setLayoutY(130);
+		player3inv.setMnemonicParsing(false);
+		player3inv.setPrefHeight(50);
+		player3inv.setPrefWidth(125);
+		player3inv.setText(playerParty.getMember(3).getName());
+		
+		swapItem.setLayoutX(340);
+		swapItem.setLayoutY(150);
+		swapItem.setMnemonicParsing(false);
+		swapItem.setPrefHeight(50);
+		swapItem.setPrefWidth(125);
+		swapItem.setText("<->");
 	
+		
+		exit.setLayoutX(614);
+		exit.setLayoutY(60);
+		exit.setMnemonicParsing(false);
+		exit.setPrefHeight(50);
+		exit.setPrefWidth(125);
+		exit.setText("Exit");
+		
+		inventoryRoot.setBottom(bottom);
+		inventoryRoot.setLeft(left);
+		inventoryRoot.setRight(right);
+		
+		bottom.getChildren().add(player0inv);
+		bottom.getChildren().add(player1inv);
+		bottom.getChildren().add(player2inv);
+		bottom.getChildren().add(player3inv);
+		bottom.getChildren().add(exit);
+		
+		left.getChildren().add(swapItem);
+		
+		
+		scene.setRoot(inventoryRoot);
+		Color grey = Color.GRAY;
+		scene.setFill(grey);
+		inventoryControl();
+	}
+	
+	public void inventoryControl() {
+		
+		player0inv.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+    		public void handle(ActionEvent arg0) {
+    			System.out.println("player0");
+    			drawInventory(playerParty.getMember(0));
+    			
+    		}
+    	});
+		
+		player1inv.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				System.out.println("player1");
+    			drawInventory(playerParty.getMember(1));
+    			
+
+			}
+		});
+		
+		player2inv.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				System.out.println("player2");
+    			drawInventory(playerParty.getMember(2));
+
+			}
+		});
+		
+		player3inv.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				System.out.println("player3");
+    			drawInventory(playerParty.getMember(3));
+
+			}
+		});
+		
+		exit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				System.out.println("exit");
+				grid();
+			}
+		});
+		
+		swapItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if (currentItem != null && inventoryItem != null) {
+					System.out.println("swapping" + currentItem + " with " + inventoryItem);
+					Armor armor = new Armor(ArmorType.HEADGEAR, 1);
+					Weapon weapon = new Weapon(1);
+					if (currentItem.getClass() == armor.getClass() && inventoryItem.getClass() == armor.getClass()) {
+						currentOdd.changeEquipment((Armor) inventoryItem);
+						playerParty.removeItem(inventoryItem);
+						playerParty.addItem((Armor) currentItem);
+					} else if (currentItem.getClass() == weapon.getClass() && inventoryItem.getClass() == weapon.getClass()) {
+						currentOdd.changeEquipment((Weapon) inventoryItem);
+						playerParty.removeItem(inventoryItem);
+						playerParty.addItem((Weapon) currentItem);
+					} else {
+						System.out.println("Items must be of same type");
+					}
+					currentItem = null;
+					inventoryItem = null;
+					drawInventory(currentOdd);					
+				}
+			}
+		});
+	}
 	
     @Override
     public void start(Stage stage) {
