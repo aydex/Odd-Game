@@ -43,6 +43,8 @@ public class FriendlyParty extends Party {
 		inventory.add(item);
 	}
 	
+	
+	
 	/**
 	 * Returns the equipment at the given index in the inventory
 	 * @param index The index of the equipment to be returned

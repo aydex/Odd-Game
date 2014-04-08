@@ -1,4 +1,4 @@
-package utilities;
+package utils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,6 +15,35 @@ public class FileManager {
 	 * @return the string-representation of the given filename
 	 */
 	public static String getStringFromFile(String fileName){
+		String fileOutput = ""; 
+		Scanner in;
+		 try
+		 {
+			 in = new Scanner(new FileReader(fileDirectory+fileName+".txt"));
+			 while(in.hasNext()){
+				 String tempString = in.nextLine();
+				 //System.out.println("getStringFromFile("+fileName+") - tempString: "+tempString);
+				 fileOutput+=tempString;
+			 }
+			 in.close();
+			 //System.out.println("getStringFromFile - done with stringappend");
+			 return fileOutput;
+		 }
+		 catch (FileNotFoundException e)
+		 {
+			 System.err.println("Error: file " + fileName + " could not be opened. Does it exist?");
+			 System.exit(1);
+		 }
+		 return fileOutput;
+	}
+
+	
+	/**
+	 * returns the string-representation from the given filename with newline
+	 * @param fileName the filename of the file
+	 * @return the string-representation of the given filename with newline
+	 */
+	public static String getStringFromFileNewline(String fileName){
 		String fileOutput = ""; 
 		Scanner in;
 		 try
@@ -39,6 +68,7 @@ public class FileManager {
 		 return fileOutput;
 	}
 
+	
 	/**
 	 * saves the file to the fileName
 	 * @param fileName the filename of the file
@@ -48,14 +78,15 @@ public class FileManager {
 		try
 	        {
 	            PrintWriter outFile = new PrintWriter(fileDirectory+fileName+".txt");
-	            for(int i = 0 ; i < file.split("\n").length; i++){
-	            	outFile.println(file.split("\n")[i]);
+	            for(int i = 0 ; i < 15; i++){
+	            	//System.out.println("saveStringToFile("+fileName+","+file+") - "+file.substring(i, i+20));
+	            	outFile.println(file.substring(i, i+20));
 	            }
 	            outFile.close();
 	        }
 	        catch (FileNotFoundException e)
 	        {
-	            System.err.println("Error: file 'test.txt' could not be opened for writing.");
+	            System.err.println("Error: file '"+fileName+"' could not be opened for writing.");
 	            System.exit(1);
 	        }
 	}

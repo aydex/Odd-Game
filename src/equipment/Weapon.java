@@ -6,7 +6,7 @@ import utils.RandomOdd;
 
 public class Weapon extends Equipment {
 	
-	public enum WeaponType { CLUB, RIFLE, PISTOL, AUTOMATIC}
+	public enum WeaponType { KNIFE, RIFLE, PISTOL, AUTOMATIC}
 	public enum DamageType { REGULAR, LASER, PLASMA }
 	
 	private int attack;
@@ -39,7 +39,7 @@ public class Weapon extends Equipment {
 	public Weapon(int level){
 		super("");
 		String name = "";
-		attack = RandomOdd.getRandomInt(level*(1/2), level);
+		attack = RandomOdd.getRandomInt(level*(1/2)+1, level);
 		try{
 			name = RandomOdd.getRandomNameFromFile("WeaponNames.txt");			
 		}
@@ -63,9 +63,9 @@ public class Weapon extends Equipment {
 		}
 		switch(weapon){
 		case 1:
-			weaponType = WeaponType.CLUB;
+			weaponType = WeaponType.KNIFE;
 			attack += 0;
-			name += " club";
+			name += " knife";
 			break;
 		case 2:
 			weaponType = WeaponType.PISTOL;
@@ -85,6 +85,14 @@ public class Weapon extends Equipment {
 		}
 		setValue(attack*2);
 		setName(name);
+	}
+	
+	/**
+	 * Constructor used for constructing a weapon from a string produced by the toString method, used in save/load. Not complete
+	 * @param string The string representation of the weapon
+	 */
+	public Weapon(String string){
+		super("");
 	}
 	
 	/**
@@ -118,7 +126,7 @@ public class Weapon extends Equipment {
 	public int[] getSimpleAttackMod(){
 		int[] returnValue = new int[2];
 		switch(weaponType){
-		case CLUB:
+		case KNIFE:
 			returnValue[0] = (1/2) * getStat() * 1;
 			returnValue[1] = 0;
 			break;
@@ -159,7 +167,7 @@ public class Weapon extends Equipment {
 	public int[] getStandardAttackMod(){
 		int[] returnValue = new int[2];
 		switch(weaponType){
-		case CLUB:
+		case KNIFE:
 			returnValue[0] += (1/2) * getStat() * (3/2);
 			returnValue[1] += 2;
 			break;
@@ -200,7 +208,7 @@ public class Weapon extends Equipment {
 	public int[] getHeavyAttackMod(){
 		int[] returnValue = new int[2];
 		switch(weaponType){
-		case CLUB:
+		case KNIFE:
 			returnValue[0] += (1/2) * getStat() * 2;
 			returnValue[1] += 4;
 			break;
@@ -232,6 +240,11 @@ public class Weapon extends Equipment {
 			break;
 		}
 		return returnValue;
+	}
+	
+	
+	public String toString(){
+		
 	}
 
 }
