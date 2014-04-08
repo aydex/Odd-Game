@@ -94,5 +94,33 @@ public class Party {
 	public boolean isEmpty(){
 		return members.isEmpty();
 	}
+	
+	/**
+	 * Returns true if all the members of the given party is dead
+	 * @return whether the entire party is dead
+	 */
+	public boolean isDead(){
+		boolean returnValue = true;
+		for (int i = 0; i < getSize(); i++){
+			if (getMember(i).isAlive()){
+				returnValue = false;
+			}
+		}
+		return returnValue;
+	}
+	
+	/**
+	 * Returns the number of living members of the party
+	 * @return the number of living members of the party
+	 */
+	public int getAlive(){
+		int k = 0;
+		for (int i = 0; i < getSize(); i++){
+			if (getMember(i).isAlive()){
+				k += 1;
+			}
+		}
+		return k;
+	}
 
 }

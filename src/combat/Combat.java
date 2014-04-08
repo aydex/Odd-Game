@@ -63,10 +63,11 @@ public class Combat {
 		attackStat = aiChooseAttack();
 		Member target = aiChooseTarget();
 		System.out.println("Target: "+target.getName());
+		currentPlayer.decreasePower(attackStat[1]);
 		target.decreaseHealth(attackStat[0], member.getDamageType());
-		if (!target.isAlive()){
-			party.removeMember(target);
-		}
+		//if (!target.isAlive()){
+		//	party.removeMember(target);
+		//}
 	}
 	
 	/**
@@ -102,7 +103,8 @@ public class Combat {
 	/**
 	 * Performs attack when attack button is pressed in combat graphics, target and attack must be set
 	 */
-	public void performAttack(){
+	public void performAttack(Member currentPlayer){
+		this.currentPlayer = currentPlayer;
 		if (target != null && attack != null){
 			double[] attackStat;
 			if (attack == Attack.HEAVY){
@@ -115,10 +117,11 @@ public class Combat {
 				attackStat = currentPlayer.getSimpleAttackStats();
 			}
 			playerTurn = false;
+			currentPlayer.decreasePower(attackStat[1]);
 			target.decreaseHealth(attackStat[0], currentPlayer.getDamageType());
-			if (!target.isAlive()){
-				enemy.removeMember(target);
-			}
+			//if (!target.isAlive()){
+			//	enemy.removeMember(target);
+			//}
 		}
 	}
 	
@@ -133,6 +136,7 @@ public class Combat {
 	 * Sets the current player's target to enemy0, called from button in combat graphics
 	 */
 	public void setTargetEnemy0(){
+		target = null;
 		if (enemy.getMember(0).isAlive()){
 			target = enemy.getMember(0);			
 		}
@@ -142,6 +146,7 @@ public class Combat {
 	 * Sets the current player's target to enemy1, called from button in combat graphics
 	 */
 	public void setTargetEnemy1(){
+		target = null;
 		if (enemy.getMember(1).isAlive()){
 			target = enemy.getMember(1);			
 		}
@@ -151,6 +156,7 @@ public class Combat {
 	 * Sets the current player's target to enemy2, called from button in combat graphics
 	 */
 	public void setTargetEnemy2(){
+		target = null;
 		if (enemy.getMember(2).isAlive()){
 			target = enemy.getMember(2);			
 		}
@@ -160,6 +166,7 @@ public class Combat {
 	 * Sets the current player's target to enemy3, called from button in combat graphics
 	 */
 	public void setTargetEnemy3(){
+		target = null;
 		if (enemy.getMember(3).isAlive()){
 			target = enemy.getMember(3);			
 		}
@@ -168,9 +175,10 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to heavy
 	 */
-	public void setAttackHeavy(){
+	public void setAttackHeavy(Member currentPlayer){
+		attack = null;
 		double[] attackStat = currentPlayer.getHeavyAttackStats();
-		if (attackStat[1] < currentPlayer.getPower()){
+		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.HEAVY;			
 		}
 	}
@@ -178,9 +186,10 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to standard
 	 */
-	public void setAttackStandard(){
+	public void setAttackStandard(Member currentPlayer){
+		attack = null;
 		double[] attackStat = currentPlayer.getStandardAttackStats();
-		if (attackStat[1] < currentPlayer.getPower()){
+		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.STANDRAD;			
 		}
 	}
@@ -188,9 +197,10 @@ public class Combat {
 	/**
 	 * Sets the current player's attack type to simple
 	 */
-	public void setAttackSimple(){
+	public void setAttackSimple(Member currentPlayer){
+		attack = null;
 		double[] attackStat = currentPlayer.getSimpleAttackStats();
-		if (attackStat[1] < currentPlayer.getPower()){
+		if (attackStat[1] <= currentPlayer.getPower()){
 			attack = Attack.SIMPLE;			
 		}		
 	}

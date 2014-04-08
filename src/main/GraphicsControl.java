@@ -57,15 +57,15 @@ public class GraphicsControl extends Application {
 	
 	private Combat combat;
 	private BorderPane combatRoot;
-	private Button enemy0Button;
-	private Button enemy1Button;
-	private Button enemy2Button;
-	private Button enemy3Button;
-	private Button attackButton;
-	private Button surrenderButton;
-	private Button heavyButton;
-	private Button standardButton;
-	private Button simpleButton;
+	private Button enemy0Button = new Button();
+	private Button enemy1Button = new Button();
+	private Button enemy2Button = new Button();
+	private Button enemy3Button = new Button();
+	private Button attackButton = new Button();
+	private Button surrenderButton = new Button();
+	private Button heavyButton = new Button();
+	private Button standardButton = new Button();
+	private Button simpleButton = new Button();
 	
 	private int currentMember = 0;
 	private int currentEnemy = 0;
@@ -288,7 +288,7 @@ public class GraphicsControl extends Application {
 		turnOrder.setLayoutX(20);
 		turnOrder.setLayoutY(100);
 		
-		surrenderButton = new Button();
+		//surrenderButton = new Button();
 		surrenderButton.setLayoutX(14);
 		surrenderButton.setLayoutY(137);
 		surrenderButton.setMnemonicParsing(false);
@@ -296,7 +296,7 @@ public class GraphicsControl extends Application {
 		surrenderButton.setPrefWidth(125);
 		surrenderButton.setText("Surrender");
 		
-		attackButton = new Button();
+		//attackButton = new Button();
 		attackButton.setLayoutX(661);
 		attackButton.setLayoutY(137);
 		attackButton.setMnemonicParsing(false);
@@ -304,21 +304,21 @@ public class GraphicsControl extends Application {
 		attackButton.setPrefWidth(125);
 		attackButton.setText("Attack");
 		
-		heavyButton = new Button();
+		//heavyButton = new Button();
 		heavyButton.setLayoutX(180);
 		heavyButton.setLayoutY(56);
 		heavyButton.setMnemonicParsing(false);
 		heavyButton.setPrefWidth(125);
 		heavyButton.setText("Heavy");
 		
-		standardButton = new Button();
+		//standardButton = new Button();
 		standardButton.setLayoutX(338);
 		standardButton.setLayoutY(56);
 		standardButton.setMnemonicParsing(false);
 		standardButton.setPrefWidth(125);
 		standardButton.setText("Standard");
 		
-		simpleButton = new Button();
+		//simpleButton = new Button();
 		simpleButton.setLayoutX(492);
 		simpleButton.setLayoutY(56);
 		simpleButton.setMnemonicParsing(false);
@@ -353,7 +353,7 @@ public class GraphicsControl extends Application {
 		
 		GridPane gridEnemy1 = new GridPane();
 		if (combat.getEnemy().getSize() > 1){
-			if (combat.getEnemy().getMember(0).isAlive()){
+			if (combat.getEnemy().getMember(1).isAlive()){
 				gridEnemy1.setLayoutX(0);
 				gridEnemy1.setLayoutY(100);
 				gridEnemy1.setPrefHeight(100);
@@ -367,7 +367,7 @@ public class GraphicsControl extends Application {
 		
 		GridPane gridEnemy2 = new GridPane();
 		if (combat.getEnemy().getSize() > 2){
-			if (combat.getEnemy().getMember(0).isAlive()){
+			if (combat.getEnemy().getMember(2).isAlive()){
 				gridEnemy2.setLayoutX(0);
 				gridEnemy2.setLayoutY(200);
 				gridEnemy2.setPrefHeight(100);
@@ -381,7 +381,7 @@ public class GraphicsControl extends Application {
 		
 		GridPane gridEnemy3 = new GridPane();
 		if (combat.getEnemy().getSize() > 3){
-			if (combat.getEnemy().getMember(0).isAlive()){
+			if (combat.getEnemy().getMember(3).isAlive()){
 				gridEnemy3.setLayoutX(0);
 				gridEnemy3.setLayoutY(300);
 				gridEnemy3.setPrefHeight(100);
@@ -418,7 +418,7 @@ public class GraphicsControl extends Application {
 		
 		GridPane gridPlayer1 = new GridPane();
 		if (combat.getParty().getSize() > 1){
-			if (combat.getParty().getMember(0).isAlive()){
+			if (combat.getParty().getMember(1).isAlive()){
 				gridPlayer1.setLayoutX(0);
 				gridPlayer1.setLayoutY(100);
 				gridPlayer1.setPrefHeight(100);
@@ -432,7 +432,7 @@ public class GraphicsControl extends Application {
 		
 		GridPane gridPlayer2 = new GridPane();
 		if (combat.getParty().getSize() > 2){
-			if (combat.getParty().getMember(0).isAlive()){
+			if (combat.getParty().getMember(2).isAlive()){
 				gridPlayer2.setLayoutX(0);
 				gridPlayer2.setLayoutY(200);
 				gridPlayer2.setPrefHeight(100);
@@ -446,7 +446,7 @@ public class GraphicsControl extends Application {
 		
 		GridPane gridPlayer3 = new GridPane();
 		if (combat.getParty().getSize() > 3){			
-			if (combat.getParty().getMember(0).isAlive()){
+			if (combat.getParty().getMember(3).isAlive()){
 				gridPlayer3.setLayoutX(0);
 				gridPlayer3.setLayoutY(300);
 				gridPlayer3.setPrefHeight(100);
@@ -472,108 +472,126 @@ public class GraphicsControl extends Application {
 			center.getColumnConstraints().add(column);
 		}
 		
-		center.setGridLinesVisible(true);
+		center.setGridLinesVisible(false);
 		
 		if (combat.getEnemy().getSize() > 0) {
-			File fileEnemy0 = new File(combat.getEnemy().getMember(0).getCombatRepresentation());
-			Image enemy0Im = new Image(fileEnemy0.toURI().toString());
-			ImageView imageEnemy0 = new ImageView(enemy0Im);
-			imageEnemy0.setFitHeight(100);
-			imageEnemy0.setFitWidth(153);
-			imageEnemy0.setPickOnBounds(true);
-			imageEnemy0.setPreserveRatio(true);
-			center.add(imageEnemy0, 0, 0);
-			GridPane.setHalignment(imageEnemy0, HPos.CENTER);
+			if (combat.getEnemy().getMember(0).isAlive()) {
+				System.out.println("Image enemy 0");
+				File fileEnemy0 = new File(combat.getEnemy().getMember(0).getCombatRepresentation());
+				Image enemy0Im = new Image(fileEnemy0.toURI().toString());
+				ImageView imageEnemy0 = new ImageView(enemy0Im);
+				imageEnemy0.setFitHeight(100);
+				imageEnemy0.setFitWidth(153);
+				imageEnemy0.setPickOnBounds(true);
+				imageEnemy0.setPreserveRatio(true);
+				center.add(imageEnemy0, 0, 0);
+				GridPane.setHalignment(imageEnemy0, HPos.CENTER);
+			}
 		}
 		
 		
 		if (combat.getEnemy().getSize() > 1) {
-			File fileEnemy1 = new File(combat.getEnemy().getMember(1).getCombatRepresentation());
-			Image enemy1Im = new Image(fileEnemy1.toURI().toString());
-			ImageView imageEnemy1 = new ImageView(enemy1Im);
-			imageEnemy1.setFitHeight(100);
-			imageEnemy1.setFitWidth(153);
-			imageEnemy1.setPickOnBounds(true);
-			imageEnemy1.setPreserveRatio(true);
-			center.add(imageEnemy1, 0, 1);
-			GridPane.setHalignment(imageEnemy1, HPos.CENTER);
+			ImageView imageEnemy1;
+			if (combat.getEnemy().getMember(1).isAlive()) {
+				File fileEnemy1 = new File(combat.getEnemy().getMember(1).getCombatRepresentation());
+				Image enemy1Im = new Image(fileEnemy1.toURI().toString());
+				imageEnemy1 = new ImageView(enemy1Im);
+				imageEnemy1.setFitHeight(100);
+				imageEnemy1.setFitWidth(153);
+				imageEnemy1.setPickOnBounds(true);
+				imageEnemy1.setPreserveRatio(true);
+				center.add(imageEnemy1, 0, 1);
+				GridPane.setHalignment(imageEnemy1, HPos.CENTER);
+			}
 		}
 		
 		if (combat.getEnemy().getSize() > 2) {
-			File fileEnemy2 = new File(combat.getEnemy().getMember(2).getCombatRepresentation());
-			Image enemy2Im = new Image(fileEnemy2.toURI().toString());
-			ImageView imageEnemy2 = new ImageView(enemy2Im);
-			imageEnemy2.setFitHeight(100);
-			imageEnemy2.setFitWidth(153);
-			imageEnemy2.setPickOnBounds(true);
-			imageEnemy2.setPreserveRatio(true);
-			center.add(imageEnemy2, 0, 2);
-			GridPane.setHalignment(imageEnemy2, HPos.CENTER);
+			if (combat.getEnemy().getMember(2).isAlive()) {
+				File fileEnemy2 = new File(combat.getEnemy().getMember(2).getCombatRepresentation());
+				Image enemy2Im = new Image(fileEnemy2.toURI().toString());
+				ImageView imageEnemy2 = new ImageView(enemy2Im);
+				imageEnemy2.setFitHeight(100);
+				imageEnemy2.setFitWidth(153);
+				imageEnemy2.setPickOnBounds(true);
+				imageEnemy2.setPreserveRatio(true);
+				center.add(imageEnemy2, 0, 2);
+				GridPane.setHalignment(imageEnemy2, HPos.CENTER);
+			}
 		}
 		
 		if (combat.getEnemy().getSize() > 3) {
-			File fileEnemy3 = new File(combat.getEnemy().getMember(3).getCombatRepresentation());
-			Image enemy3Im = new Image(fileEnemy3.toURI().toString());
-			ImageView imageEnemy3 = new ImageView(enemy3Im);
-			imageEnemy3.setFitHeight(100);
-			imageEnemy3.setFitWidth(153);
-			imageEnemy3.setPickOnBounds(true);
-			imageEnemy3.setPreserveRatio(true);
-			center.add(imageEnemy3, 0, 3);
-			GridPane.setHalignment(imageEnemy3, HPos.CENTER);
+			if (combat.getEnemy().getMember(3).isAlive()) {
+				File fileEnemy3 = new File(combat.getEnemy().getMember(3).getCombatRepresentation());
+				Image enemy3Im = new Image(fileEnemy3.toURI().toString());
+				ImageView imageEnemy3 = new ImageView(enemy3Im);
+				imageEnemy3.setFitHeight(100);
+				imageEnemy3.setFitWidth(153);
+				imageEnemy3.setPickOnBounds(true);
+				imageEnemy3.setPreserveRatio(true);
+				center.add(imageEnemy3, 0, 3);
+				GridPane.setHalignment(imageEnemy3, HPos.CENTER);
+			}
 		}
 		
 		if (combat.getParty().getSize() > 0) {
-			File filePlayer0 = new File(combat.getParty().getMember(0).getCombatRepresentation());
-			Image Player0Im = new Image(filePlayer0.toURI().toString());
-			ImageView imagePlayer0 = new ImageView(Player0Im);
-			imagePlayer0.setFitHeight(100);
-			imagePlayer0.setFitWidth(153);
-			imagePlayer0.setPickOnBounds(true);
-			imagePlayer0.setPreserveRatio(true);
-			center.add(imagePlayer0, 2, 0);
-			GridPane.setHalignment(imagePlayer0, HPos.CENTER);
+			if (combat.getParty().getMember(0).isAlive()) {
+				File filePlayer0 = new File(combat.getParty().getMember(0).getCombatRepresentation());
+				Image Player0Im = new Image(filePlayer0.toURI().toString());
+				ImageView imagePlayer0 = new ImageView(Player0Im);
+				imagePlayer0.setFitHeight(100);
+				imagePlayer0.setFitWidth(153);
+				imagePlayer0.setPickOnBounds(true);
+				imagePlayer0.setPreserveRatio(true);
+				center.add(imagePlayer0, 2, 0);
+				GridPane.setHalignment(imagePlayer0, HPos.CENTER);
+			}
 		}
 		
 		
 		if (combat.getParty().getSize() > 1) {
-			File filePlayer1 = new File(combat.getParty().getMember(1).getCombatRepresentation());
-			Image Player1Im = new Image(filePlayer1.toURI().toString());
-			ImageView imagePlayer1 = new ImageView(Player1Im);
-			imagePlayer1.setFitHeight(100);
-			imagePlayer1.setFitWidth(153);
-			imagePlayer1.setPickOnBounds(true);
-			imagePlayer1.setPreserveRatio(true);
-			center.add(imagePlayer1, 2, 1);
-			GridPane.setHalignment(imagePlayer1, HPos.CENTER);
+			if (combat.getParty().getMember(1).isAlive()) {
+				File filePlayer1 = new File(combat.getParty().getMember(1).getCombatRepresentation());
+				Image Player1Im = new Image(filePlayer1.toURI().toString());
+				ImageView imagePlayer1 = new ImageView(Player1Im);
+				imagePlayer1.setFitHeight(100);
+				imagePlayer1.setFitWidth(153);
+				imagePlayer1.setPickOnBounds(true);
+				imagePlayer1.setPreserveRatio(true);
+				center.add(imagePlayer1, 2, 1);
+				GridPane.setHalignment(imagePlayer1, HPos.CENTER);
+			}
 		}
 		
 		
 		if (combat.getParty().getSize() > 2) {
-			File filePlayer2 = new File(combat.getParty().getMember(2).getCombatRepresentation());
-			Image Player2Im = new Image(filePlayer2.toURI().toString());
-			ImageView imagePlayer2 = new ImageView(Player2Im);
-			imagePlayer2.setFitHeight(100);
-			imagePlayer2.setFitWidth(153);
-			imagePlayer2.setPickOnBounds(true);
-			imagePlayer2.setPreserveRatio(true);
-			center.add(imagePlayer2, 2, 2);
-			GridPane.setHalignment(imagePlayer2, HPos.CENTER);
+			if (combat.getParty().getMember(2).isAlive()) {
+				File filePlayer2 = new File(combat.getParty().getMember(2).getCombatRepresentation());
+				Image Player2Im = new Image(filePlayer2.toURI().toString());
+				ImageView imagePlayer2 = new ImageView(Player2Im);
+				imagePlayer2.setFitHeight(100);
+				imagePlayer2.setFitWidth(153);
+				imagePlayer2.setPickOnBounds(true);
+				imagePlayer2.setPreserveRatio(true);
+				center.add(imagePlayer2, 2, 2);
+				GridPane.setHalignment(imagePlayer2, HPos.CENTER);
+			}
 		}
 		
 		if (combat.getParty().getSize() > 3) {
-			File filePlayer3 = new File(combat.getParty().getMember(3).getCombatRepresentation());
-			Image Player3Im = new Image(filePlayer3.toURI().toString());
-			ImageView imagePlayer3 = new ImageView(Player3Im);
-			imagePlayer3.setFitHeight(100);
-			imagePlayer3.setFitWidth(153);
-			imagePlayer3.setPickOnBounds(true);
-			imagePlayer3.setPreserveRatio(true);
-			center.add(imagePlayer3, 2, 3);
-			GridPane.setHalignment(imagePlayer3, HPos.CENTER);
+			if (combat.getParty().getMember(3).isAlive()) {
+				File filePlayer3 = new File(combat.getParty().getMember(3).getCombatRepresentation());
+				Image Player3Im = new Image(filePlayer3.toURI().toString());
+				ImageView imagePlayer3 = new ImageView(Player3Im);
+				imagePlayer3.setFitHeight(100);
+				imagePlayer3.setFitWidth(153);
+				imagePlayer3.setPickOnBounds(true);
+				imagePlayer3.setPreserveRatio(true);
+				center.add(imagePlayer3, 2, 3);
+				GridPane.setHalignment(imagePlayer3, HPos.CENTER);
+			}
 		}
 		
-		enemy0Button = new Button();
+		//enemy0Button = new Button();
 		enemy0Button.setMnemonicParsing(false);
 		enemy0Button.setOpacity(0);
 		enemy0Button.setPrefHeight(69);
@@ -581,7 +599,7 @@ public class GraphicsControl extends Application {
 		enemy0Button.setText("Enemy0");
 		center.add(enemy0Button, 0, 0);
 		
-		enemy1Button = new Button();
+		//enemy1Button = new Button();
 		enemy1Button.setMnemonicParsing(false);
 		enemy1Button.setOpacity(0);
 		enemy1Button.setPrefHeight(69);
@@ -589,7 +607,7 @@ public class GraphicsControl extends Application {
 		enemy1Button.setText("Enemy1");
 		center.add(enemy1Button, 0, 1);
 		
-		enemy2Button = new Button();
+		//enemy2Button = new Button();
 		enemy2Button.setMnemonicParsing(false);
 		enemy2Button.setOpacity(0);
 		enemy2Button.setPrefHeight(69);
@@ -597,7 +615,7 @@ public class GraphicsControl extends Application {
 		enemy2Button.setText("Enemy2");
 		center.add(enemy2Button, 0, 2);
 		
-		enemy3Button = new Button();
+		//enemy3Button = new Button();
 		enemy3Button.setMnemonicParsing(false);
 		enemy3Button.setOpacity(0);
 		enemy3Button.setPrefHeight(69);
@@ -670,17 +688,34 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			
-    			
-    			
-    			
-    			
-    			
-    			
     			System.out.println("attack");
-    			combat.performAttack();
-    			if(currentEnemy<enemyParty.getSize()){
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.performAttack(currentPlayer);
+    			if(currentEnemy < enemyParty.getAlive()){
     				combat.performAITurn(enemyParty.getMember(currentEnemy));
-    				if(enemyParty.isEmpty()){
+    			}
+    			if(enemyParty.isDead()){
+    				scene.setRoot(gridPane);
+    				scene.setOnKeyPressed(keyEventHandler);
+    				grid();
+    				gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
+    				int[] tempBackgroundList = world.getEnemyPlacement();
+    				world.clearProximity();
+    				gridList = world.toChar();
+    				gridChange(tempList[3], tempList[4],'@');
+    				gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
+    			}
+    			else if(playerParty.isDead()){
+    				//endgame
+    			}
+    			currentEnemy++;
+    			currentMember++;
+    			if(currentMember >= playerParty.getAlive()){
+    				while(currentEnemy < enemyParty.getAlive()){
+    					combat.performAITurn(enemyParty.getMember(currentEnemy));
+    					currentEnemy++;
+    				}
+    				if(enemyParty.isDead()){
     					scene.setRoot(gridPane);
     					scene.setOnKeyPressed(keyEventHandler);
     					grid();
@@ -691,30 +726,8 @@ public class GraphicsControl extends Application {
     					gridChange(tempList[3], tempList[4],'@');
     					gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
     				}
-    				else if(playerParty.isEmpty()){
+    				else if(playerParty.isDead()){
     					//endgame
-    				}
-    			}
-    			currentEnemy++;
-    			currentMember++;
-    			if(currentMember>=playerParty.getSize()){
-    				while(currentEnemy<enemyParty.getSize()){
-    					combat.performAITurn(enemyParty.getMember(currentEnemy));
-    					if(enemyParty.isEmpty()){
-        					scene.setRoot(gridPane);
-        					scene.setOnKeyPressed(keyEventHandler);
-        					grid();
-        					gridChange(tempList[1], tempList[2], gridList[tempList[2]*sceneX+tempList[1]]);
-        					int[] tempBackgroundList = world.getEnemyPlacement();
-        					world.clearProximity();
-        					gridList = world.toChar();
-        					gridChange(tempList[3], tempList[4],'@');
-        					gridChange(tempBackgroundList[0], tempBackgroundList[1],gridList[tempBackgroundList[1]*sceneX+tempBackgroundList[0]]);
-        				}
-    					else if(playerParty.isEmpty()){
-        					//endgame
-        				}
-    					currentEnemy++;
     				}
     				currentEnemy = 0;
     				currentMember = 0;
@@ -736,7 +749,8 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			System.out.println("heavy");
-    			combat.setAttackHeavy();
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.setAttackHeavy(currentPlayer);
     		}
     	});
     	
@@ -744,7 +758,8 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			System.out.println("standard");
-    			combat.setAttackStandard();
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.setAttackStandard(currentPlayer);
     		}
     	});
     	
@@ -752,7 +767,8 @@ public class GraphicsControl extends Application {
     		@Override
     		public void handle(ActionEvent arg0) {
     			System.out.println("simple");
-    			combat.setAttackSimple();
+    			Member currentPlayer = combat.getParty().getMember(currentMember);
+    			combat.setAttackSimple(currentPlayer);
     		}
     	});
 		
