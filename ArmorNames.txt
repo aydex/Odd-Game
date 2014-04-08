@@ -1,0 +1,8 @@
+Wooden
+Steel
+Gold
+Diamond
+Plastic
+Iron
+Denim
+Dragon
