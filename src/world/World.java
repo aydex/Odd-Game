@@ -35,6 +35,10 @@ public class World {
 		return grid.getEquipment(level);
 	}
 	
+	public boolean isWon(){
+		return grid.isWon();
+	}
+	
 	/**
 	 * constructor for world, it overwrites the gridsfiles from previous games, and set the matrix for the overall world
 	 */
@@ -56,7 +60,7 @@ public class World {
 			}
 		}
 		//System.out.println("world - pre grid = new Grid()");
-		grid = new Grid(fileLocation+"saveMaps/"+nameMatrix[y][x],Direction.DOWN);//Direction.valueOf(coordinateString.split(",")[2]));
+		grid = new Grid(fileLocation+"saveMaps/"+nameMatrix[y][x],Direction.LEFT);//Direction.valueOf(coordinateString.split(",")[2]));
 		
 	}
 	

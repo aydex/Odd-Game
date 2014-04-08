@@ -29,6 +29,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -64,6 +66,9 @@ public class GraphicsControl extends Application {
 	private ImageView playerImageView;
 	
 	private World world;
+
+	private Pane gameOver = new Pane();
+	private Pane victory = new Pane();
 	
 	private Combat combat;
 	private BorderPane combatRoot;
@@ -301,6 +306,10 @@ public class GraphicsControl extends Application {
 					gridChange(tempList[3], tempList[4],'@');
 				}
 				//System.out.println(direction);
+			}
+			
+			if(world.isWon()){
+				drawVictory();
 			}
 			keyActive = false;
 		}
@@ -772,7 +781,7 @@ public class GraphicsControl extends Application {
 					gridChange(tempList[3], tempList[4],'@');
     			}
     			else if(playerParty.isDead()){
-    				//endgame
+    				drawGameOver();
     			}
     			currentEnemy++;
     			currentMember++;
@@ -1079,6 +1088,64 @@ public class GraphicsControl extends Application {
       	//scene.setOnKeyReleased(keyReleaseHandler);
       	
     } 
+    
+   
+	
+	public void drawGameOver(){
+		gameOver.setPrefHeight(600);
+		gameOver.setPrefWidth(800);
+		
+		Label gameOverText = new Label("Game Over!");
+		gameOverText.setLayoutX(220);
+		gameOverText.setLayoutY(230);
+		gameOverText.setFont(Font.font("Cambria",68));
+		gameOverText.setTextFill(Color.GRAY);
+		
+		Label lostText = new Label("Better luck next time");
+		lostText.setLayoutX(260);
+		lostText.setLayoutY(310);
+		lostText.setFont(Font.font("Cambria",28));
+		lostText.setTextFill(Color.GREY);
+		
+		gameOver.getChildren().add(gameOverText);
+		gameOver.getChildren().add(lostText);
+		
+		scene.setFill(Color.BLACK);
+		scene.setRoot(gameOver);
+		
+	}
+	
+	public void drawVictory(){
+		victory.setPrefHeight(600);
+		victory.setPrefWidth(800);
+		
+		Label victoryText = new Label("Congratulations!");
+		victoryText.setLayoutX(190);
+		victoryText.setLayoutY(140);
+		victoryText.setFont(Font.font("Cambria",58));
+		victoryText.setTextFill(Color.STEELBLUE);
+		
+		Label victoryText2 = new Label("You won!");
+		victoryText2.setLayoutX(275);
+		victoryText2.setLayoutY(220);
+		victoryText2.setFont(Font.font("Cambria",58));
+		victoryText2.setTextFill(Color.STEELBLUE);
+		
+		Label storyText = new Label("You survived your journey through the apocalyptic world and reached safety.");
+		storyText.setLayoutX(230);
+		storyText.setLayoutY(350);
+		storyText.setPrefWidth(350);
+		storyText.setWrapText(true);
+		storyText.setFont(Font.font("Cambria",20));
+		storyText.setTextFill(Color.BLACK);
+		
+		victory.getChildren().add(victoryText);
+		victory.getChildren().add(victoryText2);
+		victory.getChildren().add(storyText);
+		
+		scene.setFill(Color.WHITESMOKE);
+		scene.setRoot(victory);
+	}
     
     public static void main(String[] args) {
     	launch(args);

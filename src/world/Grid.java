@@ -130,6 +130,15 @@ public class Grid {
 		return returnInt;
 	}
 	
+	public boolean isWon(){
+		if(originalBoard[posY][posX]=='q'){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public Equipment getEquipment(int level){
 		int[] returnInt = new int[2];
 		Equipment returnEq = new Equipment("temp");
@@ -218,9 +227,10 @@ public class Grid {
 						type = MemberType.SUPERROBOT;
 						numberOfEnemies = 1;
 						level+=10;
+						break;
 					default:
 						type = MemberType.HUMAN;
-						numberOfEnemies = 3;
+						numberOfEnemies = 1;
 						break;
 					} // end switch
 						
@@ -373,6 +383,9 @@ public class Grid {
 		}
 		else{
 			collisionBoard[i][j] = 1;
+		}
+		if(originalBoard[i][j]=='q'){
+			collisionBoard[i][j] = 0;
 		}
 	}
 	
