@@ -1,6 +1,8 @@
 package party;
 
 import java.util.ArrayList;
+
+import javafx.util.Callback;
 import equipment.Equipment;
 
 public class FriendlyParty extends Party {
@@ -40,6 +42,7 @@ public class FriendlyParty extends Party {
 	 * @param item The equipment to be added to the inventory
 	 */
 	public void addItem(Equipment item){
+		System.out.println("adding " + item + " to inventory");
 		inventory.add(item);
 	}
 	
@@ -62,6 +65,7 @@ public class FriendlyParty extends Party {
 	 * @param item The equipment to be removed
 	 */
 	public void removeItem(Equipment item){
+		System.out.println("removing " + item + " from inventory");
 		inventory.remove(item);
 	}
 	
@@ -104,6 +108,11 @@ public class FriendlyParty extends Party {
 	 */
 	public int getMoney(){
 		return money;
+	}
+
+	public ArrayList<Equipment> getInventory() {
+		System.out.println("inventory contains" + inventory);
+		return inventory;
 	}
 
 }
