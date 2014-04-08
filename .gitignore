@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 bin/
 .settings
 .DS_Store
 .classpath
 .project
-mapfolder/saveMaps
-=======
-bin/
-.settings
-.classpath
-.project
->>>>>>> cc4b48445a80919ac9d74805a4d6f9ede9ddad13
+mapfolder/saveMaps/*
+mapfolder/saveMaps/
+saveMaps/
