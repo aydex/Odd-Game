@@ -862,7 +862,7 @@ public class GraphicsControl extends Application {
 		party.setText("Party");
 		right.getChildren().add(party);
 		party.setLayoutX(90);
-		party.setLayoutY(25);
+		party.setLayoutY(100);
 		ListView<Equipment> inventory = new ListView<Equipment>();
 		System.out.println(playerParty.getInventory());
 		ObservableList<Equipment> invItems =FXCollections.observableArrayList (
@@ -895,16 +895,16 @@ public class GraphicsControl extends Application {
 		personStats.setLayoutX(300);
 		personStats.setLayoutY(130);
 		
-		
+		inventory.setPrefHeight(200);
 		inventory.setLayoutX(-20);
-		inventory.setLayoutY(40);
+		inventory.setLayoutY(120);
 		
 		//Individual player inventory
 		Text person = new Text();
 		person.setText(currentOdd.getName());
 		left.getChildren().add(person);
 		person.setLayoutX(120);
-		person.setLayoutY(25);
+		person.setLayoutY(130);
 		ListView<Equipment> currentInventory = new ListView<Equipment>();
 		ObservableList<Equipment> items =FXCollections.observableArrayList (
 		    currentMember.getInventory());
@@ -935,8 +935,10 @@ public class GraphicsControl extends Application {
 		partyStats.setLayoutX(300);
 		partyStats.setLayoutY(350);
 		
+		currentInventory.setPrefHeight(150);
+		
 		currentInventory.setLayoutX(20);
-		currentInventory.setLayoutY(40);
+		currentInventory.setLayoutY(150);
 		
 		player0inv.setLayoutX(164);
 		player0inv.setLayoutY(130);
