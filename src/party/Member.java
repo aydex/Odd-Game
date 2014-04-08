@@ -2,6 +2,7 @@ package party;
 
 import java.util.ArrayList;
 
+import javafx.util.Callback;
 import equipment.Armor;
 import equipment.Armor.ArmorType;
 import equipment.Equipment;
@@ -204,6 +205,7 @@ public class Member {
 	 * @return the old weapon
 	 */
 	public Equipment changeEquipment(Weapon weapon){
+		System.out.println("changing weapon " + this.weapon + " to " + weapon);
 		Weapon returnWeapon = this.weapon;
 		this.weapon = weapon;
 		this.updateDamDef();
@@ -449,5 +451,16 @@ public class Member {
 	 */
 	public String toString(){
 		return memberType+","+level+","+weapon+","+headGear+","+chest+","+hands+","+shield+","+boots;
+	}
+
+	public ArrayList<Equipment> getInventory() {
+		ArrayList<Equipment> inventory = new ArrayList<Equipment>();
+		inventory.add(chest);
+		inventory.add(boots);
+		inventory.add(hands);
+		inventory.add(headGear);
+		inventory.add(shield);
+		inventory.add(weapon);
+		return inventory;
 	}
 }

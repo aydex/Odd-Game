@@ -242,9 +242,5 @@ public class Weapon extends Equipment {
 		return returnValue;
 	}
 	
-	
-	public String toString(){
-		
-	}
 
 }
